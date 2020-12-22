@@ -773,12 +773,23 @@ export default {
                         });
                     }
                 );
+                // 追加参数 reg_test_model
+                // if (targetNode.component_id === "cla_test_model") {
+                //     // 找到拆分节点
+                //     this.runArr.forEach((item, index, arr) => {
+                //         if (item.component_id === "split_datasets") {
+                //             node_params.train_csv_path =
+                //                 item.output.train_csv_path;
+                //         }
+                //     });
+                //     // train_csv_path
+                // }
                 // 生成参数
                 let obj = {
                     user_id: localStorage.getItem("data_user_id"),
                     user_name: "user1",
                     experiment_id: this.data_test_id + "",
-                    experiment_name: "switch_machine_test2",
+                    experiment_name: this.currentTest.test_name, // 实验名称
                     node_id: this.runArr[this.currentNodeNum].id,
                     node_name: this.runArr[this.currentNodeNum].name,
                     component_id: this.runArr[this.currentNodeNum].component_id,
@@ -1718,7 +1729,7 @@ export default {
         // 追加模型测试节点
         addNodeModelTest(pos_x, pos_y, node_id, str) {
             let obj = this.nodeLabel4[0].nodeItem[0]; // 拿到模型数据模板
-            obj.component_id = str + obj.component_id;
+            let component_id = str + obj.component_id;
             const params = {
                 model_id: sessionStorage["newGraph"],
                 desp: {
@@ -1727,6 +1738,7 @@ export default {
                     ...obj
                 }
             };
+            params.desp.component_id = component_id;
             let current_node_id = new Date().getTime() - 2000;
             this.yourJSONDataFillThere.nodes.push({
                 ...params.desp,

@@ -7,8 +7,8 @@
             :visible.sync="dialogVisible"
             width="50%"
             :before-close="handleClose">
-            <div style="max-height:60vh;overflow-y:auto;">
-                {{this.$store.state.analysisDialog}}
+            <!--聚类-->
+            <div style="max-height:60vh;overflow-y:auto;display:none;" >
                 <!--表格-->
                 <table class="report-table">
                     <tr>
@@ -29,9 +29,34 @@
                     </tr>
                 </table>
                 <!--图-->
-                <el-button @click="createData">显示图表</el-button>
-                <el-button @click="createBarData">柱形图</el-button>
+                <el-button-group>
+                    <el-button type="primary" @click="createData">饼图</el-button>
+                    <el-button @click="createBarData">柱形图</el-button>
+                </el-button-group>
                 <div id="main" style="width:100%;height:400px;"></div>
+            </div>
+            <!--回归-->
+            <div style="max-height:60vh;overflow-y:auto;">
+                <!--图-->
+                <el-button-group>
+                    <el-button type="primary" @click="createData">饼图</el-button>
+                    <el-button @click="createBarData">柱形图</el-button>
+                </el-button-group>
+                <!--表格-->
+                <el-table
+                    :data="tableData"
+                    stripe
+                    style="width: 100%">
+                    <el-table-column
+                        prop="date"
+                        label="指标"
+                        >
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="值">
+                    </el-table-column>
+                    </el-table>
             </div>
         </el-dialog>
   </div>
@@ -49,6 +74,28 @@ export default {
                 "#52CCA3",
                 "#A1E6CE",
                 "#6699FF"
+            ],
+            tableData: [
+                {
+                    date: "2016-05-02",
+                    name: "王小虎",
+                    address: "上海市普陀区金沙江路 1518 弄"
+                },
+                {
+                    date: "2016-05-04",
+                    name: "王小虎",
+                    address: "上海市普陀区金沙江路 1517 弄"
+                },
+                {
+                    date: "2016-05-01",
+                    name: "王小虎",
+                    address: "上海市普陀区金沙江路 1519 弄"
+                },
+                {
+                    date: "2016-05-03",
+                    name: "王小虎",
+                    address: "上海市普陀区金沙江路 1516 弄"
+                }
             ]
         };
     },
@@ -290,7 +337,20 @@ export default {
     .el-dialog__body {
         color: #fff;
     }
-
+    .el-table th,
+    .el-table tr {
+        background: #2a2d36;
+    }
+    .el-table td,
+    .el-table th.is-leaf {
+        border-bottom: 1px solid #4f4c4c;
+    }
+    .el-table__row:last-child td {
+        border-bottom: 1px solid #4f4c4c;
+    }
+    .el-table--striped .el-table__body tr.el-table__row--striped td {
+        background: #3a3d4a;
+    }
     .report-table {
         width: 100%;
         border-collapse: collapse;
@@ -301,7 +361,7 @@ export default {
                 line-height: 36px;
                 background: #30333d;
                 padding-left: 10px;
-                border-bottom: 1px solid #4f4c4c;
+                border-bottom: 1px solid #4f4c4c !important;
             }
             td:first-child {
                 width: 40%;

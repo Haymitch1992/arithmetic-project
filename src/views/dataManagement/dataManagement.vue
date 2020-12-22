@@ -766,7 +766,7 @@ export default {
         },
         downLoadFile(str) {
             // 导出数据集
-            window.location.href = "http://192.168.61.106:5001/" + str;
+            window.location.href = this.globalUlr + str;
         },
         clickDelete(id) {
             this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
