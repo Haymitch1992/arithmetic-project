@@ -804,8 +804,14 @@ export default {
                         ? "true"
                         : "fasle" // 是否输出模型
                 };
-                if (this.runArr[this.currentNodeNum].is_generate_model) {
+                if (
+                    this.runArr[this.currentNodeNum].is_generate_model &&
+                    this.runArr[this.currentNodeNum].is_generate_model ===
+                        "true"
+                ) {
                     obj.is_generate_model = true;
+                } else {
+                    obj.is_generate_model = false;
                 }
                 console.log("打印当前要上传的参数", obj);
                 // console.log("当前节点的下标", this.runArr[this.currentNodeNum]);

@@ -203,7 +203,7 @@ export const nodeList = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'split-input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "采样比例",
                             "value": {
                                 "node_params": {
@@ -251,7 +251,7 @@ export const nodeList = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'input-default', // 输入框
-                            "label": "采样比例",
+                            "label": "分层采样比例",
                             "value": {
                                 "node_params": {
                                     "sample_prop_dict": "{'A':0.2,'B':0.5,'C':0.3}"
