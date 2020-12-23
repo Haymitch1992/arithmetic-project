@@ -41,6 +41,8 @@ export default {
                 nodeTpye: "analysisDialog",
                 status: true
             });
+            // 当前节点参数保存 id 节点名称
+            console.log("查看当前节点参数", this.isEditAreaShow);
         },
         openData() {
             if (this.isEditAreaShow.form[0].data[0].value.node_params) {

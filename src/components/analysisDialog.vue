@@ -2,13 +2,13 @@
   <div class="report-dialog">
    <!-- 数据集数据展示 -->
         <el-dialog
-            title="聚类模型评估-结果分析报告"
+            :title="titleList[currentNodetype]"
              class="dataView"
             :visible.sync="dialogVisible"
             width="50%"
             :before-close="handleClose">
             <!--聚类-->
-            <div style="max-height:60vh;overflow-y:auto;display:none;" >
+            <div style="max-height:60vh;overflow-y:auto;" v-show="currentNodetype===0">
                 <!--表格-->
                 <table class="report-table">
                     <tr>
@@ -30,21 +30,24 @@
                 </table>
                 <!--图-->
                 <el-button-group>
-                    <el-button type="primary" @click="createData">饼图</el-button>
-                    <el-button @click="createBarData">柱形图</el-button>
+                    <el-button  :type="currentTab===0?'primary':'default'" size="small"  @click="createData(0)">饼图</el-button>
+                    <el-button  :type="currentTab===1?'primary':'default'" size="small" @click="createBarData(1)">柱形图</el-button>
                 </el-button-group>
-                <div id="main" style="width:100%;height:400px;"></div>
+                <div id="main" v-show="currentTab===0" style="width:750px;height:400px;"></div>
+                <div id="main2" v-show="currentTab===1" style="width:750px;height:400px;"></div>
             </div>
             <!--回归-->
-            <div style="max-height:60vh;overflow-y:auto;">
+            <div style="max-height:60vh;overflow-y:auto;"  v-show="currentNodetype===1">
                 <!--图-->
                 <el-button-group>
-                    <el-button type="primary" @click="createData">饼图</el-button>
-                    <el-button @click="createBarData">柱形图</el-button>
+                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="createData(0)">饼图</el-button>
+                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="createBarData(1)">柱形图</el-button>
                 </el-button-group>
                 <!--表格-->
                 <el-table
                     :data="tableData"
+                    class="data-table"
+                    border
                     stripe
                     style="width: 100%">
                     <el-table-column
@@ -66,6 +69,14 @@ import echarts from "echarts";
 export default {
     data() {
         return {
+            titleList: [
+                "聚类模型评估分析报告",
+                "回归-结果分析报告",
+                "二分类评估报告",
+                "多分类评估报告"
+            ],
+            currentNodetype: 0,
+            currentTab: 0,
             dialogVisible: true,
             colorList: [
                 "#B3CDFF",
@@ -117,7 +128,8 @@ export default {
                 status: false
             });
         },
-        createData() {
+        createData(num) {
+            this.currentTab = num;
             // 出事haul
             var myChart = echarts.init(document.getElementById("main"));
             let option = {
@@ -209,8 +221,9 @@ export default {
             // 使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
         },
-        createBarData() {
-            var myChart = echarts.init(document.getElementById("main"));
+        createBarData(num) {
+            this.currentTab = num;
+            var myChart = echarts.init(document.getElementById("main2"));
             let option = {
                 toolbox: {
                     show: true,
@@ -324,6 +337,29 @@ export default {
     .el-dialog {
         width: 800px !important;
     }
+    .el-button--primary {
+        background-color: #3d7fff;
+        border: 1px solid #3d7fff;
+        border-right: 1px solid #494c54 !important;
+    }
+    .el-button-group > .el-button {
+        width: 100px;
+    }
+    .el-button--default {
+        background-color: #2a2d36;
+        border: 1px solid #494c54;
+        color: #fff;
+    }
+    .data-table {
+        margin-top: 10px;
+        border-top: 1px solid #494c54;
+        border-left: 1px solid #494c54;
+    }
+    .el-table--border::after,
+    .el-table--group::after,
+    .el-table::before {
+        background-color: #494c54;
+    }
     .el-dialog,
     .el-pager li {
         background: #2a2d36;
@@ -337,17 +373,19 @@ export default {
     .el-dialog__body {
         color: #fff;
     }
-    .el-table th,
     .el-table tr {
         background: #2a2d36;
+        border-right: 1px solid #494c54;
     }
     .el-table td,
     .el-table th.is-leaf {
+        border-right: 1px solid #494c54;
         border-bottom: 1px solid #4f4c4c;
     }
     .el-table__row:last-child td {
         border-bottom: 1px solid #4f4c4c;
     }
+    .el-table th,
     .el-table--striped .el-table__body tr.el-table__row--striped td {
         background: #3a3d4a;
     }

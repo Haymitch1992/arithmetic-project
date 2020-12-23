@@ -421,7 +421,7 @@ export const nodeList = [
             node_type: 'item-4',
             in_ports: [0],
             in_ports_text: ['输入'],
-            in_ports_name: ['train_csv_path'],
+            in_ports_name: ['dataset_path'],
             out_ports: [0],
             out_ports_text: ['输出'],
             iconClassName: 'el-icon-loading',
