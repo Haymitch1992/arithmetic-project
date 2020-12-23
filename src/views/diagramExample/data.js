@@ -250,11 +250,11 @@ export const nodeList = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select-3', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "采样比例",
                             "value": {
                                 "node_params": {
-                                    "sample_prop_dict": 0.5
+                                    "sample_prop_dict": '{A:0.2,B:0.5,C:0.3}'
                                 }
                             },
                             "tag": "sample_prop_dict"
@@ -743,7 +743,7 @@ export const nodeList2 = [
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "选择标签",
                             "value": "2",
                             "tag": "select_tag"
@@ -754,14 +754,14 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "树的个数",
                             "value": "3",
                             "tag": "near_number"
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "单棵树的最大深度",
                             "value": "1",
                             "tag": "near_number"
@@ -796,7 +796,7 @@ export const nodeList2 = [
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "选择标签",
                             "value": "2",
                             "tag": "select_tag"
@@ -807,14 +807,14 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "树的个数",
                             "value": "3",
                             "tag": "near_number"
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "单棵树的最大深度",
                             "value": "1",
                             "tag": "near_number"
@@ -844,7 +844,7 @@ export const nodeList2 = [
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "选择标签",
                             "value": "2",
                             "tag": "select_tag"
@@ -855,14 +855,14 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "树的个数",
                             "value": "3",
                             "tag": "near_number"
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "单棵树的最大深度",
                             "value": "1",
                             "tag": "near_number"
@@ -992,7 +992,7 @@ export const nodeList3 = [
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "正则项系数",
                             "value": {
                                 "node_params": {
@@ -1051,7 +1051,7 @@ export const nodeList3 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'select-6', // 输入框
                             "label": "核函数选择",
                             "value": {
                                 "node_params": {
@@ -1062,7 +1062,7 @@ export const nodeList3 = [
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "正则项系数",
                             "value": {
                                 "node_params": {
@@ -1121,7 +1121,7 @@ export const nodeList3 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "森林中树的个数",
                             "value": {
                                 "node_params": {
@@ -1132,7 +1132,7 @@ export const nodeList3 = [
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "单棵树的最大深度",
                             "value": {
                                 "node_params": {
@@ -1143,7 +1143,7 @@ export const nodeList3 = [
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "叶节点数据的最小个数",
                             "value": {
                                 "node_params": {
@@ -1265,7 +1265,7 @@ export const nodeList3 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'select-6', // 输入框
                             "label": "核函数选择",
                             "value": {
                                 "node_params": {
@@ -1276,7 +1276,7 @@ export const nodeList3 = [
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "正则项系数",
                             "value": {
                                 "node_params": {
@@ -1335,7 +1335,7 @@ export const nodeList3 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "森林中树的个数",
                             "value": {
                                 "node_params": {
@@ -1346,7 +1346,7 @@ export const nodeList3 = [
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "单棵树的最大深度",
                             "value": {
                                 "node_params": {
@@ -1357,7 +1357,7 @@ export const nodeList3 = [
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "叶节点数据的最小个数",
                             "value": {
                                 "node_params": {
@@ -1410,7 +1410,7 @@ export const nodeList3 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "聚类个数",
                             "value": {
                                 "node_params": {
@@ -1458,7 +1458,7 @@ export const nodeList3 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "邻域点距离阈值",
                             "value": {
                                 "node_params": {
@@ -1469,7 +1469,7 @@ export const nodeList3 = [
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
+                            "type": 'input-default', // 输入框
                             "label": "核心对象密度阈值",
                             "value": {
                                 "node_params": {

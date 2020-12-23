@@ -54,7 +54,7 @@
                             <el-button type="text" size="small" @click="clickDelete(scope.row.id)">删除</el-button>
                             <el-button type="text" size="small" @click="downLoadFile(scope.row.data_path)" v-if="scope.row.data_type!==3">导出数据集</el-button>
                             <el-button type="text" size="small" @click="getDataNumber(scope.row)"  v-if="scope.row.data_type===3">导出数据集</el-button>
-                            <el-button v-if="scope.row.data_lable===0" type="text" size="small" @click="createdTip(scope.row.id)"  style="margin-left: 0;">创建标注任务</el-button>
+                            <el-button v-if="scope.row.data_lable===0||scope.row.data_lable===3" type="text" size="small" @click="createdTip(scope.row.id)"  style="margin-left: 0;">创建标注任务</el-button>
                             <el-button v-if="scope.row.data_lable===1" type="text" size="small" @click="goDetail(scope.row.id)" style="margin-left: 0;">标注</el-button>
                             <!-- <el-button v-if="scope.row.data_type===3" type="text" size="small" style="margin-left: 0;">不可标注</el-button> -->
                             <el-button v-if="scope.row.data_lable===1" type="text" size="small" @click="changedTip(scope.row.id)" style="margin-left: 0;">修改</el-button>

@@ -40,13 +40,14 @@
             <div style="max-height:60vh;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='回归评估'">
                 <!--图-->
                 <el-button-group>
-                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="createData(0)">饼图</el-button>
-                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="createBarData(1)">柱形图</el-button>
+                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="createData(0)">列表</el-button>
+                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="createBarData(1)">图表</el-button>
                 </el-button-group>
                 <!--表格-->
                 <el-table
                     :data="tableData"
                     class="data-table"
+                     v-show="currentTab===0"
                     border
                     stripe
                     style="width: 100%">
@@ -60,9 +61,28 @@
                         label="值">
                     </el-table-column>
                 </el-table>
-                <div class="chart-box">
-                    <div class="chart-left"></div>
-                    <div class="chart-right"></div>
+                <div class="chart-box"  v-show="currentTab===1">
+                    <div class="chart-left">
+                        <div class="chart-item" @click="handleItem(0)">
+                            <span :class="currentItem===0?'active':''">ROC</span>
+                            <img src="../assets/img/charts-icon-1.png" alt="">
+                        </div>
+                        <div class="chart-item" @click="handleItem(1)">
+                            <span :class="currentItem===1?'active':''">K-S</span>
+                            <img src="../assets/img/charts-icon-2.png" alt="">
+                        </div>
+                        <div class="chart-item" @click="handleItem(2)">
+                            <span :class="currentItem===2?'active':''">Precision Recall</span>
+                            <img src="../assets/img/charts-icon-3.png" alt="">
+                        </div>
+                        <div class="chart-item" @click="handleItem(3)">
+                            <span :class="currentItem===3?'active':''">Class Predict Report</span>
+                            <img src="../assets/img/charts-icon-4.png" alt="">
+                        </div>
+                    </div>
+                    <div class="chart-right">
+                        <div id="main3" style="width:100%;height:100%;"></div>
+                    </div>
                 </div>
             </div>
         </el-dialog>
@@ -79,6 +99,7 @@ export default {
                 "二分类评估报告",
                 "多分类评估报告"
             ],
+            currentItem: 0, // 当前选中的组件下标
             currentNodetype: 0,
             currentTab: 0,
             dialogVisible: true,
@@ -126,11 +147,56 @@ export default {
         }
     },
     methods: {
+        handleItem(num) {
+            this.currentItem = num;
+            this.createScatter();
+        },
         handleClose() {
             this.$store.commit("handleNode", {
                 nodeTpye: "analysisDialog",
                 status: false
             });
+        },
+        // 创建散点图
+        createScatter() {
+            var myChart = echarts.init(document.getElementById("main3"));
+            let option = {
+                xAxis: {},
+                yAxis: {},
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        magicType: {
+                            show: true,
+                            type: ["pie", "funnel"]
+                        },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                },
+                series: [
+                    {
+                        symbolSize: 20,
+                        data: [
+                            [10.0, 8.04],
+                            [8.0, 6.95],
+                            [13.0, 7.58],
+                            [9.0, 8.81],
+                            [11.0, 8.33],
+                            [14.0, 9.96],
+                            [6.0, 7.24],
+                            [4.0, 4.26],
+                            [12.0, 10.84],
+                            [7.0, 4.82],
+                            [5.0, 5.68]
+                        ],
+                        type: "scatter"
+                    }
+                ]
+            };
+            myChart.setOption(option);
         },
         createData(num) {
             this.currentTab = num;
@@ -338,6 +404,47 @@ export default {
 </script>
 <style lang="scss">
 .report-dialog {
+    .chart-box {
+        width: 100%;
+        height: 360px;
+        padding-top: 10px;
+        .chart-left {
+            width: 22%;
+            float: left;
+            padding-right: 10px;
+            box-sizing: border-box;
+            .chart-item {
+                width: 100%;
+                height: 90px;
+                position: relative;
+                margin-bottom: 2px;
+                span {
+                    position: absolute;
+                    top: 2px;
+                    left: 6px;
+                    background-color: #4c4f5f;
+                    line-height: 24px;
+                    font-size: 12px;
+                    padding: 0 10px;
+                }
+                .active {
+                    background-color: #3d7fff;
+                    color: #fff;
+                }
+                img {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                }
+            }
+        }
+        .chart-right {
+            width: 78%;
+            float: left;
+            background-color: #ddd;
+            height: 360px;
+        }
+    }
     .el-dialog {
         width: 800px !important;
     }
@@ -345,6 +452,7 @@ export default {
         background-color: #3d7fff;
         border: 1px solid #3d7fff;
         border-right: 1px solid #494c54 !important;
+        border-left: 1px solid #494c54 !important;
     }
     .el-button-group > .el-button {
         width: 100px;
@@ -380,6 +488,7 @@ export default {
     .el-table tr {
         background: #2a2d36;
         border-right: 1px solid #494c54;
+        color: #f5f5f5;
     }
     .el-table td,
     .el-table th.is-leaf {
