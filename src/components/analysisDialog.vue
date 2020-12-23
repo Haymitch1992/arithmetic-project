@@ -85,6 +85,67 @@
                     </div>
                 </div>
             </div>
+            <!--二分类 多分类-->
+            <div style="max-height:60vh;min-height:450px;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='二分类评估'||this.$store.state.currentDialog.nodeName==='多分类评估'">
+                <!--图-->
+                <el-button-group>
+                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0)">列表</el-button>
+                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(1)">比例矩阵</el-button>
+                    <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2)">混淆矩阵</el-button>
+                </el-button-group>
+                <!--表格-->
+                <el-table
+                    :data="tableData"
+                    class="data-table"
+                     v-show="currentTab===0"
+                    border
+                    stripe
+                    style="width: 100%">
+                    <el-table-column
+                        prop="date"
+                        label="指标"
+                        >
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="值">
+                    </el-table-column>
+                </el-table>
+                <div class="matrix-box" v-show="currentTab===1">
+                    <div class="matrix-line" v-for="(item ,index) in arr1" :key="index">
+                        <div class="matrix-td" :style="{backgroundColor:`rgba(100,147,248,${1*item2/12})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
+                    </div>
+                    <div class="matrix-tool-x" >
+                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                            <i></i>
+                            <span>{{item}}</span>
+                        </div>
+                    </div>
+                    <div class="matrix-tool-y" >
+                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                            <i></i>
+                            <span>{{item}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="matrix-box" v-show="currentTab===2">
+                    <div class="matrix-line" v-for="(item ,index) in arr2" :key="index">
+                        <div class="matrix-td"  :style="{backgroundColor:`rgba(100,147,248,${1*item2/1})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
+                    </div>
+                    <div class="matrix-tool-x" >
+                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                            <i></i>
+                            <span>{{item}}</span>
+                        </div>
+                    </div>
+                    <div class="matrix-tool-y" >
+                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                            <i></i>
+                            <span>{{item}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </el-dialog>
   </div>
 </template>
@@ -93,6 +154,9 @@ import echarts from "echarts";
 export default {
     data() {
         return {
+            arr1: [[12, 0, 0], [0, 10, 1], [0, 0, 7]],
+            arr2: [[1, 0.4, 0.6], [0, 0.9091, 0.0901], [0, 0, 1]],
+            LabelList: ["setosa", "versicolor", "virginica"],
             titleList: [
                 "聚类模型评估分析报告",
                 "回归-结果分析报告",
@@ -151,11 +215,24 @@ export default {
             this.currentItem = num;
             this.createScatter();
         },
+        handelMatrix(num) {
+            this.currentTab = num;
+            this.createMatrix();
+        },
         handleClose() {
             this.$store.commit("handleNode", {
                 nodeTpye: "analysisDialog",
                 status: false
             });
+        },
+        // 创建矩阵
+        createMatrix() {
+            let arr1 = [[12, 0, 0], [0, 10, 1], [0, 0, 7]];
+            let arr2 = [
+                [1, 0, 0],
+                [0, 0.9090909090909091, 0.09090909090909091],
+                [0, 0, 1]
+            ];
         },
         // 创建散点图
         createScatter() {
@@ -404,6 +481,81 @@ export default {
 </script>
 <style lang="scss">
 .report-dialog {
+    .matrix-box {
+        margin-top: 20px;
+        margin-left: 80px;
+        width: 300px;
+        border-left: 1px solid #eee;
+        border-top: 1px solid #eee;
+        box-sizing: border-box;
+        position: relative;
+        .matrix-line {
+            display: flex;
+            background: rgba(196, 222, 255, 1);
+            .matrix-td {
+                flex: 1;
+                width: 100px;
+                height: 100px;
+                text-align: center;
+                border-right: 1px solid #eee;
+                border-bottom: 1px solid #eee;
+                box-sizing: border-box;
+                line-height: 100px;
+                background: cornflowerblue;
+                opacity: 1;
+            }
+        }
+        .matrix-tool-x {
+            position: absolute;
+            width: 300px;
+            bottom: -30px;
+            left: 0;
+            i {
+                width: 1px;
+                height: 6px;
+                background: #fff;
+                display: block;
+                position: absolute;
+                left: 50px;
+                top: -17px;
+            }
+            .matrix-tool-item {
+                width: 100px;
+                text-align: center;
+                display: inline-block;
+                position: relative;
+            }
+        }
+        .matrix-tool-y {
+            position: absolute;
+            width: 100px;
+            bottom: 0;
+            left: -20px;
+            i {
+                width: 6px;
+                height: 1px;
+                background: #fff;
+                display: block;
+                position: absolute;
+                left: 19px;
+                top: 50px;
+            }
+            .matrix-tool-item {
+                width: 100px;
+                height: 100px;
+                text-align: right;
+                display: block;
+                position: relative;
+                line-height: 100px;
+                span {
+                    position: absolute;
+                    left: -90px;
+                    width: 100px;
+                    text-align: right;
+                }
+            }
+        }
+    }
     .chart-box {
         width: 100%;
         height: 360px;
