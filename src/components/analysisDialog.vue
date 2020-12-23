@@ -2,7 +2,7 @@
   <div class="report-dialog">
    <!-- 数据集数据展示 -->
         <el-dialog
-            :title="`${this.$store.state.currentDialog.nodeName}-分析评估报告`"
+            :title="`${this.$store.state.currentDialog.nodeName}-分析报告`"
              class="dataView"
             :visible.sync="dialogVisible"
             width="50%"
@@ -127,6 +127,8 @@
                             <span>{{item}}</span>
                         </div>
                     </div>
+                     <span class="pos-span-1">预测</span>
+                    <span class="pos-span-2">真实</span>
                 </div>
                 <div class="matrix-box" v-show="currentTab===2">
                     <div class="matrix-line" v-for="(item ,index) in arr2" :key="index">
@@ -144,6 +146,8 @@
                             <span>{{item}}</span>
                         </div>
                     </div>
+                    <span class="pos-span-1">预测</span>
+                    <span class="pos-span-2">真实</span>
                 </div>
             </div>
         </el-dialog>
@@ -489,6 +493,16 @@ export default {
         border-top: 1px solid #eee;
         box-sizing: border-box;
         position: relative;
+        .pos-span-1 {
+            position: absolute;
+            left: -40px;
+            top: 0px;
+        }
+        .pos-span-2 {
+            position: absolute;
+            bottom: -55px;
+            left: 136px;
+        }
         .matrix-line {
             display: flex;
             background: rgba(196, 222, 255, 1);

@@ -254,7 +254,7 @@ export const nodeList = [
                             "label": "采样比例",
                             "value": {
                                 "node_params": {
-                                    "sample_prop_dict": '{A:0.2,B:0.5,C:0.3}'
+                                    "sample_prop_dict": "{'A':0.2,'B':0.5,'C':0.3}"
                                 }
                             },
                             "tag": "sample_prop_dict"
