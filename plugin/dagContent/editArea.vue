@@ -39,7 +39,8 @@ export default {
         openAnalysis() {
             this.$store.commit("handleNode", {
                 nodeTpye: "analysisDialog",
-                status: true
+                status: true,
+                nodeName: this.isEditAreaShow.nodeName
             });
             // 当前节点参数保存 id 节点名称
             console.log("查看当前节点参数", this.isEditAreaShow);

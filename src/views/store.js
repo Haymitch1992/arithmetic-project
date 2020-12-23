@@ -27,6 +27,7 @@ let store = new Vuex.Store({
     dataDialog: false, // 数据集列表展示
     logDialog: false, // 运行结果展示
     analysisDialog: false, // 分析结果展示
+    currentDialog: {},
     current_set_id: '', // 当前数据集的id
     run_uuid: ''
   },
@@ -39,6 +40,7 @@ let store = new Vuex.Store({
     },
     handleNode(state, obj) {
       state[obj.nodeTpye] = obj.status
+      state.currentDialog.nodeName = obj.nodeName
     },
     changeStep(state, num) {
       state.step = num

@@ -2,13 +2,13 @@
   <div class="report-dialog">
    <!-- 数据集数据展示 -->
         <el-dialog
-            :title="titleList[currentNodetype]"
+            :title="`${this.$store.state.currentDialog.nodeName}-分析评估报告`"
              class="dataView"
             :visible.sync="dialogVisible"
             width="50%"
             :before-close="handleClose">
             <!--聚类-->
-            <div style="max-height:60vh;overflow-y:auto;" v-show="currentNodetype===0">
+            <div style="max-height:60vh;overflow-y:auto;" v-show="this.$store.state.currentDialog.nodeName==='聚类评估'">
                 <!--表格-->
                 <table class="report-table">
                     <tr>
@@ -37,7 +37,7 @@
                 <div id="main2" v-show="currentTab===1" style="width:750px;height:400px;"></div>
             </div>
             <!--回归-->
-            <div style="max-height:60vh;overflow-y:auto;"  v-show="currentNodetype===1">
+            <div style="max-height:60vh;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='回归评估'">
                 <!--图-->
                 <el-button-group>
                     <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="createData(0)">饼图</el-button>
@@ -59,7 +59,11 @@
                         prop="address"
                         label="值">
                     </el-table-column>
-                    </el-table>
+                </el-table>
+                <div class="chart-box">
+                    <div class="chart-left"></div>
+                    <div class="chart-right"></div>
+                </div>
             </div>
         </el-dialog>
   </div>
