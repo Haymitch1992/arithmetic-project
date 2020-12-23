@@ -456,7 +456,7 @@ export const nodeList = [
             out_ports: [0],
             out_ports_text: ['输出'],
             iconClassName: 'el-icon-loading',
-            out_ports_name: ['input_data_minmax_factorize'],
+            out_ports_name: ['input_data_factorize'],
             form: [
                 {
                     "label": "字段设置",
