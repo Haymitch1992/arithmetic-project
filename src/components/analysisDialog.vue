@@ -9,8 +9,13 @@
             :before-close="handleClose">
             <!--聚类-->
             <div style="max-height:60vh;overflow-y:auto;" v-show="this.$store.state.currentDialog.nodeName==='聚类评估'">
+                <el-button-group>
+                    <el-button  :type="currentTab===0?'primary':'default'" size="small" @click="changejulei(0)">指标数据</el-button>
+                    <el-button  :type="currentTab===1?'primary':'default'" size="small"  @click="changejulei(1)">饼图</el-button>
+                    <el-button  :type="currentTab===2?'primary':'default'" size="small" @click="changejulei(2)">柱形图</el-button>
+                </el-button-group>
                 <!--表格-->
-                <table class="report-table">
+                <table class="report-table" v-show="currentTab===0">
                     <tr>
                         <td>总记录数</td>
                         <td>123</td>
@@ -29,19 +34,15 @@
                     </tr>
                 </table>
                 <!--图-->
-                <el-button-group>
-                    <el-button  :type="currentTab===0?'primary':'default'" size="small"  @click="createData(0)">饼图</el-button>
-                    <el-button  :type="currentTab===1?'primary':'default'" size="small" @click="createBarData(1)">柱形图</el-button>
-                </el-button-group>
-                <div id="main" v-show="currentTab===0" style="width:750px;height:400px;"></div>
-                <div id="main2" v-show="currentTab===1" style="width:750px;height:400px;"></div>
+                <div id="main" v-show="currentTab===1" style="width:750px;height:400px;"></div>
+                <div id="main2" v-show="currentTab===2" style="width:750px;height:400px;"></div>
             </div>
             <!--回归-->
             <div style="max-height:60vh;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='回归评估'">
                 <!--图-->
                 <el-button-group>
-                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="createData(0)">列表</el-button>
-                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="createBarData(1)">图表</el-button>
+                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="changeTab(0)">列表</el-button>
+                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="changeTab(1)">图表</el-button>
                 </el-button-group>
                 <!--表格-->
                 <el-table
@@ -81,18 +82,18 @@
                         </div>
                     </div>
                     <div class="chart-right">
-                        <div id="main3" style="width:100%;height:100%;"></div>
+                        <div id="main3"  style="width:580px;height:360px;"></div>
                     </div>
                 </div>
             </div>
             <!--二分类 多分类-->
-            <div style="max-height:60vh;min-height:450px;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='二分类评估'||this.$store.state.currentDialog.nodeName==='多分类评估'">
+            <div style="max-height:60vh;min-height:450px;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='二分类评估'">
                 <!--图-->
                 <el-button-group>
-                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0)">列表</el-button>
-                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(1)">比例矩阵</el-button>
-                    <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2)">混淆矩阵</el-button>
-                    <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2)">预测类别分析</el-button>
+                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0)">指标数据</el-button>
+                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(1)">混淆矩阵</el-button>
+                    <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2)">比例矩阵</el-button>
+                    <el-button :type="currentTab===3?'primary':'default'" size="small" @click="handelMatrix(3)">图表</el-button>
                 </el-button-group>
                 <!--表格-->
                 <el-table
@@ -150,6 +151,96 @@
                     <span class="pos-span-1">预测</span>
                     <span class="pos-span-2">真实</span>
                 </div>
+                <div class="chart-box"  v-show="currentTab===3">
+                    <div class="chart-left">
+                        <div class="chart-item" @click="handleItem(0)">
+                            <span :class="currentItem===0?'active':''">ROC</span>
+                            <img src="../assets/img/charts-icon-1.png" alt="">
+                        </div>
+                        <div class="chart-item" @click="handleItem(1)">
+                            <span :class="currentItem===1?'active':''">K-S</span>
+                            <img src="../assets/img/charts-icon-2.png" alt="">
+                        </div>
+                        <div class="chart-item" @click="handleItem(2)">
+                            <span :class="currentItem===2?'active':''">Precision Recall</span>
+                            <img src="../assets/img/charts-icon-3.png" alt="">
+                        </div>
+                        <div class="chart-item" @click="handleItem(3)">
+                            <span :class="currentItem===3?'active':''">Class Predict Report</span>
+                            <img src="../assets/img/charts-icon-4.png" alt="">
+                        </div>
+                    </div>
+                    <div class="chart-right">
+                        <div id="main4" style="width:580px;height:360px;"></div>
+                    </div>
+                </div>
+            </div>
+            <!--多分类-->
+            <div style="max-height:60vh;min-height:450px;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='多分类评估'">
+                <!--图-->
+                <el-button-group>
+                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0)">指标数据</el-button>
+                    <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2)">混淆矩阵</el-button>
+                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(1)">比例矩阵</el-button>
+                    <el-button :type="currentTab===3?'primary':'default'" size="small" @click="handelMatrix(3)">预测类别分析</el-button>
+                </el-button-group>
+                <!--表格-->
+                <el-table
+                    :data="tableData"
+                    class="data-table"
+                     v-show="currentTab===0"
+                    border
+                    stripe
+                    style="width: 100%">
+                    <el-table-column
+                        prop="date"
+                        label="指标"
+                        >
+                    </el-table-column>
+                    <el-table-column
+                        prop="address"
+                        label="值">
+                    </el-table-column>
+                </el-table>
+                <div class="matrix-box" v-show="currentTab===1">
+                    <div class="matrix-line" v-for="(item ,index) in arr1" :key="index">
+                        <div class="matrix-td" :style="{backgroundColor:`rgba(100,147,248,${1*item2/12})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
+                    </div>
+                    <div class="matrix-tool-x" >
+                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                            <i></i>
+                            <span>{{item}}</span>
+                        </div>
+                    </div>
+                    <div class="matrix-tool-y" >
+                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                            <i></i>
+                            <span>{{item}}</span>
+                        </div>
+                    </div>
+                     <span class="pos-span-1">预测</span>
+                    <span class="pos-span-2">真实</span>
+                </div>
+                <div class="matrix-box" v-show="currentTab===2">
+                    <div class="matrix-line" v-for="(item ,index) in arr2" :key="index">
+                        <div class="matrix-td"  :style="{backgroundColor:`rgba(100,147,248,${1*item2/1})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
+                    </div>
+                    <div class="matrix-tool-x" >
+                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                            <i></i>
+                            <span>{{item}}</span>
+                        </div>
+                    </div>
+                    <div class="matrix-tool-y" >
+                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                            <i></i>
+                            <span>{{item}}</span>
+                        </div>
+                    </div>
+                    <span class="pos-span-1">预测</span>
+                    <span class="pos-span-2">真实</span>
+                </div>
+                <div id="main6" v-show="currentTab==3" style="width:750px;height:400px;"></div>
             </div>
         </el-dialog>
   </div>
@@ -177,7 +268,7 @@ export default {
                 "#9580FF",
                 "#BFB3FF",
                 "#52CCA3",
-                "#A1E6CE",
+                "#1677FF",
                 "#6699FF"
             ],
             tableData: [
@@ -218,11 +309,13 @@ export default {
     methods: {
         handleItem(num) {
             this.currentItem = num;
-            this.createScatter();
+            this.createScatter("main3");
         },
         handelMatrix(num) {
             this.currentTab = num;
             this.createMatrix();
+            this.createScatter("main4");
+            this.createBarData("main6");
         },
         handleClose() {
             this.$store.commit("handleNode", {
@@ -240,8 +333,8 @@ export default {
             ];
         },
         // 创建散点图
-        createScatter() {
-            var myChart = echarts.init(document.getElementById("main3"));
+        createScatter(str) {
+            var myChart = echarts.init(document.getElementById(str));
             let option = {
                 xAxis: {},
                 yAxis: {},
@@ -280,10 +373,9 @@ export default {
             };
             myChart.setOption(option);
         },
-        createData(num) {
-            this.currentTab = num;
+        createData(str) {
             // 出事haul
-            var myChart = echarts.init(document.getElementById("main"));
+            var myChart = echarts.init(document.getElementById(str));
             let option = {
                 tooltip: {
                     trigger: "item",
@@ -373,9 +465,17 @@ export default {
             // 使用刚指定的配置项和数据显示图表。
             myChart.setOption(option);
         },
-        createBarData(num) {
+        changejulei(num) {
             this.currentTab = num;
-            var myChart = echarts.init(document.getElementById("main2"));
+            this.createData("main");
+            this.createBarData("main2");
+        },
+        changeTab(num) {
+            this.currentTab = num;
+            this.createScatter("main3");
+        },
+        createBarData(str) {
+            var myChart = echarts.init(document.getElementById(str));
             let option = {
                 toolbox: {
                     show: true,

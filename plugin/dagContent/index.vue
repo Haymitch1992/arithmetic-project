@@ -506,6 +506,7 @@ export default {
             const id = this.DataAll.nodes[i].id;
             const detail = this.DataAll.nodes[i].detail || null;
             const nodeName = this.DataAll.nodes[i].name || null;
+            const nodeType = this.DataAll.nodes[i].node_type || null;
             const rightClickEvent =
                 this.DataAll.nodes[i].rightClickEvent || null;
             const x = e.x - this.initPos.left;
@@ -519,6 +520,7 @@ export default {
                 detail,
                 form,
                 nodeName,
+                nodeType,
                 rightClickEvent
             };
             e.stopPropagation();

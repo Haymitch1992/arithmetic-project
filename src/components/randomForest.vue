@@ -124,6 +124,13 @@ export default {
     watch: {
         nodeData() {
             // 当前节点是数据集的时候
+            this.initData();
+
+            // 当前节点是拆分时
+        }
+    },
+    methods: {
+        initData() {
             switch (this.componentId) {
                 case "load_data":
                     if (this.nodeData[0].data[0].value.value) {
@@ -144,11 +151,7 @@ export default {
                     this.splitValue = this.nodeData[1].data[0].value.node_params.n_neighbors;
                     break;
             }
-
-            // 当前节点是拆分时
-        }
-    },
-    methods: {
+        },
         saveItem(item) {
             // 数据集模糊匹配存储
             let arr = item.data_path.split("/");
@@ -222,6 +225,7 @@ export default {
         }
     },
     mounted() {
+        this.initData();
         console.log("节点名", this.nodeTile);
     }
 };
