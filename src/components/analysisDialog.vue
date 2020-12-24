@@ -65,20 +65,8 @@
                 <div class="chart-box"  v-show="currentTab===1">
                     <div class="chart-left">
                         <div class="chart-item" @click="handleItem(0)">
-                            <span :class="currentItem===0?'active':''">ROC</span>
+                            <span :class="currentItem===0?'active':''">Residual</span>
                             <img src="../assets/img/charts-icon-1.png" alt="">
-                        </div>
-                        <div class="chart-item" @click="handleItem(1)">
-                            <span :class="currentItem===1?'active':''">K-S</span>
-                            <img src="../assets/img/charts-icon-2.png" alt="">
-                        </div>
-                        <div class="chart-item" @click="handleItem(2)">
-                            <span :class="currentItem===2?'active':''">Precision Recall</span>
-                            <img src="../assets/img/charts-icon-3.png" alt="">
-                        </div>
-                        <div class="chart-item" @click="handleItem(3)">
-                            <span :class="currentItem===3?'active':''">Class Predict Report</span>
-                            <img src="../assets/img/charts-icon-4.png" alt="">
                         </div>
                     </div>
                     <div class="chart-right">
@@ -732,8 +720,9 @@ export default {
     }
     .data-table {
         margin-top: 10px;
-        border-top: 1px solid #494c54;
+        border-top: 1px solid #494c54 !important;
         border-left: 1px solid #494c54;
+        border-bottom: none;
     }
     .el-table--border::after,
     .el-table--group::after,
