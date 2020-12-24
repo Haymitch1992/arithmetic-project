@@ -92,6 +92,7 @@
                     <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0)">列表</el-button>
                     <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(1)">比例矩阵</el-button>
                     <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2)">混淆矩阵</el-button>
+                    <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2)">预测类别分析</el-button>
                 </el-button-group>
                 <!--表格-->
                 <el-table
@@ -486,7 +487,7 @@ export default {
 <style lang="scss">
 .report-dialog {
     .matrix-box {
-        margin-top: 20px;
+        margin-top: 50px;
         margin-left: 80px;
         width: 300px;
         border-left: 1px solid #eee;
@@ -517,6 +518,7 @@ export default {
                 line-height: 100px;
                 background: cornflowerblue;
                 opacity: 1;
+                color: #333;
             }
         }
         .matrix-tool-x {
