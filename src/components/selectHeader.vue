@@ -3,7 +3,7 @@
         <el-dialog
                 title="选择字段"
                 :visible.sync = "showDialog"
-                width="558px"
+                width="570px"
                 :before-close="handleClose">
             <div class="transfer-box">
                 <el-transfer v-model="selectTransferData"

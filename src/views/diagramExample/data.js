@@ -1387,7 +1387,7 @@ export const nodeList3 = [
             out_ports: [0],
             is_generate_model: "true",
             out_ports_text: ['输出模型'],
-            out_ports_name: ['kmeans_model'],
+            out_ports_name: ['cluster_data'],
             form: [
                 {
                     "label": "字段设置",
@@ -1435,7 +1435,7 @@ export const nodeList3 = [
             out_ports: [0],
             is_generate_model: "true",
             out_ports_text: ['输出模型'],
-            out_ports_name: ['dbscan_model'],
+            out_ports_name: ['cluster_data'],
             form: [
                 {
                     "label": "字段设置",
@@ -1462,10 +1462,10 @@ export const nodeList3 = [
                             "label": "邻域点距离阈值",
                             "value": {
                                 "node_params": {
-                                    "disatance_threshold": '0.5'
+                                    "distance_threshold": '0.5'
                                 }
                             },
-                            "tag": "disatance_threshold"
+                            "tag": "distance_threshold"
                         },
                         {
                             // 类型判断 下拉框|输入框

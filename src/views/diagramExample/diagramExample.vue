@@ -2,9 +2,7 @@
 <template>
     <!-- 最外层容器监mouse系列事件, 用来做节点拖拽 -->
     <div>
-        <div
-            class="diagramExample"
-        >
+        <div class="diagramExample">
             <div class="tag-line" v-if="choiceNodeList.length!==0">
                 <!-- 展开的试验列表 默认打开第一个-->
                 <div>
