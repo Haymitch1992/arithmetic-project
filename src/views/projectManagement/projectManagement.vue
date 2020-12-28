@@ -81,29 +81,29 @@ import {
     GET_OPTIONS,
     CREATE_PROJECT,
     DELETE_PROJECT
-} from "../../assets/url";
-import axios from "axios";
-import moment from "moment";
+} from '../../assets/url';
+import axios from 'axios';
+import moment from 'moment';
 export default {
-    name: "home",
+    name: 'home',
     filters: {
         modelStatusZn(val) {
             switch (val) {
                 case 0:
-                    return "未开始";
+                    return '未开始';
                 case 1:
-                    return "进行中";
+                    return '进行中';
                 case 2:
-                    return "已完成";
+                    return '已完成';
                 case 3:
-                    return "失败";
+                    return '失败';
                 case 4:
-                    return "已停止";
+                    return '已停止';
             }
         },
         create_time(val) {
-            if (!val) return "";
-            return moment(val).format("YYYY-MM-DD HH:mm:ss");
+            if (!val) return '';
+            return moment(val).format('YYYY-MM-DD HH:mm:ss');
         }
     },
 
@@ -117,48 +117,48 @@ export default {
                 project_name: [
                     {
                         required: true,
-                        message: "请输入项目名称",
-                        trigger: "blur"
+                        message: '请输入项目名称',
+                        trigger: 'blur'
                     },
                     {
                         min: 3,
                         max: 10,
-                        message: "长度在 3 到 10 个字符",
-                        trigger: "blur"
+                        message: '长度在 3 到 10 个字符',
+                        trigger: 'blur'
                     }
                 ],
                 project_description: [
                     {
                         required: true,
-                        message: "请输入项目说明",
-                        trigger: "blur"
+                        message: '请输入项目说明',
+                        trigger: 'blur'
                     },
                     {
                         min: 3,
                         max: 10,
-                        message: "长度在 3 到 10 个字符",
-                        trigger: "blur"
+                        message: '长度在 3 到 10 个字符',
+                        trigger: 'blur'
                     }
                 ]
             },
             headerList: [],
             formData: {
-                project_name: "", // 项目名称
-                project_description: "", // 项目说明
-                name: "",
-                type: "导入文件",
-                path: "/root/TCT_API_Develop/media/",
-                databaseName: "", // 数据库名
-                tableName: "", // 表名
-                userName: "", // 用户名
-                password: "" // 密码
+                project_name: '', // 项目名称
+                project_description: '', // 项目说明
+                name: '',
+                type: '导入文件',
+                path: '/root/TCT_API_Develop/media/',
+                databaseName: '', // 数据库名
+                tableName: '', // 表名
+                userName: '', // 用户名
+                password: '' // 密码
             },
             formData2: {
                 set_header_input: [],
-                set_header_type: "",
-                set_header_id: "",
-                data_set_id: "",
-                data_user_id: localStorage.getItem("data_user_id")
+                set_header_type: '',
+                set_header_id: '',
+                data_set_id: '',
+                data_user_id: localStorage.getItem('data_user_id')
             },
             fileList: [],
             dialogTableVisible: false, // 注册数据集弹窗
@@ -179,15 +179,15 @@ export default {
     },
     methods: {
         deletePrject(id) {
-            this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
             })
                 .then(() => {
                     this.$api
                         .post(DELETE_PROJECT, {
-                            data_user_id: localStorage.getItem("data_user_id"),
+                            data_user_id: localStorage.getItem('data_user_id'),
                             data_project_id: id
                         })
                         .then(res => {
@@ -196,46 +196,46 @@ export default {
                 })
                 .catch(() => {
                     this.$message({
-                        type: "info",
-                        message: "已取消删除"
+                        type: 'info',
+                        message: '已取消删除'
                     });
                 });
         },
         goExperiment(id, proName) {
             // 将项目id 存至 vuex data_project_id
             let routeJump = this.$router.resolve({
-                name: "diagramExample",
+                name: 'diagramExample',
                 params: { data_project_id: id }
             });
-            localStorage.setItem("data_project_id", id);
-            localStorage.setItem("data_project_name", proName);
-            window.open(routeJump.href, "_blank");
+            localStorage.setItem('data_project_id', id);
+            localStorage.setItem('data_project_name', proName);
+            window.open(routeJump.href, '_blank');
             // 保存当前项目名
         },
         dataTypeZn(row, column) {
             switch (row.data_type) {
                 case 1:
-                    return "csv";
+                    return 'csv';
                 case 2:
-                    return "text";
+                    return 'text';
                 case 3:
-                    return "mysql";
+                    return 'mysql';
             }
         },
         openUpload() {
             this.dialogTableVisible = true;
-            this.formData.name = "";
+            this.formData.name = '';
         },
         beforeAvatarUpload(file) {
             const isJPG =
-                file.type === "text/plain" ||
-                file.type === "application/vnd.ms-excel";
+                file.type === 'text/plain' ||
+                file.type === 'application/vnd.ms-excel';
             const isLt2M = file.size / 1024 / 1024 < 20;
             if (!isJPG) {
-                this.$message.error("上传文件只能是txt或cvs格式!");
+                this.$message.error('上传文件只能是txt或cvs格式!');
             }
             if (!isLt2M) {
-                this.$message.error("上传文件大小不能超过 20MB!");
+                this.$message.error('上传文件大小不能超过 20MB!');
             }
             return isJPG && isLt2M;
         },
@@ -248,9 +248,9 @@ export default {
             }
         },
         getFormValue(id) {
-            this.$api.get(GET_OPTIONS + "?data_set_id=" + id).then(res => {
+            this.$api.get(GET_OPTIONS + '?data_set_id=' + id).then(res => {
                 this.formData2.set_header_input = res.data.all_data_lable.set_header_input.split(
-                    ","
+                    ','
                 );
                 this.formData2.set_header_type =
                     res.data.all_data_lable.set_header_type;
@@ -292,10 +292,10 @@ export default {
             // 重置data数据
             this.formData2 = {
                 set_header_input: [],
-                set_header_type: "",
-                set_header_id: "",
-                data_set_id: "",
-                data_user_id: localStorage.getItem("data_user_id")
+                set_header_type: '',
+                set_header_id: '',
+                data_set_id: '',
+                data_user_id: localStorage.getItem('data_user_id')
             };
         },
         createdTip(id) {
@@ -318,25 +318,25 @@ export default {
             window.location.href = this.globalUrl + str;
         },
         clickDelete(id) {
-            this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
             })
                 .then(() => {
                     this.deleteItem(id);
                 })
                 .catch(() => {
                     this.$message({
-                        type: "info",
-                        message: "已取消删除"
+                        type: 'info',
+                        message: '已取消删除'
                     });
                 });
         },
         deleteItem(id) {
             this.$api
                 .post(DELETE_DATA_LIST, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     set_id: id
                 })
                 .then(res => {
@@ -347,7 +347,7 @@ export default {
         getHeaderList(id) {
             this.$api
                 .post(CREATE_PROJECT, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     set_id: id
                 })
                 .then(res => {
@@ -359,7 +359,7 @@ export default {
         getAllData() {
             this.$api
                 .post(GET_ALL_PROJECT, {
-                    data_user_id: localStorage.getItem("data_user_id")
+                    data_user_id: localStorage.getItem('data_user_id')
                 })
                 .then(res => {
                     this.dataList = res.data.all_project;
@@ -368,8 +368,8 @@ export default {
         resetForm() {
             this.dialogTableVisible = false;
             this.formData = {
-                project_name: "",
-                project_description: ""
+                project_name: '',
+                project_description: ''
             };
         },
         handleRemove(file, fileList) {
@@ -390,7 +390,7 @@ export default {
                 if (valid) {
                     this.$api
                         .post(CREATE_PROJECT, {
-                            data_user_id: localStorage.getItem("data_user_id"),
+                            data_user_id: localStorage.getItem('data_user_id'),
                             project_name: this.formData.project_name,
                             project_description: this.formData
                                 .project_description
@@ -400,14 +400,14 @@ export default {
                             this.getAllData();
                         });
                 } else {
-                    console.log("error submit!!");
+                    console.log('error submit!!');
                     return false;
                 }
             });
         },
         goDetail(id) {
             this.$router.push({
-                name: "dataTableDetail",
+                name: 'dataTableDetail',
                 params: { lableId: id }
             });
         }

@@ -6,10 +6,10 @@
     @mouseup="endNodesBus($event)"
   >
     <!-- 左侧导航 -->
-<!--    <div class="page-left">-->
-<!--      <div class="logo">DAG-Board</div>-->
-<!--      <el-tree :data="leads" :props="defaultProps" @node-click="handleNodeClick"></el-tree>-->
-<!--    </div>-->
+    <!-- <div class="page-left">
+        <div class="logo">DAG-Board</div>
+        <el-tree :data="leads" :props="defaultProps" @node-click="handleNodeClick"></el-tree>
+    </div> -->
     <!-- 顶栏 -->
     <div class="headbar">
       <p @mousedown="dragIt('随机采样')">随机采样</p>
@@ -20,16 +20,16 @@
     </div>
     <!-- DAG-Diagram主体 -->
     <DAGBoard
-      :DataAll="DataAll"
-      @updateDAG="updateDAG"
-      @editNodeDetails="editNodeDetails"
-      @doSthPersonal="doSthPersonal"
+        :DataAll="DataAll"
+        @updateDAG="updateDAG"
+        @editNodeDetails="editNodeDetails"
+        @doSthPersonal="doSthPersonal"
     ></DAGBoard>
     <!-- 用来模拟拖拽添加的元素 -->
     <node-bus
-      v-if="dragBus"
-      :value="busValue.value"
-      :pos_x="busValue.pos_x"
+        v-if="dragBus"
+        :value="busValue.value"
+        :pos_x="busValue.pos_x"
       :pos_y="busValue.pos_y"
     />
     <!-- 右侧JSOn展示,你忽略就行了 -->
@@ -48,7 +48,17 @@
 </template>
 
 <script>
-import { simple_example_data, text_example_data, simple_r_click_data, edges_example_data, nodes_example_data, ports_example_data, complex_example_data, leads, animationJSON } from './data';
+import {
+    simple_example_data,
+    text_example_data,
+    simple_r_click_data,
+    edges_example_data,
+    nodes_example_data,
+    ports_example_data,
+    complex_example_data,
+    leads,
+    animationJSON
+} from './data';
 export default {
     components: {
         editor: require('vue2-ace-editor')
@@ -77,7 +87,9 @@ export default {
                 label: 'label'
             },
             DataAll: { edges: [], nodes: [] },
-            jsonEditor: JSON.stringify('//change JSON click left button show the change')
+            jsonEditor: JSON.stringify(
+                '//change JSON click left button show the change'
+            )
         };
     },
 
@@ -141,8 +153,12 @@ export default {
             }
             if (dragDes && dragDes.drag && e.toElement.id === 'svgContent') {
                 const { model_id, type } = dragDes;
-                const pos_x = (e.offsetX - 90 - (sessionStorage['svg_left'] || 0)) / (sessionStorage['svgScale'] || 1); // 参数修正
-                const pos_y = (e.offsetY - 15 - (sessionStorage['svg_top'] || 0)) / (sessionStorage['svgScale'] || 1); // 参数修正
+                const pos_x =
+                    (e.offsetX - 90 - (sessionStorage['svg_left'] || 0)) /
+                    (sessionStorage['svgScale'] || 1); // 参数修正
+                const pos_y =
+                    (e.offsetY - 15 - (sessionStorage['svg_top'] || 0)) /
+                    (sessionStorage['svgScale'] || 1); // 参数修正
                 const params = {
                     model_id: sessionStorage['newGraph'],
                     desp: {
@@ -188,10 +204,20 @@ export default {
             require('brace/theme/tomorrow');
         },
         editNodeDetails(value) {
-            alert(`edit id ${value.id} , info : ${JSON.stringify(value.detail, null, 4)} `);
+            alert(
+                `edit id ${value.id} , info : ${JSON.stringify(
+                    value.detail,
+                    null,
+                    4
+                )} `
+            );
         },
         doSthPersonal(eventName, id) {
-            alert(`edit personal things like ${eventName}, the id is ${id}, current node detail is ${JSON.stringify(this.DataAll.nodes.find(item => item.id === id))}`);
+            alert(
+                `edit personal things like ${eventName}, the id is ${id}, current node detail is ${JSON.stringify(
+                    this.DataAll.nodes.find(item => item.id === id)
+                )}`
+            );
         },
         changeVersion() {
             let GlobalConfigString = localStorage.getItem('GlobalConfig');
@@ -199,13 +225,25 @@ export default {
             if (GlobalConfigString && GlobalConfigString.length > 0) {
                 GlobalConfig = JSON.parse(GlobalConfigString);
                 GlobalConfig.isVertical = !GlobalConfig.isVertical;
-                localStorage.setItem('GlobalConfig', JSON.stringify(GlobalConfig));
+                localStorage.setItem(
+                    'GlobalConfig',
+                    JSON.stringify(GlobalConfig)
+                );
             } else {
                 GlobalConfig.isVertical = false;
-                localStorage.setItem('GlobalConfig', JSON.stringify(GlobalConfig));
+                localStorage.setItem(
+                    'GlobalConfig',
+                    JSON.stringify(GlobalConfig)
+                );
             }
             location.reload();
-            alert(`change to ${GlobalConfig.isVertical ? 'vertical version' : 'cross version'}`);
+            alert(
+                `change to ${
+                    GlobalConfig.isVertical
+                        ? 'vertical version'
+                        : 'cross version'
+                }`
+            );
         },
         makeSomeAnimation() {
             // 动画范例
@@ -217,7 +255,12 @@ export default {
         },
         play() {
             // 播放帧动画
-            console.log('当前帧', this.currentAnimate, '最大帧', this.maxAnimateFrames);
+            console.log(
+                '当前帧',
+                this.currentAnimate,
+                '最大帧',
+                this.maxAnimateFrames
+            );
             if (this.currentAnimate >= this.maxAnimateFrames) return false;
             this.DataAll = this.animationArr[this.currentAnimate];
             this.jsonEditor = JSON.stringify(this.DataAll, null, 4);
@@ -232,7 +275,11 @@ export default {
         }
     },
     created() {
-        this.handleNodeClick({ value: localStorage['currentExample'] ? JSON.parse(localStorage['currentExample']) : simple_example_data }); // 读取缓存
+        this.handleNodeClick({
+            value: localStorage['currentExample']
+                ? JSON.parse(localStorage['currentExample'])
+                : simple_example_data
+        }); // 读取缓存
         // this.$nextTick(() => {
         //   this.$confirm('现在可以前往示范页查看新内容了, 是否跳转?', '提示', {
         //     confirmButtonText: '确定',
@@ -341,7 +388,10 @@ export default {
     background-color: inherit;
     mix-blend-mode: lighten;
 }
-.page-left .el-tree--highlight-current .el-tree-node.is-current > .el-tree-node__content {
+.page-left
+    .el-tree--highlight-current
+    .el-tree-node.is-current
+    > .el-tree-node__content {
     background: #ccc;
     color: black;
 }

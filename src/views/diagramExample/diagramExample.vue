@@ -142,15 +142,13 @@
 <script>
 import {
     diagramExampleData,
-    JSONFromService,
-    JSONFromService2,
     nodeLabel6,
     nodeList,
     nodeList2,
     nodeList3,
     nodeList4,
     nodeList5
-} from "./data";
+} from './data';
 import {
     POST_RUN_MODEL,
     ALL_TEST,
@@ -167,19 +165,19 @@ import {
     GET_ALL_MODULE,
     POST_ALL_MODULE,
     ALL_DATA_LIST
-} from "../../assets/url.js";
-import randomForest from "../../components/randomForest";
-import experimentalDetail from "../../components/experimentalDetail";
-import experimentAttribute from "../../components/experimentAttribute";
-import automaticOptions from "../../components/automaticOptions";
-import shortcutBar from "../../components/shortcutBar";
-import drawer from "../../components/drawer";
-import selectHeader from "../../components/selectHeader";
-import demonStation from "../../components/demonStation";
-import dataDialog from "../../components/dataDialog";
-import axios from "axios";
-import logDialog from "../../components/logDialog";
-import analysisDialog from "../../components/analysisDialog";
+} from '../../assets/url.js';
+import randomForest from '../../components/randomForest';
+import experimentalDetail from '../../components/experimentalDetail';
+import experimentAttribute from '../../components/experimentAttribute';
+import automaticOptions from '../../components/automaticOptions';
+import shortcutBar from '../../components/shortcutBar';
+import drawer from '../../components/drawer';
+import selectHeader from '../../components/selectHeader';
+import demonStation from '../../components/demonStation';
+import dataDialog from '../../components/dataDialog';
+import axios from 'axios';
+import logDialog from '../../components/logDialog';
+import analysisDialog from '../../components/analysisDialog';
 
 export default {
     components: {
@@ -204,18 +202,18 @@ export default {
         currentTabNum(newNum, oldNum) {
             // 没有实验不允许用户切换
             if (this.choiceNodeList.length === 0) {
-                this.$confirm("没有实验对象，请先创建实验", "提示", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
+                this.$confirm('没有实验对象，请先创建实验', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
                 })
                     .then(() => {
                         this.dialogFormVisible = true;
                     })
                     .catch(() => {
                         this.$message({
-                            type: "info",
-                            message: "已取消"
+                            type: 'info',
+                            message: '已取消'
                         });
                     });
             }
@@ -230,14 +228,14 @@ export default {
             currentTest: {},
             btnShow: false,
             form: {
-                test_name: "",
-                test_content: ""
+                test_name: '',
+                test_content: ''
             },
             all_data_list: [],
             dialogFormVisible: false, // 创建实验
             data_test_id: 7,
-            searchVal: "",
-            data_project_id: localStorage.getItem("data_project_id"),
+            searchVal: '',
+            data_project_id: localStorage.getItem('data_project_id'),
             all_project: [],
             showMyExperiment: true,
             isShowNode: false,
@@ -250,8 +248,8 @@ export default {
             showItem6: false,
             data: this.diagramExampleData,
             defaultProps: {
-                children: "children",
-                label: "label"
+                children: 'children',
+                label: 'label'
             },
             nodeLabel1: nodeList,
             nodeLabel2: nodeList2,
@@ -261,7 +259,7 @@ export default {
             nodeLabel6: nodeLabel6,
             // 以下为svg必要内容
             dragBus: false, // 是否在拖拽,
-            uploadJSONDataFillThere: "",
+            uploadJSONDataFillThere: '',
             yourJSONDataFillThere: {
                 // 用来展示的节点与连线
                 nodes: [],
@@ -269,7 +267,7 @@ export default {
             },
             // 以下为拖拽方式添加节点必须内容
             busValue: {
-                value: "name",
+                value: 'name',
                 pos_x: 100,
                 pos_y: 100
             },
@@ -283,23 +281,23 @@ export default {
             // 复制的内容
             copyContent: [],
             nodeForm: {}, // 节点的数据
-            nodeTitle: "",
-            componentId: "",
+            nodeTitle: '',
+            componentId: '',
             outObj: {},
-            ndoeId: "",
+            ndoeId: '',
             runArr: [], // 执行数组
             currentNodeNum: 0, // 运行节点下标
             limit_num: 0,
-            loading: ""
+            loading: ''
         };
     },
     created() {
         // this.loadJSON()
-        this.onkeydown = document.addEventListener("keydown", e => {
-            if (e.ctrlKey && e.key === "c") {
+        this.onkeydown = document.addEventListener('keydown', e => {
+            if (e.ctrlKey && e.key === 'c') {
                 // 按下ctrl + c
                 this.ctrlC();
-            } else if (e.ctrlKey && e.key === "v") {
+            } else if (e.ctrlKey && e.key === 'v') {
                 // 按下ctrl + v
                 this.ctrlV();
             }
@@ -310,7 +308,7 @@ export default {
         this.getNodeList();
         // this.getDataList()
         console.log(this.$route.params.currentId);
-        console.log("当前参数名", this.$store.state);
+        console.log('当前参数名', this.$store.state);
         this.getNodeStair();
         this.postNodeStair();
         // 取 localStorage.setItem("data_project_id", "id");
@@ -361,12 +359,12 @@ export default {
         getDataList() {
             this.$api
                 .post(ALL_DATA_LIST, {
-                    data_user_id: localStorage.getItem("data_user_id")
+                    data_user_id: localStorage.getItem('data_user_id')
                 })
                 .then(res => {
                     this.all_data_list = [
                         {
-                            label: "用户得数据集列表",
+                            label: '用户得数据集列表',
                             nodeItem: []
                         }
                     ];
@@ -374,8 +372,8 @@ export default {
                         (currentValue, index, arr) => {
                             this.all_data_list[0].nodeItem.push({
                                 name: currentValue.data_name,
-                                node_type: "item-4",
-                                iconClassName: "el-icon-loading",
+                                node_type: 'item-4',
+                                iconClassName: 'el-icon-loading',
                                 form: []
                             });
                         }
@@ -398,13 +396,13 @@ export default {
         },
         openNode(num) {
             // 关闭其他节点 打开当前节点的组件
-            let saveStatus = this["showItem" + num];
+            let saveStatus = this['showItem' + num];
             this.showItem1 = false;
             this.showItem2 = false;
             this.showItem3 = false;
             this.showItem4 = false;
             this.showItem5 = false;
-            this["showItem" + num] = !saveStatus;
+            this['showItem' + num] = !saveStatus;
         },
         // 更新节点数据
         updateNodeParam(params, num1, num2) {
@@ -420,7 +418,7 @@ export default {
             // 修改当前状态
             this.yourJSONDataFillThere.nodes.forEach(item => {
                 if (item.id === node_id) {
-                    item.iconClassName = "el-icon-circle-check";
+                    item.iconClassName = 'el-icon-circle-check';
                     item.startTime = startTime;
                     item.endTime = endTime;
                 }
@@ -432,16 +430,16 @@ export default {
         sendJson(obj) {
             this.loading = this.$loading({
                 lock: true,
-                text: "Loading",
-                spinner: "el-icon-loading",
-                background: "rgba(0, 0, 0, 0.7)"
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
             });
             this.$api
                 .post(POST_RUN_MODEL, {
-                    user_id: localStorage.getItem("data_user_id"),
-                    user_name: "user1",
-                    experiment_name: "switch_machine_test",
-                    node_name: "load_data",
+                    user_id: localStorage.getItem('data_user_id'),
+                    user_name: 'user1',
+                    experiment_name: 'switch_machine_test',
+                    node_name: 'load_data',
                     node_params: {
                         csv_name:
                             obj.form[0].data[0].value.node_params.csv_name,
@@ -449,11 +447,11 @@ export default {
                             obj.form[0].data[0].value.node_params.download_path
                     },
                     edge_in: [],
-                    edge_out: ["csv_path>dataset_path"],
+                    edge_out: ['csv_path>dataset_path'],
                     input: {},
                     pre_run_uuids: [],
-                    is_generate_model: "false",
-                    request_url: "http://192.168.61.106:5001/"
+                    is_generate_model: 'false',
+                    request_url: 'http://192.168.61.106:5001/'
                 })
                 .then(res => {
                     this.loading.close();
@@ -470,16 +468,16 @@ export default {
         sendJson2(obj) {
             this.loading = this.$loading({
                 lock: true,
-                text: "Loading",
-                spinner: "el-icon-loading",
-                background: "rgba(0, 0, 0, 0.7)"
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
             });
             this.$api
                 .post(POST_RUN_MODEL, {
-                    user_id: localStorage.getItem("data_user_id"),
-                    user_name: "user1",
-                    experiment_name: "switch_machine_test",
-                    node_name: "load_data",
+                    user_id: localStorage.getItem('data_user_id'),
+                    user_name: 'user1',
+                    experiment_name: 'switch_machine_test',
+                    node_name: 'load_data',
                     node_params: {
                         csv_name:
                             obj.form[0].data[0].value.node_params.csv_name,
@@ -487,11 +485,11 @@ export default {
                             obj.form[0].data[0].value.node_params.download_path
                     },
                     edge_in: [],
-                    edge_out: ["csv_path>dataset_path"],
+                    edge_out: ['csv_path>dataset_path'],
                     input: {},
                     pre_run_uuids: [],
-                    is_generate_model: "false",
-                    request_url: "http://192.168.61.106:5001/"
+                    is_generate_model: 'false',
+                    request_url: 'http://192.168.61.106:5001/'
                 })
                 .then(res => {
                     this.loading.close();
@@ -511,18 +509,18 @@ export default {
         run3() {
             let nodeArr = this.yourJSONDataFillThere.nodes;
 
-            let startNode = "";
+            let startNode = '';
             this.runArr = [];
             // 从数据集开始 找到左侧第一个输出的点
             nodeArr.forEach((item, index, arr) => {
-                if (item.component_id === "load_data") {
+                if (item.component_id === 'load_data') {
                     startNode = item;
                     this.runArr.push(startNode);
                 }
             });
             this.circulation(startNode.id);
             // 根据连线 找到 输入的点 存入runArr 重复
-            console.log("查看当前上传数据集", this.runArr);
+            console.log('查看当前上传数据集', this.runArr);
         },
         circulation(currentId) {
             let edges = this.yourJSONDataFillThere.edges;
@@ -545,7 +543,7 @@ export default {
         postNodeParameter(run_uuid, obj) {
             this.$api
                 .post(POST_NODE_PARAMETER, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_test_id: this.data_test_id,
                     run_uuid: run_uuid,
                     run_parameter: JSON.stringify(obj)
@@ -556,7 +554,7 @@ export default {
         },
         // 找到目标输出数据out_ports_name
         findTargetDataOut(targetId, targetIndex) {
-            let returnStr = "";
+            let returnStr = '';
             this.yourJSONDataFillThere.edges.forEach(item => {
                 if (
                     item.dst_node_id === targetId &&
@@ -577,7 +575,7 @@ export default {
         },
         // 找到目标输入数据in_ports_name
         findTargetDataIn(targetId, targetIndex) {
-            let returnStr = "";
+            let returnStr = '';
             this.yourJSONDataFillThere.edges.forEach(item => {
                 if (
                     item.src_node_id === targetId &&
@@ -621,9 +619,9 @@ export default {
             this.run3();
             this.loading = this.$loading({
                 lock: true,
-                text: "Loading",
-                spinner: "el-icon-loading",
-                background: "rgba(0, 0, 0, 0.7)"
+                text: 'Loading',
+                spinner: 'el-icon-loading',
+                background: 'rgba(0, 0, 0, 0.7)'
             });
             this.autoRun();
         },
@@ -633,7 +631,7 @@ export default {
             if (this.currentNodeNum >= this.limit_num) {
                 this.currentNodeNum = 0;
                 // 判断终止条件
-                this.$message.info("整体运行完成！");
+                this.$message.info('整体运行完成！');
                 this.loading.close();
                 return false;
             } else {
@@ -655,7 +653,7 @@ export default {
                         );
                         // 当前节点的输入
                         let currentNodeInName = item;
-                        let str = prevNodeOutName + ">" + currentNodeInName;
+                        let str = prevNodeOutName + '>' + currentNodeInName;
                         edge_in.push(str);
                         let targetObj = this.findTargetDataOutput(
                             currentNodeId,
@@ -685,7 +683,7 @@ export default {
                         );
                         // 当前节点的输入
                         let currentNodeInName = item;
-                        let str = currentNodeInName + ">" + prevNodeOutName;
+                        let str = currentNodeInName + '>' + prevNodeOutName;
                         edge_out.push(str);
                     }
                 );
@@ -698,7 +696,7 @@ export default {
                             // 拿到当前节点需要的 参数 key  item2.tag
                             let targetTag = item2.tag;
                             // 判断是否需要 按逗号切割 ,
-                            let targetTagArr = targetTag.split(",");
+                            let targetTagArr = targetTag.split(',');
 
                             for (let i = 0; i < targetTagArr.length; i++) {
                                 // 键 tag
@@ -709,7 +707,7 @@ export default {
                                 let Obj =
                                     item2.value.node_params[targetTagArr[i]];
                                 // 转成字符串 select_columns
-                                if (item2.type === "btn") {
+                                if (item2.type === 'btn') {
                                     Obj = Obj.join();
                                     node_params[targetTagArr[i]] = Obj;
                                 }
@@ -730,9 +728,9 @@ export default {
                 // }
                 // 生成参数
                 let obj = {
-                    user_id: localStorage.getItem("data_user_id"),
-                    user_name: "user1",
-                    experiment_id: this.data_test_id + "",
+                    user_id: localStorage.getItem('data_user_id'),
+                    user_name: 'user1',
+                    experiment_id: this.data_test_id + '',
                     experiment_name: this.currentTest.test_name, // 实验名称
                     node_id: this.runArr[this.currentNodeNum].id,
                     node_name: this.runArr[this.currentNodeNum].name,
@@ -745,19 +743,19 @@ export default {
                     pre_run_uuids: pre_run_uuids,
                     is_generate_model: this.runArr[this.currentNodeNum]
                         .is_generate_model
-                        ? "true"
-                        : "fasle" // 是否输出模型
+                        ? 'true'
+                        : 'fasle' // 是否输出模型
                 };
                 if (
                     this.runArr[this.currentNodeNum].is_generate_model &&
                     this.runArr[this.currentNodeNum].is_generate_model ===
-                        "true"
+                        'true'
                 ) {
                     obj.is_generate_model = true;
                 } else {
                     obj.is_generate_model = false;
                 }
-                console.log("打印当前要上传的参数", obj);
+                console.log('打印当前要上传的参数', obj);
                 // console.log("当前节点的下标", this.runArr[this.currentNodeNum]);
                 this.$api
                     .post(POST_RUN_MODEL, {
@@ -801,19 +799,19 @@ export default {
             // 部署当前 KNN UUID
             this.$api
                 .post(POST_DEPLOY_MODEL, {
-                    user_id: "123",
-                    user_name: "123",
-                    experiment_name: "123",
+                    user_id: '123',
+                    user_name: '123',
+                    experiment_name: '123',
                     // run_id: "facacc9d6f4e47ba8c7a81ee930a9089",
                     run_id: this.runArr[3].artifact_path,
-                    order: "start",
-                    terminate_port: "0"
+                    order: 'start',
+                    terminate_port: '0'
                 })
                 .then(res => {
                     // 将信息发送给徐昊 进行保存
                     this.$api
                         .post(POST_DEPLOY_MODEL_SAVE, {
-                            data_user_id: localStorage.getItem("data_user_id"),
+                            data_user_id: localStorage.getItem('data_user_id'),
                             data_model_id: this.runArr[3].saveId,
                             model_host: res.data.host,
                             model_port: res.data.port,
@@ -834,7 +832,7 @@ export default {
             if (this.searchVal) {
                 this.$api
                     .post(POST_SEARCH_TEST, {
-                        data_user_id: localStorage.getItem("data_user_id"),
+                        data_user_id: localStorage.getItem('data_user_id'),
                         data_project_id: this.data_project_id,
                         data_test_name: this.searchVal
                     })
@@ -848,7 +846,7 @@ export default {
                             this.data_test_id = res.data.search_test[0].id;
                             this.currentTest = res.data.search_test[0];
                             this.choiceNodeList.push(this.currentTest);
-                            console.log("当前实验id", this.data_test_id);
+                            console.log('当前实验id', this.data_test_id);
                             this.getNodeList();
                         }
                     });
@@ -857,21 +855,21 @@ export default {
             }
         },
         closeDialog() {
-            this.form.test_name = "";
-            this.form.test_content = "";
+            this.form.test_name = '';
+            this.form.test_content = '';
             this.dialogFormVisible = false;
         },
         editeTest() {
             this.$api
                 .post(POST_TEST_EDIT, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_project_id: parseInt(this.data_project_id),
                     data_test_name: this.currentTest.test_name,
                     data_test_content: this.currentTest.test_content,
                     data_test_id: this.data_test_id
                 })
                 .then(res => {
-                    this.$store.commit("changeCount", 0);
+                    this.$store.commit('changeCount', 0);
                     this.allTest();
                     // 保留当前已打开的标签
                 });
@@ -880,7 +878,7 @@ export default {
         createTest() {
             this.$api
                 .post(CREATE_TEST, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     test_project_id: this.data_project_id,
                     test_name: this.form.test_name,
                     test_content: this.form.test_content
@@ -889,7 +887,7 @@ export default {
                     this.allTest();
                     // 初次使用 创建实验后 继续提示
                     if (this.$store.state.step === 2) {
-                        this.$store.commit("changeDemoStaion", true);
+                        this.$store.commit('changeDemoStaion', true);
                     }
                     this.dialogFormVisible = false;
                 });
@@ -898,14 +896,14 @@ export default {
         deleteTest() {
             this.$api
                 .post(GET_TEST_DELETE, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_project_id: this.data_project_id,
                     data_test_id: this.data_test_id
                 })
                 .then(res => {
                     this.$message({
-                        type: "success",
-                        message: "删除成功"
+                        type: 'success',
+                        message: '删除成功'
                     });
                     this.allTest();
                     console.log(res);
@@ -916,9 +914,9 @@ export default {
             this.$api
                 .get(
                     GET_NODE_INFORMATION +
-                        "?data_project_id=" +
+                        '?data_project_id=' +
                         this.data_project_id +
-                        "&test_id=" +
+                        '&test_id=' +
                         this.data_test_id
                 )
                 .then(res => {
@@ -927,13 +925,13 @@ export default {
                         nodes: [],
                         edges: []
                     };
-                    console.log("节点信息", this.yourJSONDataFillThere);
+                    console.log('节点信息', this.yourJSONDataFillThere);
                 });
         },
         saveNode() {
             this.$api
                 .post(SAVE_NODES, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_project_id: this.data_project_id,
                     data_test_id: this.data_test_id,
                     data_node_mes: this.yourJSONDataFillThere
@@ -950,7 +948,7 @@ export default {
             // 判断choiceNodeList 是否存在当前节点 如果没有 则push
             this.choiceNodeList.forEach(item => {
                 if (item.id === this.all_project[num].id) {
-                    throw new Error("已存在当前节点");
+                    throw new Error('已存在当前节点');
                 }
             });
             this.choiceNodeList.push(this.all_project[num]);
@@ -959,7 +957,7 @@ export default {
             // 获取实验列表
             this.$api
                 .post(ALL_TEST, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_project_id: this.data_project_id
                 })
                 .then(res => {
@@ -972,14 +970,14 @@ export default {
                         this.data_test_id = res.data.all_project[0].id;
                         this.currentTest = res.data.all_project[0];
                         this.choiceNodeList.push(this.currentTest);
-                        console.log("当前实验id", this.data_test_id);
+                        console.log('当前实验id', this.data_test_id);
                         this.getNodeList();
                     } else if (res.data.all_project[0]) {
-                        console.log("当前实验id", this.data_test_id);
+                        console.log('当前实验id', this.data_test_id);
                     } else {
                         // 没有试验 不显示试验属性 和 无法拖拽组件
-                        this.data_test_id = "";
-                        this.currentTest = "";
+                        this.data_test_id = '';
+                        this.currentTest = '';
                         this.choiceNodeList = [];
                     }
                 });
@@ -995,8 +993,8 @@ export default {
                 this.copyContent.forEach(item => {
                     item.id =
                         item.id + this.yourJSONDataFillThere.nodes.length + 100; // 自定义id规范 这里随便写个长度+100作为id
-                    item.pos_x += 100 / (sessionStorage["svgScale"] || 1);
-                    item.pos_y += 100 / (sessionStorage["svgScale"] || 1);
+                    item.pos_x += 100 / (sessionStorage['svgScale'] || 1);
+                    item.pos_y += 100 / (sessionStorage['svgScale'] || 1);
                 });
             }
         },
@@ -1014,7 +1012,7 @@ export default {
             // console.log(...arguments)
             // console.log(JSON.stringify(arguments[0]))
             switch (action) {
-                case "selectNode":
+                case 'selectNode':
                     this.showNodeDetails(
                         data.nodes.find(item => item.id === id)
                     );
@@ -1029,19 +1027,13 @@ export default {
         doSthPersonal() {
             console.log(...arguments);
         },
-        loadJSON() {
-            // 这里可以跟服务端交互获取数据
-            setTimeout(() => {
-                this.yourJSONDataFillThere = JSONFromService;
-            }, 500);
-        },
         findNodeMaxNumber(str) {
             // 通过传入的节点名称 进行查找
             let targetArr = this.uploadJSONDataFillThere.nodes;
             let resultNum = 1; // 初始值是1
             targetArr.forEach(item => {
                 if (item.name.indexOf(str) !== -1) {
-                    let splitArr = item.name.split("-");
+                    let splitArr = item.name.split('-');
                     // 从中找到最大的编号
                     if (resultNum < splitArr[2]) {
                         resultNum = splitArr[2];
@@ -1067,10 +1059,10 @@ export default {
              **/
 
             let dragDes = null;
-            if (sessionStorage["dragDes"]) {
-                dragDes = JSON.parse(sessionStorage["dragDes"]);
+            if (sessionStorage['dragDes']) {
+                dragDes = JSON.parse(sessionStorage['dragDes']);
             }
-            console.log("startNodesBus", e);
+            console.log('startNodesBus', e);
             if (dragDes && dragDes.drag) {
                 const x = e.pageX;
                 const y = e.pageY;
@@ -1099,7 +1091,7 @@ export default {
             let obj = this.nodeLabel4[0].nodeItem[0]; // 拿到模型数据模板
             let component_id = str + obj.component_id;
             const params = {
-                model_id: sessionStorage["newGraph"],
+                model_id: sessionStorage['newGraph'],
                 desp: {
                     pos_x,
                     pos_y,
@@ -1125,28 +1117,28 @@ export default {
             // 节点放入svg
 
             let dragDes = null;
-            if (sessionStorage["dragDes"]) {
-                dragDes = JSON.parse(sessionStorage["dragDes"]);
+            if (sessionStorage['dragDes']) {
+                dragDes = JSON.parse(sessionStorage['dragDes']);
             }
-            if (dragDes && dragDes.drag && e.toElement.id === "svgContent") {
-                let nodeName = "";
-                if (dragDes.name.indexOf("-") !== -1) {
+            if (dragDes && dragDes.drag && e.toElement.id === 'svgContent') {
+                let nodeName = '';
+                if (dragDes.name.indexOf('-') !== -1) {
                     dragDes.name =
                         dragDes.name +
-                        "-" +
+                        '-' +
                         this.findNodeMaxNumber(dragDes.name); // 当前节点下的最大值 + 1
                 } else {
                     dragDes.name = dragDes.name;
                 }
                 const pos_x =
-                    (e.offsetX - 90 - (sessionStorage["svg_left"] || 0)) /
-                    (sessionStorage["svgScale"] || 1); // 参数修正
+                    (e.offsetX - 90 - (sessionStorage['svg_left'] || 0)) /
+                    (sessionStorage['svgScale'] || 1); // 参数修正
                 const pos_y =
-                    (e.offsetY - 15 - (sessionStorage["svg_top"] || 0)) /
-                    (sessionStorage["svgScale"] || 1); // 参数修正
+                    (e.offsetY - 15 - (sessionStorage['svg_top'] || 0)) /
+                    (sessionStorage['svgScale'] || 1); // 参数修正
                 delete dragDes.drag;
                 const params = {
-                    model_id: sessionStorage["newGraph"],
+                    model_id: sessionStorage['newGraph'],
                     desp: {
                         pos_x,
                         pos_y,
@@ -1154,7 +1146,7 @@ export default {
                         ...dragDes
                     }
                 };
-                console.log("123", params);
+                console.log('123', params);
                 let currentId = new Date().getTime();
                 this.yourJSONDataFillThere.nodes.push({
                     ...params.desp,
@@ -1164,46 +1156,46 @@ export default {
                     // out_ports: [0]
                 });
                 // 选择算法下面的节点 拖拽后 默认都要 追加一个 模型测试
-                if (dragDes.tag_type && dragDes.tag_type === "arithmetic") {
+                if (dragDes.tag_type && dragDes.tag_type === 'arithmetic') {
                     this.addNodeModelTest(
                         pos_x + 200,
                         pos_y + 100,
                         currentId,
-                        "cla_"
+                        'cla_'
                     );
                     // 模型测试
                 } else if (
                     dragDes.tag_type &&
-                    dragDes.tag_type === "arithmetic2"
+                    dragDes.tag_type === 'arithmetic2'
                 ) {
                     // 回归
                     this.addNodeModelTest(
                         pos_x + 200,
                         pos_y + 100,
                         currentId,
-                        "reg_"
+                        'reg_'
                     );
                 }
             }
-            window.sessionStorage["dragDes"] = null;
+            window.sessionStorage['dragDes'] = null;
             this.dragBus = false;
             this.saveNode();
             // console.log('保存', e)
         },
         dragIt(val) {
             val.form.createTime = new Date().toDateString();
-            sessionStorage["dragDes"] = JSON.stringify({
+            sessionStorage['dragDes'] = JSON.stringify({
                 drag: true,
                 ...val
             });
-            console.log("结果", sessionStorage["dragDes"]);
+            console.log('结果', sessionStorage['dragDes']);
         },
         /**
          * 右侧form展示逻辑
          */
         showNodeDetails(val) {
             // 展示选中的节点
-            console.log("选中节点的数据", val);
+            console.log('选中节点的数据', val);
             // 显示对应模块 并传递参数
             // 展示节点显示的内容
             this.isShowNode = true;
@@ -1231,7 +1223,7 @@ export default {
                 item => item.id === currentEditNodeId
             ).form;
             let str = JSON.stringify(_data, null, 4);
-            alert("节点信息更新完成" + str);
+            alert('节点信息更新完成' + str);
         }
     }
 };

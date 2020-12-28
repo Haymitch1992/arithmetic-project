@@ -88,28 +88,28 @@ import {
     POST_EXPORT_MODEL,
     POST_MODEL_LOG,
     POST_ONLINE_DELETE_MODEL
-} from "../../assets/url";
-import moment from "moment";
+} from '../../assets/url';
+import moment from 'moment';
 export default {
-    name: "home",
+    name: 'home',
     filters: {
         modelStatusZn(val) {
             switch (val) {
                 case 1:
-                    return "未开始";
+                    return '未开始';
                 case 0:
-                    return "进行中";
+                    return '进行中';
                 case 2:
-                    return "已完成";
+                    return '已完成';
                 case 3:
-                    return "失败";
+                    return '失败';
                 case 4:
-                    return "已停止";
+                    return '已停止';
             }
         },
         create_time(val) {
-            if (!val) return "";
-            return moment(val).format("YYYY-MM-DD HH:mm:ss");
+            if (!val) return '';
+            return moment(val).format('YYYY-MM-DD HH:mm:ss');
         }
     },
     data() {
@@ -123,36 +123,36 @@ export default {
     },
     methods: {
         deleteModel(mid) {
-            this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
             })
                 .then(() => {
                     this.$api
                         .post(POST_ONLINE_DELETE_MODEL, {
-                            data_user_id: localStorage.getItem("data_user_id"),
+                            data_user_id: localStorage.getItem('data_user_id'),
                             deploy_model_id: mid
                         })
                         .then(res => {
                             this.getList();
                             this.$message({
-                                type: "success",
-                                message: "删除成功!"
+                                type: 'success',
+                                message: '删除成功!'
                             });
                         });
                 })
                 .catch(() => {
                     this.$message({
-                        type: "info",
-                        message: "已取消删除"
+                        type: 'info',
+                        message: '已取消删除'
                     });
                 });
         },
         exportModel(mid) {
             this.$api
                 .post(POST_EXPORT_MODEL, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     deploy_model_id: mid
                 })
                 .then(res => {
@@ -164,7 +164,7 @@ export default {
         getList() {
             this.$api
                 .post(POST_ALL_DEPLOY_MODEL, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_model_keyword: 1
                 })
                 .then(res => {
@@ -173,14 +173,14 @@ export default {
                 });
         },
         debug(mid) {
-            this.$store.commit("changeDeployId", mid);
-            this.$router.push("/debug");
+            this.$store.commit('changeDeployId', mid);
+            this.$router.push('/debug');
         },
         goDetail(mid, uuid) {
             // 存住当前ID
-            this.$store.commit("changeDeployId", mid);
-            this.$store.commit("saveRunUuid", uuid);
-            this.$router.push({ name: "onlineDetail", params: { mid: mid } });
+            this.$store.commit('changeDeployId', mid);
+            this.$store.commit('saveRunUuid', uuid);
+            this.$router.push({ name: 'onlineDetail', params: { mid: mid } });
             // this.$router.push('/onlineDetail')
         },
         handleSelectionChange(val) {

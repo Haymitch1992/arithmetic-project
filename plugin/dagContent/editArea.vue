@@ -33,41 +33,41 @@ export default {
         }
     },
     mounted() {
-        console.log("isEditAreaShow", this.isEditAreaShow);
+        console.log('isEditAreaShow', this.isEditAreaShow);
     },
     methods: {
         openAnalysis() {
-            this.$store.commit("handleNode", {
-                nodeTpye: "analysisDialog",
+            this.$store.commit('handleNode', {
+                nodeTpye: 'analysisDialog',
                 status: true,
                 nodeName: this.isEditAreaShow.nodeName
             });
             // 当前节点参数保存 id 节点名称
-            console.log("查看当前节点参数", this.isEditAreaShow);
+            console.log('查看当前节点参数', this.isEditAreaShow);
         },
         openData() {
             if (this.isEditAreaShow.form[0].data[0].value.node_params) {
                 // 判断是否存在 当前节点的 set_id
                 this.$store.commit(
-                    "saveCurrentSetId",
+                    'saveCurrentSetId',
                     this.isEditAreaShow.form[0].data[0].value.node_params.set_id
                 );
-                this.$store.commit("handleNode", {
-                    nodeTpye: "dataDialog",
+                this.$store.commit('handleNode', {
+                    nodeTpye: 'dataDialog',
                     status: true
                 });
             } else {
-                this.$message.error("请设置当前节点的预测结果列名");
+                this.$message.error('请设置当前节点的预测结果列名');
             }
         },
         openLog() {
-            this.$store.commit("handleNode", {
-                nodeTpye: "logDialog",
+            this.$store.commit('handleNode', {
+                nodeTpye: 'logDialog',
                 status: true
             });
         },
         click_menu_cover(e) {
-            this.$emit("close_click_nodes");
+            this.$emit('close_click_nodes');
             e.preventDefault();
             e.cancelBubble = true;
             e.stopPropagation();
@@ -76,27 +76,27 @@ export default {
             let left = this.isEditAreaShow.x;
             let top = this.isEditAreaShow.y;
             return {
-                position: "absolute",
-                left: left + "px",
-                top: top + "px"
+                position: 'absolute',
+                left: left + 'px',
+                top: top + 'px'
             };
         },
         delEdges() {
             let params = {
-                model_id: sessionStorage["newGraph"],
+                model_id: sessionStorage['newGraph'],
                 id: this.isEditAreaShow.id
             };
-            this.$emit("delNode", params);
-            this.$emit("close_click_nodes");
+            this.$emit('delNode', params);
+            this.$emit('close_click_nodes');
         },
         changePort(action) {
-            this.$emit("changePort", action, this.isEditAreaShow.id);
+            this.$emit('changePort', action, this.isEditAreaShow.id);
         },
         editNode() {
-            this.$emit("editNodeDetails", this.isEditAreaShow);
+            this.$emit('editNodeDetails', this.isEditAreaShow);
         },
         handlePersonalThs(eventName) {
-            this.$emit("nodesPersonalEvent", eventName, this.isEditAreaShow.id);
+            this.$emit('nodesPersonalEvent', eventName, this.isEditAreaShow.id);
         }
     }
 };
