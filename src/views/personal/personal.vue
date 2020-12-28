@@ -50,136 +50,141 @@
 </template>
 
 <script>
-    import {GET_PERSONAL_INFO, POST_PERSONAL_INFO} from "../../assets/url";
+import { GET_PERSONAL_INFO, POST_PERSONAL_INFO } from '../../assets/url';
 
-    export default {
-        name: "home",
-        filters: {
-            modelStatusZn (val) {
-                switch (val) {
-                    case 0:
-                        return '未开始'
-                    case 1:
-                        return '进行中'
-                    case 2:
-                        return '已完成'
-                    case 3:
-                        return '失败'
-                    case 4:
-                        return '已停止'
+export default {
+    name: 'home',
+    filters: {
+        modelStatusZn(val) {
+            switch (val) {
+                case 0:
+                    return '未开始';
+                case 1:
+                    return '进行中';
+                case 2:
+                    return '已完成';
+                case 3:
+                    return '失败';
+                case 4:
+                    return '已停止';
+            }
+        }
+    },
+    data() {
+        return {
+            formData: {
+                email: {
+                    value: '',
+                    canEdit: true
+                },
+                userName: {
+                    value: '',
+                    canEdit: true
+                },
+                telNumber: {
+                    value: '',
+                    canEdit: true
+                },
+                company: {
+                    value: '',
+                    canEdit: true
+                },
+                address: {
+                    value: '',
+                    canEdit: true
                 }
             }
-        },
-        data () {
-            return {
-                formData: {
-                    email: {
-                        value: '',
-                        canEdit: true
-                    },
-                    userName: {
-                        value: '',
-                        canEdit: true
-                    },
-                    telNumber: {
-                        value: '',
-                        canEdit: true
-                    },
-                    company: {
-                        value: '',
-                        canEdit: true
-                    },
-                    address: {
-                        value: '',
-                        canEdit: true
-                    }
-                }
-            }
-        },
-        methods: {
-            getPersonalInfo() {
-                this.$api.get(GET_PERSONAL_INFO, {
+        };
+    },
+    methods: {
+        getPersonalInfo() {
+            this.$api
+                .get(GET_PERSONAL_INFO, {
                     data_user_id: localStorage.getItem('data_user_id')
-                }).then((res) => {
-                    console.log(res)
-                    if (res.data.code === 200) {
-                        this.formData.email.value = res.data.data_user_email
-                        this.formData.userName.value = res.data.data_user_name
-                        this.formData.telNumber.value = res.data.data_user_phone
-                        this.formData.company.value = res.data.data_user_company
-                        this.formData.address.value = res.data.data_user_home
-                    }
                 })
-            },
-            savePersonalInfo() {
-                this.$api.post(POST_PERSONAL_INFO, {
+                .then(res => {
+                    console.log(res);
+                    if (res.data.code === 200) {
+                        this.formData.email.value = res.data.data_user_email;
+                        this.formData.userName.value = res.data.data_user_name;
+                        this.formData.telNumber.value = res.data.data_user_phone;
+                        this.formData.company.value = res.data.data_user_company;
+                        this.formData.address.value = res.data.data_user_home;
+                    }
+                });
+        },
+        savePersonalInfo() {
+            this.$api
+                .post(POST_PERSONAL_INFO, {
                     data_user_id: localStorage.getItem('data_user_id'),
                     data_user_name: this.formData.userName.value,
                     data_user_phone: this.formData.telNumber.value,
                     data_user_company: this.formData.company.value,
                     data_user_home: this.formData.address.value
-                }).then((res) => {
-                    console.log(res)
-                    if (res.data.code === 200) {
-                        this.getPersonalInfo()
-                    }
                 })
-            }
-        },
-        mounted() {
-            this.getPersonalInfo()
+                .then(res => {
+                    console.log(res);
+                    if (res.data.code === 200) {
+                        this.getPersonalInfo();
+                    }
+                });
         }
+    },
+    mounted() {
+        this.getPersonalInfo();
     }
+};
 </script>
 
 <style scoped lang="scss">
-    .bg{
-        box-sizing: border-box;
-        height: 100vh;
-        width: 100%;overflow: hidden;
+.bg {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+.personal-box {
+    width: 100%;
+}
+.personal-img-line {
+    background: #f7f7f8;
+    text-align: center;
+    padding: 60px 0;
+    .personal-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: block;
+        background: #fff;
+        margin: 0 auto;
     }
-    .personal-box{
-        width: 100%;
-    }
-        .personal-img-line{
-            background: #F7F7F8;
-            text-align: center;
-            padding: 60px 0;
-            .personal-img{
-                width: 100px;
-                height: 100px;
-                border-radius: 50%;
-                display: block;
-                background: #fff;
-                margin: 0 auto;
-            }
+}
+.personal-info {
+    list-style: none;
+    margin: 0;
+    padding: 50px 0 0 0;
+    color: #666;
+    background: #ffffff;
+    width: 100%;
+    height: calc(100vh - 240px);
+    li {
+        line-height: 50px;
+        text-align: center;
+        font-size: 14px;
+        i {
+            cursor: pointer;
         }
-        .personal-info{
-            list-style: none;
-            margin: 0;
-            padding: 50px 0 0 0 ;
-            color: #666;
-            background: #FFffff;
-            width: 100%;
-            height: calc(100vh - 240px);
-            li{
-                line-height: 50px;
-                text-align: center;
-                font-size: 14px;
-                i{
-                    cursor: pointer;
-                }
-            }
-            .personal-label{
-                display: inline-block;
-                width: 100px;
-                text-align: left;
-            }
-            .personal-value{
-                display: inline-block;
-                width: 300px;
-                text-align: left;
-                margin-right: 10px;
-            }
     }
+    .personal-label {
+        display: inline-block;
+        width: 100px;
+        text-align: left;
+    }
+    .personal-value {
+        display: inline-block;
+        width: 300px;
+        text-align: left;
+        margin-right: 10px;
+    }
+}
 </style>

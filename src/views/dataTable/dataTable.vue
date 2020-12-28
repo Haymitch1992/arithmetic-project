@@ -50,15 +50,15 @@
             modelStatusZn (val) {
                 switch (val) {
                     case 0:
-                        return '未开始'
+                        return '未开始';
                     case 1:
-                        return '进行中'
+                        return '进行中';
                     case 2:
-                        return '已完成'
+                        return '已完成';
                     case 3:
-                        return '失败'
+                        return '失败';
                     case 4:
-                        return '已停止'
+                        return '已停止';
                 }
             }
         },
@@ -93,14 +93,14 @@
                         id: 3
                     }
                 ]
-            }
+            };
         },
         methods: {
             goDetail() {
-                this.$router.push('/dataTableDetail')
+                this.$router.push('/dataTableDetail');
             }
         }
-    }
+    };
 </script>
 
 <style scoped lang="scss">

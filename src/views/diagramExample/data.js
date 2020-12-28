@@ -1,9 +1,7 @@
 /**
  * 这里放置json 数据撑起组件内容
  */
-export const diagramExampleData = {
 
-}
 // 数据特征工具箱
 // 统计特征
 // 聚类特征
@@ -108,7 +106,7 @@ export const JSONFromService = {
             "node_type": 'item-3'
         }
         ]
-    }
+    };
 
 export const JSONFromService2 = {
     "edges": [
@@ -180,7 +178,7 @@ export const JSONFromService2 = {
             "node_type": 'item-3'
         }
     ]
-}
+};
 export const nodeList = [
     {
         label: '采样与过滤',
@@ -567,7 +565,7 @@ export const nodeList = [
             ]
         }]
     }
-]
+];
 export const nodeList2 = [
     {
         label: '统计特征工具箱',
@@ -872,7 +870,7 @@ export const nodeList2 = [
             ]
         }]
     }
-]
+];
 export const nodeList3 = [
     {
         label: '分类算法',
@@ -1484,7 +1482,7 @@ export const nodeList3 = [
         }
         ]
     }
-]
+];
 export const nodeList4 = [
     {
         label: '预测', // 预测节点
@@ -1712,7 +1710,7 @@ export const nodeList4 = [
             }
         ]
     }
-]
+];
 
 export const nodeList5 = [
     {
@@ -1748,7 +1746,7 @@ export const nodeList5 = [
             }
         ]
     }
-]
+];
 export const nodeLabel6 = [ {
     name: 'test_data_1',
     node_type: 'item-4',
@@ -1759,4 +1757,4 @@ export const nodeLabel6 = [ {
     node_type: 'item-4',
     iconClassName: 'el-icon-loading',
     form: []
-}]
+}];

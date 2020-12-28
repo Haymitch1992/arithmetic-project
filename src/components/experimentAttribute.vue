@@ -25,9 +25,9 @@
         data() {
             return {
                 textarea: ''
-            }
+            };
         }
-    }
+    };
 </script>
 
 <style scoped lang="scss">

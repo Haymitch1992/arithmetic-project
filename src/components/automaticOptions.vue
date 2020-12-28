@@ -91,30 +91,30 @@
                     content: '创建成功',
                     timestamp: '2018-04-11'
                 }]
-            }
+            };
         },
         methods: {
             handleClose() {
-                this.$emit('closeOptions')
+                this.$emit('closeOptions');
             },
             next() {
                 if (this.step < 3) {
-                    this.step++
+                    this.step++;
                 } else {
                     // 关闭弹窗
-                    this.handleClose()
+                    this.handleClose();
                 }
             },
             prev() {
                 if (this.step > 1) {
-                    this.step--
+                    this.step--;
                 } else {
                     // 关闭弹窗
-                    this.handleClose()
+                    this.handleClose();
                 }
             }
         }
-    }
+    };
 </script>
 
 <style>

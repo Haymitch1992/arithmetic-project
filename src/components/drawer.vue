@@ -37,17 +37,17 @@
         methods: {
             currentNode(item) {
                 // 操作当前节点
-                item.nodeSwitch = !item.nodeSwitch
+                item.nodeSwitch = !item.nodeSwitch;
             },
             dragIt(val) {
-                console.log(val)
-                this.$parent.dragIt(val)
+                console.log(val);
+                this.$parent.dragIt(val);
             },
             openNode() {
-                this.$emit('openParentNode')
+                this.$emit('openParentNode');
             }
         }
-    }
+    };
 </script>
 
 <style scoped lang="scss">

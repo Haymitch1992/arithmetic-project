@@ -25,14 +25,14 @@
         name: "logo-info",
         methods: {
             logOut () {
-                localStorage.setItem('data_user_token', '')
-                this.$router.push('/login')
+                localStorage.setItem('data_user_token', '');
+                this.$router.push('/login');
             },
             goPersonalPage() {
-                this.$router.push('/personal')
+                this.$router.push('/personal');
             }
         }
-    }
+    };
 </script>
 
 <style scoped>

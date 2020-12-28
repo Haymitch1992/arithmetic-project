@@ -35,13 +35,13 @@
 
                 },
                 textarea2: ''
-            }
+            };
         },
         mounted() {
         },
         methods: {
             submitForm() {
-                this.$emit('saveChange')
+                this.$emit('saveChange');
             },
             deleteItem() {
                 // 二次确认是否删除
@@ -50,7 +50,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    this.$emit('delelteNode')
+                    this.$emit('delelteNode');
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -59,7 +59,7 @@
                 });
             }
         }
-    }
+    };
 </script>
 
 <style scoped lang="scss">

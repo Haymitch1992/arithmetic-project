@@ -1,15 +1,15 @@
 /*
 * 此文件读取router下所有一级目录并自动注册index.js
 */
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
 
-Vue.use(Vuex)
-const requireStore = require.context('./', true, /vx.js/)
-const module = {}
+Vue.use(Vuex);
+const requireStore = require.context('./', true, /vx.js/);
+const module = {};
 requireStore.keys().forEach(fileName => {
-  module[fileName.split('/')[1]] = requireStore(fileName).default
-})
+  module[fileName.split('/')[1]] = requireStore(fileName).default;
+});
 let store = new Vuex.Store({
   modules: module,
   state: {
@@ -33,45 +33,45 @@ let store = new Vuex.Store({
   },
   mutations: {
     saveRunUuid(state, num) {
-      state.run_uuid = num
+      state.run_uuid = num;
     },
     saveCurrentSetId(state, num) {
-      state.current_set_id = num
+      state.current_set_id = num;
     },
     handleNode(state, obj) {
-      state[obj.nodeTpye] = obj.status
-      state.currentDialog.nodeName = obj.nodeName
+      state[obj.nodeTpye] = obj.status;
+      state.currentDialog.nodeName = obj.nodeName;
     },
     changeStep(state, num) {
-      state.step = num
+      state.step = num;
     },
     changeDemoStaion(state, type) {
-      state.demoStationStatus = type
+      state.demoStationStatus = type;
     },
     changeCount (state, num) {
-      state.count = num
+      state.count = num;
     },
     changeTestId (state, num) {
-      state.testId = num
+      state.testId = num;
     },
     changeUserName (state, str) {
-      state.userName = str
+      state.userName = str;
     },
     changeUserEmail (state, str) {
-      state.userEmail = str
+      state.userEmail = str;
     },
     changeSelectDate(state, arr) {
-      state.currentSelectDate = arr
+      state.currentSelectDate = arr;
     },
     changeSelectNum(state, num) {
-      state.currentSelectNum = num
+      state.currentSelectNum = num;
     },
     changeSetId(state, num) {
-      state.set_id = num
+      state.set_id = num;
     },
     changeDeployId (state, num) {
-      state.deployId = num
+      state.deployId = num;
     }
   }
-})
-export default store
+});
+export default store;

@@ -7,6 +7,6 @@ const diagramExample = {
 
   },
   actions: {}
-}
+};
 
-export default diagramExample
+export default diagramExample;

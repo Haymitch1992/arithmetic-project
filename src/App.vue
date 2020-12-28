@@ -53,9 +53,9 @@
 
 <script>
     import getBrowserCore from "./model/getBrowserCore";
-    import MENU from './components/menu'
-    import experimentMenu from './components/menu-2'
-    import LoginInfo from './components/logo-info'
+    import MENU from './components/menu';
+    import experimentMenu from './components/menu-2';
+    import LoginInfo from './components/logo-info';
     export default {
         name: 'App',
         components: {
@@ -66,13 +66,13 @@
         watch: {
             $route: {
                 handler(newRouter) {
-                    console.log(newRouter)
+                    console.log(newRouter);
                     if (this.experimentArr.indexOf(this.$route.path) !== -1) {
-                        this.currentModel = 1
+                        this.currentModel = 1;
                     } else if (this.fullScreenArr.indexOf(this.$route.path) !== -1) {
-                        this.currentModel = 2
+                        this.currentModel = 2;
                     } else {
-                        this.currentModel = 3
+                        this.currentModel = 3;
                     }
                 },
                 immediate: true
@@ -81,8 +81,8 @@
         created() {
             // 在页面刷新时将vuex里的信息保存到localStorage里
             window.addEventListener("beforeunload", () => {
-                localStorage.setItem("messageStore", JSON.stringify(this.$store.state))
-            })
+                localStorage.setItem("messageStore", JSON.stringify(this.$store.state));
+            });
 
             // 在页面加载时读取localStorage里的状态信息
             localStorage.getItem("messageStore") && this.$store.replaceState(Object.assign(this.$store.state, JSON.parse(localStorage.getItem("messageStore"))));
@@ -94,17 +94,17 @@
                 experimentArr: [ '/plan', '/diagramExample', '/engineering', '/selectAlgorithm', '/assessAlgorithm' ],
                 fullScreenArr: ['/personal', '/login', '/register', '/forget'],
                 project_name: localStorage.getItem("data_project_name")
-            }
+            };
         },
         mounted() {
             if (getBrowserCore() !== 'Google Chrome or Chromium') {
-                this.$message.error('为了保证拖拽效果，建议使用chrome浏览器')
+                this.$message.error('为了保证拖拽效果，建议使用chrome浏览器');
             }
         },
         methods: {
 
         }
-    }
+    };
 </script>
 
 <style>

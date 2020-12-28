@@ -6,7 +6,7 @@
 <script>
     export default {
         name: "shortcutBar"
-    }
+    };
 </script>
 
 <style scoped>

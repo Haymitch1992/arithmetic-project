@@ -35,36 +35,36 @@
                 let index = keyPath[keyPath.length - 1];
                 switch (index) {
                     case '1':
-                        this.$router.push('/plan')
-                        break
+                        this.$router.push('/plan');
+                        break;
                     case '2':
-                        this.$router.push('/dataManagement')
-                        break
+                        this.$router.push('/dataManagement');
+                        break;
                     // case '2-2':
                     //     this.$router.push('/dataTable') // 废弃
                     //     break
                     case '3':
-                        this.$router.push('/projectManagement')
-                        break
+                        this.$router.push('/projectManagement');
+                        break;
                     case '3-2':
-                        this.$router.push('/engineering')
-                        break
+                        this.$router.push('/engineering');
+                        break;
                     case '3-3':
-                        this.$router.push('/selectAlgorithm')
-                        break
+                        this.$router.push('/selectAlgorithm');
+                        break;
                     case '3-4':
-                        this.$router.push('/assessAlgorithm')
-                        break
+                        this.$router.push('/assessAlgorithm');
+                        break;
                     case '4':
-                        this.$router.push('/modelManagement')
-                        break
+                        this.$router.push('/modelManagement');
+                        break;
                     case '5':
-                        this.$router.push('/online')
-                        break
+                        this.$router.push('/online');
+                        break;
                 }
             }
         }
-    }
+    };
 </script>
 
 <style scoped lang="scss">
