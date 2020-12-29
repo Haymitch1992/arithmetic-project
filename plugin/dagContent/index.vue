@@ -113,7 +113,6 @@ export default {
     methods: {
         showRunStatus(obj, status) {
             // 显示或隐藏节点状态
-            console.log('显示或隐藏节点状态', obj);
             this.item = obj;
             this.visibleLog = status;
         },

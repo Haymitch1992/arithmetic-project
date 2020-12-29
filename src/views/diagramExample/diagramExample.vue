@@ -506,9 +506,8 @@ export default {
                 }
             });
         },
-        run3() {
+        checkNodeData() {
             let nodeArr = this.yourJSONDataFillThere.nodes;
-
             let startNode = '';
             this.runArr = [];
             // 从数据集开始 找到左侧第一个输出的点
@@ -616,7 +615,7 @@ export default {
             return returnObj;
         },
         autoPrepostion() {
-            this.run3();
+            this.checkNodeData();
             this.loading = this.$loading({
                 lock: true,
                 text: 'Loading',
@@ -1311,7 +1310,7 @@ export default {
     }
     .basic-node.item-1 {
         border: 1px solid#6236FF;
-        background:#6236FF;
+        background: #6236ff;
     }
     .basic-node.item-2 {
         border: 1px solid #fa6400;
