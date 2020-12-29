@@ -1310,8 +1310,8 @@ export default {
         display: block;
     }
     .basic-node.item-1 {
-        border: 1px solid #44d7b6;
-        background: #44d7b6;
+        border: 1px solid#6236FF;
+        background:#6236FF;
     }
     .basic-node.item-2 {
         border: 1px solid #fa6400;

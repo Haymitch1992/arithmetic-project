@@ -92,7 +92,7 @@ export default {
         },
         currentEvent: {
             type: String,
-            default: () => ""
+            default: () => ''
         },
         i: {
             type: Number,
@@ -117,7 +117,7 @@ export default {
         },
         isVertical() {
             let GlobalConfig = { isVertical: true };
-            let _GlobalConfig = localStorage.getItem("GlobalConfig");
+            let _GlobalConfig = localStorage.getItem('GlobalConfig');
             if (_GlobalConfig && _GlobalConfig.length > 0) {
                 GlobalConfig = Object.assign(
                     GlobalConfig,
@@ -127,7 +127,7 @@ export default {
             return GlobalConfig.isVertical;
         },
         testConsole() {
-            console.log("移入");
+            console.log('移入');
         }
     }
 };
@@ -135,8 +135,8 @@ export default {
 
 <style scoped>
 .runLog {
-    background: #fff;
-    color: #000;
+    background: #2a2d36;
+    color: #fff;
     padding: 4px 20px;
     border-radius: 4px;
     width: 200px;
@@ -150,8 +150,8 @@ export default {
 }
 
 .tips-in {
-    background: #fff;
-    color: #000;
+    background: #2a2d36;
+    color: #fff;
     padding: 4px 20px;
     border-radius: 4px;
     display: none;
@@ -167,8 +167,8 @@ export default {
     display: block;
 }
 .tips-out {
-    background: #fff;
-    color: #000;
+    background: #2a2d36;
+    color: #fff;
     padding: 4px 20px;
     border-radius: 4px;
     display: none;
@@ -200,16 +200,16 @@ export default {
     right: 3px;
 }
 .item-1 .pane-node-content {
-    border: 2px solid #44d7b6;
-    background: #44d7b6;
+    border: 2px solid#6236FF;
+    background: #6236ff;
 }
 .item-1 .pane-node-parent .space {
     border: 2px solid #ffffff;
-    background: #44d7b6;
+    background: #6236ff;
 }
 .item-1 .pane-node-children .space {
     border: 2px solid #ffffff;
-    background: #44d7b6;
+    background: #6236ff;
 }
 .item-1 .pane-node-content .name {
     color: #ffffff;
@@ -401,7 +401,7 @@ export default {
     width: 100px;
 }
 .node-pop:before {
-    content: "";
+    content: '';
     position: absolute;
     top: -19px;
     left: 10px;

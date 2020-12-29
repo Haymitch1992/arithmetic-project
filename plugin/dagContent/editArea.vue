@@ -123,7 +123,7 @@ export default {
 .menu_contain {
     width: 150px;
     border: 1px solid rgba(1, 1, 1, 0.3);
-    background: #ffffff;
+    background: #2a2d36;
     border-radius: 5px;
     padding: 3px;
 }
@@ -134,7 +134,7 @@ export default {
     padding-left: 10px;
     box-sizing: border-box;
     font-size: 13px;
-    color: #666;
+    color: #fff;
 }
 .menu_contain span:hover {
     background-color: rgba(40, 157, 233, 0.3);

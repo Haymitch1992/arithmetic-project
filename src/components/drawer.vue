@@ -11,6 +11,7 @@
                 <div class="node-label" @click="currentNode(item)">
                     <span class="el-icon-caret-bottom" v-if="item.nodeSwitch" ></span>
                     <span class="el-icon-caret-right" v-if="!item.nodeSwitch" ></span>
+                    <span class="iconfont iconwenjianjia" style="font-size: 14px;"></span>
                     <span >{{item.label}}</span>
                 </div>
                 <div
@@ -20,7 +21,9 @@
                         v-for="(item2, i) in item.nodeItem"
                         :key="'nodes_basic' + i"
                         @mousedown="dragIt(item2)"
-                >{{item2.name}}</div>
+                >
+                <span class="icon-span" :class="item2.node_type"></span>
+                {{item2.name}}</div>
             </div>
         </div>
     </div>
@@ -51,11 +54,31 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.icon-span {
+    width: 10px;
+    height: 10px;
+    background: #ddd;
+    display: inline-block;
+    vertical-align: initial;
+    margin-right: 2px;
+}
+.icon-span.item-1 {
+    background: url('../../src/assets/img/icon-2.png') no-repeat 0px 0px;
+}
+.icon-span.item-2 {
+    background: url('../../src/assets/img/icon-3.png') no-repeat 0px 0px;
+}
+.icon-span.item-3 {
+    background: url('../../src/assets/img/icon-4.png') no-repeat 0px 0px;
+}
+.icon-span.item-4 {
+    background: url('../../src/assets/img/icon-1.png') no-repeat 0px 0px;
+}
 .labeliing {
     text-align: left;
     font-size: 14px;
     cursor: pointer;
-    padding: 20px 20px 10px 20px;
+    padding: 14px 20px 10px 20px;
     .folder-icon {
         color: #00c0ff;
         margin-left: 2px;
@@ -70,38 +93,38 @@ export default {
     font-size: 14px;
     display: inline-block;
     padding-bottom: 10px;
+    padding-top: 10px;
     cursor: pointer;
 }
 .basic-node {
-    background: #3a8ee6;
     color: #fff;
-    border-radius: 4px;
-    height: 30px;
-    width: 160px;
-    border: 1px solid #289de9;
-    line-height: 30px;
+    height: 32px;
+    width: 100%;
+    border: 1px solid transparent;
+    line-height: 32px;
     display: inline-block;
     cursor: pointer;
     user-select: none;
     margin: 4px auto 10px;
-    text-align: center;
+    text-align: left;
     box-sizing: border-box;
     font-size: 14px;
     display: block;
+    padding-left: 56px;
 }
-.basic-node.item-1 {
-    border: 1px solid #44d7b6;
-    background: #44d7b6;
+.basic-node.item-1:hover {
+    border: 1px solid #6236ff;
+    background: #6236ff;
 }
-.basic-node.item-2 {
+.basic-node.item-2:hover {
     border: 1px solid #fa6400;
     background: #fa6400;
 }
-.basic-node.item-3 {
+.basic-node.item-3:hover {
     border: 1px solid #6dd400;
     background: #6dd400;
 }
-.basic-node.item-4 {
+.basic-node.item-4:hover {
     border: 1px solid #1677ff;
     background: #1677ff;
 }

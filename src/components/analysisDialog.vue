@@ -66,7 +66,7 @@
                     <div class="chart-left">
                         <div class="chart-item" @click="handleItem(0)">
                             <span :class="currentItem===0?'active':''">Residual</span>
-                            <img src="../assets/img/charts-icon-1.png" alt="">
+                            <img src="../assets/img/charts-icon-5.png" alt="">
                         </div>
                     </div>
                     <div class="chart-right">
@@ -75,7 +75,7 @@
                 </div>
             </div>
             <!--二分类 多分类-->
-            <div style="max-height:60vh;min-height:450px;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='二分类评估'">
+            <div style="max-height:60vh;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='二分类评估'">
                 <!--图-->
                 <el-button-group>
                     <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0)">指标数据</el-button>
@@ -101,43 +101,47 @@
                         label="值">
                     </el-table-column>
                 </el-table>
-                <div class="matrix-box" v-show="currentTab===1">
-                    <div class="matrix-line" v-for="(item ,index) in arr1" :key="index">
-                        <div class="matrix-td" :style="{backgroundColor:`rgba(100,147,248,${1*item2/12})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
-                    </div>
-                    <div class="matrix-tool-x" >
-                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
-                            <i></i>
-                            <span>{{item}}</span>
+                <div style="height:360px" v-show="currentTab===1">
+                    <div class="matrix-box">
+                        <div class="matrix-line" v-for="(item ,index) in arr1" :key="index">
+                            <div class="matrix-td" :style="{backgroundColor:`rgba(100,147,248,${1*item2/12})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
                         </div>
-                    </div>
-                    <div class="matrix-tool-y" >
-                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
-                            <i></i>
-                            <span>{{item}}</span>
+                        <div class="matrix-tool-x" >
+                            <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                                <i></i>
+                                <span>{{item}}</span>
+                            </div>
                         </div>
+                        <div class="matrix-tool-y" >
+                            <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                                <i></i>
+                                <span>{{item}}</span>
+                            </div>
+                        </div>
+                        <span class="pos-span-1">预测</span>
+                        <span class="pos-span-2">真实</span>
                     </div>
-                     <span class="pos-span-1">预测</span>
-                    <span class="pos-span-2">真实</span>
                 </div>
-                <div class="matrix-box" v-show="currentTab===2">
-                    <div class="matrix-line" v-for="(item ,index) in arr2" :key="index">
-                        <div class="matrix-td"  :style="{backgroundColor:`rgba(100,147,248,${1*item2/1})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
-                    </div>
-                    <div class="matrix-tool-x" >
-                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
-                            <i></i>
-                            <span>{{item}}</span>
+                <div style="height:360px;" v-show="currentTab===2">
+                    <div class="matrix-box" >
+                        <div class="matrix-line" v-for="(item ,index) in arr2" :key="index">
+                            <div class="matrix-td"  :style="{backgroundColor:`rgba(100,147,248,${1*item2/1})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
                         </div>
-                    </div>
-                    <div class="matrix-tool-y" >
-                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
-                            <i></i>
-                            <span>{{item}}</span>
+                        <div class="matrix-tool-x" >
+                            <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                                <i></i>
+                                <span>{{item}}</span>
+                            </div>
                         </div>
+                        <div class="matrix-tool-y" >
+                            <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                                <i></i>
+                                <span>{{item}}</span>
+                            </div>
+                        </div>
+                        <span class="pos-span-1">预测</span>
+                        <span class="pos-span-2">真实</span>
                     </div>
-                    <span class="pos-span-1">预测</span>
-                    <span class="pos-span-2">真实</span>
                 </div>
                 <div class="chart-box"  v-show="currentTab===3">
                     <div class="chart-left">
@@ -164,7 +168,7 @@
                 </div>
             </div>
             <!--多分类-->
-            <div style="max-height:60vh;min-height:450px;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='多分类评估'">
+            <div style="max-height:60vh;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='多分类评估'">
                 <!--图-->
                 <el-button-group>
                     <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0)">指标数据</el-button>
@@ -190,43 +194,47 @@
                         label="值">
                     </el-table-column>
                 </el-table>
-                <div class="matrix-box" v-show="currentTab===1">
-                    <div class="matrix-line" v-for="(item ,index) in arr1" :key="index">
-                        <div class="matrix-td" :style="{backgroundColor:`rgba(100,147,248,${1*item2/12})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
-                    </div>
-                    <div class="matrix-tool-x" >
-                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
-                            <i></i>
-                            <span>{{item}}</span>
+                <div style="height:360px;" v-show="currentTab===1">
+                    <div class="matrix-box">
+                        <div class="matrix-line" v-for="(item ,index) in arr1" :key="index">
+                            <div class="matrix-td" :style="{backgroundColor:`rgba(100,147,248,${1*item2/12})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
                         </div>
-                    </div>
-                    <div class="matrix-tool-y" >
-                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
-                            <i></i>
-                            <span>{{item}}</span>
+                        <div class="matrix-tool-x" >
+                            <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                                <i></i>
+                                <span>{{item}}</span>
+                            </div>
                         </div>
+                        <div class="matrix-tool-y" >
+                            <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                                <i></i>
+                                <span>{{item}}</span>
+                            </div>
+                        </div>
+                        <span class="pos-span-1">预测</span>
+                        <span class="pos-span-2">真实</span>
                     </div>
-                     <span class="pos-span-1">预测</span>
-                    <span class="pos-span-2">真实</span>
                 </div>
-                <div class="matrix-box" v-show="currentTab===2">
-                    <div class="matrix-line" v-for="(item ,index) in arr2" :key="index">
-                        <div class="matrix-td"  :style="{backgroundColor:`rgba(100,147,248,${1*item2/1})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
-                    </div>
-                    <div class="matrix-tool-x" >
-                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
-                            <i></i>
-                            <span>{{item}}</span>
+                <div style="height:360px;" v-show="currentTab===2">
+                    <div class="matrix-box">
+                        <div class="matrix-line" v-for="(item ,index) in arr2" :key="index">
+                            <div class="matrix-td"  :style="{backgroundColor:`rgba(100,147,248,${1*item2/1})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
                         </div>
-                    </div>
-                    <div class="matrix-tool-y" >
-                        <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
-                            <i></i>
-                            <span>{{item}}</span>
+                        <div class="matrix-tool-x" >
+                            <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                                <i></i>
+                                <span>{{item}}</span>
+                            </div>
                         </div>
+                        <div class="matrix-tool-y" >
+                            <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
+                                <i></i>
+                                <span>{{item}}</span>
+                            </div>
+                        </div>
+                        <span class="pos-span-1">预测</span>
+                        <span class="pos-span-2">真实</span>
                     </div>
-                    <span class="pos-span-1">预测</span>
-                    <span class="pos-span-2">真实</span>
                 </div>
                 <div id="main6" v-show="currentTab==3" style="width:750px;height:400px;"></div>
             </div>
@@ -234,51 +242,51 @@
   </div>
 </template>
 <script>
-import echarts from "echarts";
+import echarts from 'echarts';
 export default {
     data() {
         return {
             arr1: [[12, 0, 0], [0, 10, 1], [0, 0, 7]],
             arr2: [[1, 0.4, 0.6], [0, 0.9091, 0.0901], [0, 0, 1]],
-            LabelList: ["setosa", "versicolor", "virginica"],
+            LabelList: ['setosa', 'versicolor', 'virginica'],
             titleList: [
-                "聚类模型评估分析报告",
-                "回归-结果分析报告",
-                "二分类评估报告",
-                "多分类评估报告"
+                '聚类模型评估分析报告',
+                '回归-结果分析报告',
+                '二分类评估报告',
+                '多分类评估报告'
             ],
             currentItem: 0, // 当前选中的组件下标
             currentNodetype: 0,
             currentTab: 0,
             dialogVisible: true,
             colorList: [
-                "#B3CDFF",
-                "#9580FF",
-                "#BFB3FF",
-                "#52CCA3",
-                "#1677FF",
-                "#6699FF"
+                '#B3CDFF',
+                '#9580FF',
+                '#BFB3FF',
+                '#52CCA3',
+                '#1677FF',
+                '#6699FF'
             ],
             tableData: [
                 {
-                    date: "2016-05-02",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1518 弄"
+                    date: '2016-05-02',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1518 弄'
                 },
                 {
-                    date: "2016-05-04",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1517 弄"
+                    date: '2016-05-04',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1517 弄'
                 },
                 {
-                    date: "2016-05-01",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1519 弄"
+                    date: '2016-05-01',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1519 弄'
                 },
                 {
-                    date: "2016-05-03",
-                    name: "王小虎",
-                    address: "上海市普陀区金沙江路 1516 弄"
+                    date: '2016-05-03',
+                    name: '王小虎',
+                    address: '上海市普陀区金沙江路 1516 弄'
                 }
             ]
         };
@@ -290,24 +298,24 @@ export default {
     },
     watch: {
         dialogVisible2(newVal, oldVal) {
-            console.log("*********************", newVal, oldVal);
+            console.log('*********************', newVal, oldVal);
             this.createData();
         }
     },
     methods: {
         handleItem(num) {
             this.currentItem = num;
-            this.createScatter("main3");
+            this.createScatter('main3');
         },
         handelMatrix(num) {
             this.currentTab = num;
             this.createMatrix();
-            this.createScatter("main4");
-            this.createBarData("main6");
+            this.createScatter('main4');
+            this.createBarData('main6');
         },
         handleClose() {
-            this.$store.commit("handleNode", {
-                nodeTpye: "analysisDialog",
+            this.$store.commit('handleNode', {
+                nodeTpye: 'analysisDialog',
                 status: false
             });
         },
@@ -333,7 +341,7 @@ export default {
                         dataView: { show: true, readOnly: false },
                         magicType: {
                             show: true,
-                            type: ["pie", "funnel"]
+                            type: ['pie', 'funnel']
                         },
                         restore: { show: true },
                         saveAsImage: { show: true }
@@ -355,7 +363,7 @@ export default {
                             [7.0, 4.82],
                             [5.0, 5.68]
                         ],
-                        type: "scatter"
+                        type: 'scatter'
                     }
                 ]
             };
@@ -366,22 +374,22 @@ export default {
             var myChart = echarts.init(document.getElementById(str));
             let option = {
                 tooltip: {
-                    trigger: "item",
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
                 },
                 legend: {
-                    orient: "vertical",
-                    top: "40px",
-                    right: "right",
+                    orient: 'vertical',
+                    top: '40px',
+                    right: 'right',
                     data: [
-                        "直接访问",
-                        "邮件营销",
-                        "联盟广告",
-                        "视频广告",
-                        "搜索引擎"
+                        '直接访问',
+                        '邮件营销',
+                        '联盟广告',
+                        '视频广告',
+                        '搜索引擎'
                     ],
                     textStyle: {
-                        color: "#fff"
+                        color: '#fff'
                     }
                 },
                 toolbox: {
@@ -391,7 +399,7 @@ export default {
                         dataView: { show: true, readOnly: false },
                         magicType: {
                             show: true,
-                            type: ["pie", "funnel"]
+                            type: ['pie', 'funnel']
                         },
                         restore: { show: true },
                         saveAsImage: { show: true }
@@ -399,42 +407,42 @@ export default {
                 },
                 series: [
                     {
-                        name: "访问来源",
-                        type: "pie",
-                        radius: "55%",
-                        center: ["50%", "60%"],
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '55%',
+                        center: ['50%', '60%'],
                         data: [
                             {
                                 value: 335,
-                                name: "直接访问",
+                                name: '直接访问',
                                 itemStyle: {
                                     color: this.colorList[0]
                                 }
                             },
                             {
                                 value: 310,
-                                name: "邮件营销",
+                                name: '邮件营销',
                                 itemStyle: {
                                     color: this.colorList[1]
                                 }
                             },
                             {
                                 value: 234,
-                                name: "联盟广告",
+                                name: '联盟广告',
                                 itemStyle: {
                                     color: this.colorList[2]
                                 }
                             },
                             {
                                 value: 135,
-                                name: "视频广告",
+                                name: '视频广告',
                                 itemStyle: {
                                     color: this.colorList[3]
                                 }
                             },
                             {
                                 value: 1548,
-                                name: "搜索引擎",
+                                name: '搜索引擎',
                                 itemStyle: {
                                     color: this.colorList[4]
                                 }
@@ -444,7 +452,7 @@ export default {
                             itemStyle: {
                                 shadowBlur: 10,
                                 shadowOffsetX: 0,
-                                shadowColor: "rgba(0, 0, 0, 0.5)"
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
                             }
                         }
                     }
@@ -455,12 +463,12 @@ export default {
         },
         changejulei(num) {
             this.currentTab = num;
-            this.createData("main");
-            this.createBarData("main2");
+            this.createData('main');
+            this.createBarData('main2');
         },
         changeTab(num) {
             this.currentTab = num;
-            this.createScatter("main3");
+            this.createScatter('main3');
         },
         createBarData(str) {
             var myChart = echarts.init(document.getElementById(str));
@@ -472,41 +480,41 @@ export default {
                         dataView: { show: true, readOnly: false },
                         magicType: {
                             show: true,
-                            type: ["pie", "funnel"]
+                            type: ['pie', 'funnel']
                         },
                         restore: { show: true },
                         saveAsImage: { show: true }
                     }
                 },
                 xAxis: {
-                    type: "category",
+                    type: 'category',
                     data: [
-                        "Mon",
-                        "Tue",
-                        "Wed",
-                        "Thu",
-                        "Fri",
-                        "Sat",
-                        "Sun",
-                        "Mon",
-                        "Tue",
-                        "Wed",
-                        "Thu",
-                        "Fri",
-                        "Sat",
-                        "Sun"
+                        'Mon',
+                        'Tue',
+                        'Wed',
+                        'Thu',
+                        'Fri',
+                        'Sat',
+                        'Sun',
+                        'Mon',
+                        'Tue',
+                        'Wed',
+                        'Thu',
+                        'Fri',
+                        'Sat',
+                        'Sun'
                     ],
                     axisLabel: {
                         textStyle: {
-                            color: "#fff"
+                            color: '#fff'
                         }
                     }
                 },
                 yAxis: {
-                    type: "value",
+                    type: 'value',
                     axisLabel: {
                         textStyle: {
-                            color: "#999"
+                            color: '#999'
                         }
                     }
                 },
@@ -531,7 +539,7 @@ export default {
                         barWidth: 20,
                         showBackground: true,
                         backgroundStyle: {
-                            color: "#50545C"
+                            color: '#50545C'
                         },
                         itemStyle: {
                             color: new echarts.graphic.LinearGradient(
@@ -540,9 +548,9 @@ export default {
                                 0,
                                 1,
                                 [
-                                    { offset: 0, color: "#83bff6" },
-                                    { offset: 0.5, color: "#188df0" },
-                                    { offset: 1, color: "#6699FF" }
+                                    { offset: 0, color: '#83bff6' },
+                                    { offset: 0.5, color: '#188df0' },
+                                    { offset: 1, color: '#6699FF' }
                                 ]
                             )
                         },
@@ -554,14 +562,14 @@ export default {
                                     0,
                                     1,
                                     [
-                                        { offset: 0, color: "#2378f7" },
-                                        { offset: 0.7, color: "#2378f7" },
-                                        { offset: 1, color: "#6699FF" }
+                                        { offset: 0, color: '#2378f7' },
+                                        { offset: 0.7, color: '#2378f7' },
+                                        { offset: 1, color: '#6699FF' }
                                     ]
                                 )
                             }
                         },
-                        type: "bar"
+                        type: 'bar'
                     }
                 ]
             };
@@ -746,6 +754,9 @@ export default {
         background: #2a2d36;
         border-right: 1px solid #494c54;
         color: #f5f5f5;
+    }
+    .el-table--enable-row-hover .el-table__body tr:hover > td {
+        background: #2a2d36;
     }
     .el-table td,
     .el-table th.is-leaf {

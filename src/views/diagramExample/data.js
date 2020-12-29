@@ -390,10 +390,10 @@ export const nodeList = [
 ];
 export const nodeList2 = [
     {
-        label: '统计特征工具箱',
+        label: '特征变换',
         nodeSwitch: true,
         nodeItem: [{
-            name: '统计特征',
+            name: '特征尺度变换',
             node_type: 'item-1',
             in_ports: [0],
             in_ports_text: ['输入'],
@@ -441,7 +441,199 @@ export const nodeList2 = [
                 }
             ]
         }, {
-            name: '聚类特征',
+            name: '特征异常平滑',
+            node_type: 'item-1',
+            in_ports: [0],
+            in_ports_text: ['输入'],
+            out_ports: [0],
+            out_ports_text: ['输出'],
+            iconClassName: 'el-icon-loading',
+            form: [
+                {
+                    "label": "字段设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'select', // 输入框
+                            "label": "选择特征",
+                            "placeholder": "选择要标注修改的表头",
+                            "value": "1",
+                            "tag": "select_characteristic"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "选择标签",
+                            "value": "2",
+                            "tag": "select_tag"
+                        }
+                    ]
+                }, {
+                    "label": "参数设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "树的个数",
+                            "value": "3",
+                            "tag": "near_number"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "单棵树的最大深度",
+                            "value": "1",
+                            "tag": "near_number"
+                        }
+                    ]
+                }
+            ]
+        }, {
+            name: '特征离散',
+            node_type: 'item-1',
+            in_ports: [0],
+            in_ports_text: ['输入'],
+            out_ports: [0],
+            out_ports_text: ['输出'],
+            iconClassName: 'el-icon-loading',
+            form: [
+                {
+                    "label": "字段设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'select', // 输入框
+                            "label": "选择特征",
+                            "placeholder": "选择要标注修改的表头",
+                            "value": "1",
+                            "tag": "select_characteristic"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "选择标签",
+                            "value": "2",
+                            "tag": "select_tag"
+                        }
+                    ]
+                }, {
+                    "label": "参数设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "树的个数",
+                            "value": "3",
+                            "tag": "near_number"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "单棵树的最大深度",
+                            "value": "1",
+                            "tag": "near_number"
+                        }
+                    ]
+                }
+            ]
+        }, {
+            name: '生成统计类特征',
+            node_type: 'item-1',
+            in_ports: [0],
+            in_ports_text: ['输入'],
+            out_ports: [0],
+            out_ports_text: ['输出'],
+            iconClassName: 'el-icon-loading',
+            form: [
+                {
+                    "label": "字段设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'select', // 输入框
+                            "label": "选择特征",
+                            "placeholder": "选择要标注修改的表头",
+                            "value": "1",
+                            "tag": "select_characteristic"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "选择标签",
+                            "value": "2",
+                            "tag": "select_tag"
+                        }
+                    ]
+                }, {
+                    "label": "参数设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "树的个数",
+                            "value": "3",
+                            "tag": "near_number"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "单棵树的最大深度",
+                            "value": "1",
+                            "tag": "near_number"
+                        }
+                    ]
+                }
+            ]
+        }, {
+            name: '奇异值分解(SVD)',
+            node_type: 'item-1',
+            in_ports: [0],
+            in_ports_text: ['输入'],
+            out_ports: [0],
+            out_ports_text: ['输出'],
+            iconClassName: 'el-icon-loading',
+            form: [
+                {
+                    "label": "字段设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'select', // 输入框
+                            "label": "选择特征",
+                            "placeholder": "选择要标注修改的表头",
+                            "value": "1",
+                            "tag": "select_characteristic"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "选择标签",
+                            "value": "2",
+                            "tag": "select_tag"
+                        }
+                    ]
+                }, {
+                    "label": "参数设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "树的个数",
+                            "value": "3",
+                            "tag": "near_number"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input', // 输入框
+                            "label": "单棵树的最大深度",
+                            "value": "1",
+                            "tag": "near_number"
+                        }
+                    ]
+                }
+            ]
+        }, {
+            name: '主成分分析(PCA)',
             node_type: 'item-1',
             in_ports: [0],
             in_ports_text: ['输入'],
@@ -491,10 +683,10 @@ export const nodeList2 = [
         }]
     },
     {
-        label: '图特征工具箱',
+        label: '特征重要性评估',
         nodeSwitch: true,
         nodeItem: [ {
-            name: 'Node2vec',
+            name: '线性模型特征重要性',
             node_type: 'item-1',
             in_ports: [0],
             in_ports_text: ['输入'],
@@ -542,7 +734,7 @@ export const nodeList2 = [
                 }
             ]
         }, {
-            name: 'DeepWalk',
+            name: '随机森林特征重要性',
             node_type: 'item-1',
             in_ports: [0],
             in_ports_text: ['输入'],
@@ -592,10 +784,10 @@ export const nodeList2 = [
         }]
     },
     {
-        label: '深度特征工具箱',
+        label: '特征选择',
         nodeSwitch: true,
         nodeItem: [ {
-            name: '深度特征工具箱',
+            name: '过滤式特征选择',
             node_type: 'item-1',
             in_ports: [0],
             in_ports_text: ['输入'],
@@ -642,8 +834,66 @@ export const nodeList2 = [
                     ]
                 }
             ]
-        }, {
-            name: '深度语言特征',
+        }]
+    },
+    {
+        label: '特征生成',
+        nodeSwitch: true,
+        nodeItem: [ {
+            name: '特征编码',
+            node_type: 'item-1',
+            in_ports: [0],
+            in_ports_text: ['输入'],
+            out_ports: [0],
+            out_ports_text: ['输出'],
+            iconClassName: 'el-icon-loading',
+            form: [
+                {
+                    "label": "字段设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'select', // 输入框
+                            "label": "选择特征",
+                            "placeholder": "选择要标注修改的表头",
+                            "value": "1",
+                            "tag": "select_characteristic"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default', // 输入框
+                            "label": "选择标签",
+                            "value": "2",
+                            "tag": "select_tag"
+                        }
+                    ]
+                }, {
+                    "label": "参数设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default', // 输入框
+                            "label": "树的个数",
+                            "value": "3",
+                            "tag": "near_number"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default', // 输入框
+                            "label": "单棵树的最大深度",
+                            "value": "1",
+                            "tag": "near_number"
+                        }
+                    ]
+                }
+            ]
+        }]
+    },
+    {
+        label: '异常检测',
+        nodeSwitch: true,
+        nodeItem: [ {
+            name: '异常检测模块',
             node_type: 'item-1',
             in_ports: [0],
             in_ports_text: ['输入'],
