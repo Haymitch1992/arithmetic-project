@@ -46,9 +46,12 @@
           @change-node-name="changeNodeName"
           @link-end="linkEnd"
           @link-pre="linkPre"
+          @showRunStatus="showRunStatus"
         />
       </g>
-
+        <nodeRunStatus
+        v-if="visibleLog"
+        :item="item"></nodeRunStatus>
     </g>
     <EditArea
       @editNodeDetails="editNodeDetails"
@@ -68,19 +71,21 @@
       :modelRunningStatus="modelRunningStatus"
       :currentEvent="currentEvent"
     />
+
   </svg>
 </template>
 <script>
-import Arrow from "./arrow.vue";
-import SimulateArrow from "./simulateArrow.vue";
-import SimulateFrame from "./simulateFrame.vue";
-import EditArea from "./editArea.vue";
-import Control from "./control.vue";
-import SimulateSelArea from "./simulateSelArea.vue";
-import mainBody from "./mainBody.vue";
+import Arrow from './arrow.vue';
+import SimulateArrow from './simulateArrow.vue';
+import SimulateFrame from './simulateFrame.vue';
+import EditArea from './editArea.vue';
+import Control from './control.vue';
+import SimulateSelArea from './simulateSelArea.vue';
+import mainBody from './mainBody.vue';
+import nodeRunStatus from './nodeRunStatus.vue';
 
 export default {
-    name: "DAGBoard",
+    name: 'DAGBoard',
     props: {
         showTool: Boolean,
         DataAll: {
@@ -91,8 +96,8 @@ export default {
 
     computed: {
         svgScale() {
-            return this.svg_scale || !!sessionStorage["svgScale"]
-                ? sessionStorage["svgScale"]
+            return this.svg_scale || !!sessionStorage['svgScale']
+                ? sessionStorage['svgScale']
                 : 1;
         }
     },
@@ -102,10 +107,16 @@ export default {
         });
     },
     mounted() {
-        sessionStorage["svg_left"] = 0;
-        sessionStorage["svg_top"] = 0;
+        sessionStorage['svg_left'] = 0;
+        sessionStorage['svg_top'] = 0;
     },
     methods: {
+        showRunStatus(obj, status) {
+            // 显示或隐藏节点状态
+            console.log('显示或隐藏节点状态', obj);
+            this.item = obj;
+            this.visibleLog = status;
+        },
         startActive() {
             // 激活图像状态变更
             let step = this.step;
@@ -134,6 +145,7 @@ export default {
          * 事件分发器
          */
         dragPre(e, i, item) {
+            console.log('***************', e, i, item);
             // 准备拖动节点
             this.multipleSelectNodes = JSON.parse(JSON.stringify(this.choice));
             if (
@@ -145,9 +157,9 @@ export default {
                 );
             }
             this.setInitRect(); // 工具类 初始化dom坐标
-            this.currentEvent = "dragPane"; // 修正行为
-            sessionStorage["offsetX"] = e.offsetX;
-            sessionStorage["offsetY"] = e.offsetY;
+            this.currentEvent = 'dragPane'; // 修正行为
+            sessionStorage['offsetX'] = e.offsetX;
+            sessionStorage['offsetY'] = e.offsetY;
             this.choice.index = i; // 当前选择的接点
             this.timeStamp = e.timeStamp;
             this.selPaneNode(item.id);
@@ -159,19 +171,19 @@ export default {
         dragIng(e) {
             // 事件发放器 根据currentEvent来执行系列事件
             switch (this.currentEvent) {
-                case "dragPane":
+                case 'dragPane':
                     this.paneDragIng(e);
                     break;
-                case "PaneDraging":
+                case 'PaneDraging':
                     this.setDragFramePosition(e); // 触发节点拖动
                     break;
-                case "dragLink":
+                case 'dragLink':
                     this.setDragLinkPostion(e); // 触发连线拖动
                     break;
-                case "sel_area_ing":
+                case 'sel_area_ing':
                     this.setSelAreaPostion(e); // 触发框选
                     break;
-                case "move_graph":
+                case 'move_graph':
                     this.graphMoveIng(e);
                     break;
                 default:
@@ -183,7 +195,7 @@ export default {
             switch (this.currentEvent) {
                 // case 'PaneDraging': this.paneDragEnd(e); // 触发节点拖动结束
                 // break;
-                case "sel_area_ing":
+                case 'sel_area_ing':
                     this.getSelNodes(this.simulate_sel_area);
                     break;
                 default:
@@ -194,11 +206,11 @@ export default {
         svgMouseDown(e) {
             // svg鼠标按下触发事件分发
             this.setInitRect();
-            if (this.currentEvent === "sel_area") {
+            if (this.currentEvent === 'sel_area') {
                 this.selAreaStart(e);
             } else {
                 // 那就拖动画布
-                this.currentEvent = "move_graph";
+                this.currentEvent = 'move_graph';
                 this.graphMovePre(e);
             }
         },
@@ -208,7 +220,7 @@ export default {
         linkPre(e, i, nth) {
             // 开始连线
             this.setInitRect();
-            this.currentEvent = "dragLink";
+            this.currentEvent = 'dragLink';
             this.choice = Object.assign({}, this.choice, {
                 index: i,
                 point: nth
@@ -220,7 +232,7 @@ export default {
 
         linkEnd(i, nth) {
             // 连线结束 i, 目标点序号 nth 出发点 choice.index 出发点序号 choice.point
-            if (this.currentEvent === "dragLink") {
+            if (this.currentEvent === 'dragLink') {
                 let params = {
                     desp: {
                         src_node_id: this.DataAll.nodes[this.choice.index].id,
@@ -238,45 +250,45 @@ export default {
          *  svg画板缩放行为
          */
         sizeInit() {
-            this.changeSize("init"); // 回归到默认倍数
+            this.changeSize('init'); // 回归到默认倍数
             this.svg_left = 0; // 回归到默认位置
             this.svg_top = 0;
-            sessionStorage["svg_left"] = 0;
-            sessionStorage["svg_top"] = 0;
+            sessionStorage['svg_left'] = 0;
+            sessionStorage['svg_top'] = 0;
             // 将符合条件的数据 放在一组
             let arr = this.DataAll;
             let num = 0;
             arr.nodes.forEach(item => {
                 switch (item.name) {
-                    case "数据集":
+                    case '数据集':
                         item.pos_x = 200;
                         item.pos_y = 100;
                         break;
-                    case "标准化":
+                    case '标准化':
                         item.pos_x = 400;
                         item.pos_y = 190;
                         break;
-                    case "拆分":
+                    case '拆分':
                         item.pos_x = 200;
                         item.pos_y = 280;
                         break;
-                    case "分类-KNN-2":
+                    case '分类-KNN-2':
                         item.pos_x = 50;
                         item.pos_y = 460;
                         break;
-                    case "回归-KNN-2":
+                    case '回归-KNN-2':
                         item.pos_x = 50;
                         item.pos_y = 460;
                         break;
-                    case "模型测试":
+                    case '模型测试':
                         item.pos_x = 300;
                         item.pos_y = 460;
                         break;
-                    case "分类评估":
+                    case '分类评估':
                         item.pos_x = 200;
                         item.pos_y = 640;
                         break;
-                    case "回归评估":
+                    case '回归评估':
                         item.pos_x = 200;
                         item.pos_y = 640;
                         break;
@@ -289,10 +301,10 @@ export default {
             });
         },
         sizeExpend() {
-            this.changeSize("expend"); // 画板放大0.1
+            this.changeSize('expend'); // 画板放大0.1
         },
         sizeShrink() {
-            this.changeSize("shrink"); // 画板缩小0.1
+            this.changeSize('shrink'); // 画板缩小0.1
         },
         onMouseWheel(e) {
             // 鼠标滚动或mac触摸板可以改变size
@@ -311,22 +323,22 @@ export default {
             // 绑定鼠标滚轮事件
             const addEvent = (obj, xEvent, fn) => {
                 if (obj.attachEvent) {
-                    obj.attachEvent("on" + xEvent, fn);
+                    obj.attachEvent('on' + xEvent, fn);
                 } else {
                     obj.addEventListener(xEvent, fn, false);
                 }
             };
 
-            var oDiv = document.getElementById("svgContent");
+            var oDiv = document.getElementById('svgContent');
             // 当滚轮事件发生时，执行onMouseWheel这个函数
-            addEvent(oDiv, "mousewheel", this.onMouseWheel);
-            addEvent(oDiv, "DOMMouseScroll", this.onMouseWheel);
+            addEvent(oDiv, 'mousewheel', this.onMouseWheel);
+            addEvent(oDiv, 'DOMMouseScroll', this.onMouseWheel);
         },
         /**
          * 节点事件 单选 框选 拖动
          */
         sel_area() {
-            this.currentEvent = "sel_area";
+            this.currentEvent = 'sel_area';
             this.simulate_sel_area = {
                 left: 0,
                 top: 0,
@@ -335,19 +347,19 @@ export default {
             };
         },
         paneDragIng(e) {
-            let offsetX = sessionStorage["offsetX"] || 0;
-            let offsetY = sessionStorage["offsetY"] || 0;
+            let offsetX = sessionStorage['offsetX'] || 0;
+            let offsetY = sessionStorage['offsetY'] || 0;
             const x =
-                (e.x - this.initPos.left - (sessionStorage["svg_left"] || 0)) /
+                (e.x - this.initPos.left - (sessionStorage['svg_left'] || 0)) /
                     this.svgScale -
                 30 -
                 offsetX;
             const y =
-                (e.y - this.initPos.top - (sessionStorage["svg_top"] || 0)) /
+                (e.y - this.initPos.top - (sessionStorage['svg_top'] || 0)) /
                     this.svgScale -
                 offsetY;
             let params = {
-                model_id: sessionStorage["newGraph"],
+                model_id: sessionStorage['newGraph'],
                 id: this.DataAll.nodes[this.choice.index].id,
                 pos_x: x,
                 pos_y: y
@@ -367,15 +379,15 @@ export default {
             this.initMultiplePosition = null;
             this.dragFrame = { dragFrame: false, posX: 0, posY: 0 };
             const x =
-                (e.x - this.initPos.left - (sessionStorage["svg_left"] || 0)) /
+                (e.x - this.initPos.left - (sessionStorage['svg_left'] || 0)) /
                     this.svgScale -
                 90;
             const y =
-                (e.y - this.initPos.top - (sessionStorage["svg_top"] || 0)) /
+                (e.y - this.initPos.top - (sessionStorage['svg_top'] || 0)) /
                     this.svgScale -
                 15;
             let params = {
-                model_id: sessionStorage["newGraph"],
+                model_id: sessionStorage['newGraph'],
                 id: this.DataAll.nodes[this.choice.index].id,
                 pos_x: x,
                 pos_y: y
@@ -386,17 +398,17 @@ export default {
             this.choice.paneNode.length = [];
             if (id) {
                 this.choice.paneNode.push(id);
-                this.$emit("updateDAG", this.DataAll, "selectNode", id);
+                this.$emit('updateDAG', this.DataAll, 'selectNode', id);
             }
         },
         selAreaStart(e) {
             // 框选节点开始
-            this.currentEvent = "sel_area_ing";
+            this.currentEvent = 'sel_area_ing';
             const x =
-                (e.x - this.initPos.left - (sessionStorage["svg_left"] || 0)) /
+                (e.x - this.initPos.left - (sessionStorage['svg_left'] || 0)) /
                 this.svgScale;
             const y =
-                (e.y - this.initPos.top - (sessionStorage["svg_top"] || 0)) /
+                (e.y - this.initPos.top - (sessionStorage['svg_top'] || 0)) /
                 this.svgScale;
             this.simulate_sel_area = {
                 left: x,
@@ -408,10 +420,10 @@ export default {
         setSelAreaPostion(e) {
             // 框选节点ing
             const x =
-                (e.x - this.initPos.left - (sessionStorage["svg_left"] || 0)) /
+                (e.x - this.initPos.left - (sessionStorage['svg_left'] || 0)) /
                 this.svgScale;
             const y =
-                (e.y - this.initPos.top - (sessionStorage["svg_top"] || 0)) /
+                (e.y - this.initPos.top - (sessionStorage['svg_top'] || 0)) /
                 this.svgScale;
             const width = x - this.simulate_sel_area.left;
             const height = y - this.simulate_sel_area.top;
@@ -459,8 +471,8 @@ export default {
             const { x, y } = this.svg_trans_init;
             this.svg_left = e.x - x + this.svg_trans_pre.x;
             this.svg_top = e.y - y + this.svg_trans_pre.y;
-            sessionStorage["svg_left"] = this.svg_left;
-            sessionStorage["svg_top"] = this.svg_top;
+            sessionStorage['svg_left'] = this.svg_left;
+            sessionStorage['svg_top'] = this.svg_top;
         },
         /**
          * 模态框类
@@ -468,8 +480,8 @@ export default {
         setDragFramePosition(e) {
             // 节点拖拽模态
             const x =
-                e.x - this.initPos.left - (sessionStorage["svg_left"] || 0);
-            const y = e.y - this.initPos.top - (sessionStorage["svg_top"] || 0);
+                e.x - this.initPos.left - (sessionStorage['svg_left'] || 0);
+            const y = e.y - this.initPos.top - (sessionStorage['svg_top'] || 0);
             this.dragFrame = {
                 posX: x / this.svgScale - 90,
                 posY: y / this.svgScale - 15
@@ -478,10 +490,10 @@ export default {
         setDragLinkPostion(e, init) {
             // 节点连线模态
             const x =
-                (e.x - this.initPos.left - (sessionStorage["svg_left"] || 0)) /
+                (e.x - this.initPos.left - (sessionStorage['svg_left'] || 0)) /
                 this.svgScale;
             const y =
-                (e.y - this.initPos.top - (sessionStorage["svg_top"] || 0)) /
+                (e.y - this.initPos.top - (sessionStorage['svg_top'] || 0)) /
                 this.svgScale;
             if (init) {
                 this.dragLink = Object.assign({}, this.dragLink, {
@@ -500,7 +512,7 @@ export default {
         },
         r_click_nodes(e, i) {
             // 如果是数据集的话
-            console.log("执行右击", e, i, this.DataAll.nodes[i]);
+            console.log('执行右击', e, i, this.DataAll.nodes[i]);
             // 节点右键模态
             this.setInitRect();
             const id = this.DataAll.nodes[i].id;
@@ -533,7 +545,7 @@ export default {
         setInitRect() {
             // 矫正svg组件坐标
             let { left, top } = document
-                .getElementById("svgContent")
+                .getElementById('svgContent')
                 .getBoundingClientRect();
             this.initPos = { left, top };
         },
@@ -541,7 +553,7 @@ export default {
          * 执行&暂停模型训练模拟
          */
         changeModelRunningStatus(status) {
-            this.$emit("updateDAG", this.DataAll, "startRunning");
+            this.$emit('updateDAG', this.DataAll, 'startRunning');
         },
         /**
          * 数据层逻辑
@@ -562,11 +574,11 @@ export default {
                 ...value.desp,
                 id: _DataAll.edges.length + 10
             });
-            that.$emit("updateDAG", _DataAll, "addEdge");
+            that.$emit('updateDAG', _DataAll, 'addEdge');
         },
         delEdge({ id }) {
             // 删除边
-            console.log("id", id);
+            console.log('id', id);
             let _edges = [];
             this.DataAll.edges.forEach((item, i) => {
                 if (item.id !== id) {
@@ -574,7 +586,7 @@ export default {
                 }
             });
             this.DataAll.edges = _edges;
-            this.$emit("updateDAG", this.DataAll, "delEdge");
+            this.$emit('updateDAG', this.DataAll, 'delEdge');
         },
         moveNode(params) {
             // 移动点的位置
@@ -586,7 +598,7 @@ export default {
                     item.pos_y = params.pos_y;
                 }
             });
-            this.$emit("updateDAG", _DataAll, "moveNode");
+            this.$emit('updateDAG', _DataAll, 'moveNode');
         },
         multipleMoveNode(params) {
             // 同时移动多个点
@@ -608,7 +620,7 @@ export default {
                 }
             });
             _DataAll.nodes = _initMultiplePosition;
-            this.$emit("updateDAG", _DataAll, "moveNode");
+            this.$emit('updateDAG', _DataAll, 'moveNode');
         },
         addNode: params => {
             // 增加节点
@@ -619,7 +631,7 @@ export default {
                 in_ports: [0],
                 out_ports: [0]
             });
-            this.$emit("updateDag", this.DataAll, "addNode");
+            this.$emit('updateDag', this.DataAll, 'addNode');
         },
         delNode({ model_id, id }) {
             // 删除节点
@@ -637,39 +649,39 @@ export default {
             });
             this.DataAll.edges = _edges;
             this.DataAll.nodes = _nodes;
-            this.$emit("updateDAG", this.DataAll, "delNode");
+            this.$emit('updateDAG', this.DataAll, 'delNode');
         },
         changeSize(action) {
             // 改变size
             let svgScale =
-                typeof sessionStorage["svgScale"] === "string"
-                    ? Number(sessionStorage["svgScale"])
+                typeof sessionStorage['svgScale'] === 'string'
+                    ? Number(sessionStorage['svgScale'])
                     : 1;
             let _width = window.innerWidth;
             let _height = window.innerHeight;
             switch (action) {
-                case "shrink":
+                case 'shrink':
                     svgScale -= 0.05;
-                    this.svg_left = sessionStorage["svg_left"] =
+                    this.svg_left = sessionStorage['svg_left'] =
                         this.svg_left + _width * 0.01;
-                    this.svg_top = sessionStorage["svg_top"] =
+                    this.svg_top = sessionStorage['svg_top'] =
                         this.svg_top + _height * 0.01;
 
                     break;
-                case "expend":
+                case 'expend':
                     svgScale += 0.05;
-                    this.svg_top = sessionStorage["svg_top"] =
+                    this.svg_top = sessionStorage['svg_top'] =
                         this.svg_top - _height * 0.01;
-                    this.svg_left = sessionStorage["svg_left"] =
+                    this.svg_left = sessionStorage['svg_left'] =
                         this.svg_left - _width * 0.01;
                     break;
-                case "init":
+                case 'init':
                     svgScale = 1;
                     break;
                 default:
-                    () => "";
+                    () => '';
             }
-            this.svg_scale = sessionStorage["svgScale"] = svgScale;
+            this.svg_scale = sessionStorage['svgScale'] = svgScale;
         },
         changeNodeName(params) {
             // 改变节点名称
@@ -678,28 +690,30 @@ export default {
                     item.name = params.name;
                 }
             });
-            this.$emit("updateDAG", this.DataAll, "changeNodeName");
+            this.$emit('updateDAG', this.DataAll, 'changeNodeName');
         },
         changePort(action, id) {
             this.DataAll.nodes.forEach(item => {
                 if (item.id === id) {
                     item[action]
                         ? item[action].push(item[action].length)
-                        : (item[action] = ["0"]);
+                        : (item[action] = ['0']);
                 }
             });
-            this.$emit("updateDAG", this.DataAll, "changePort");
+            this.$emit('updateDAG', this.DataAll, 'changePort');
         },
         editNodeDetails(value) {
             // 抛出待编辑内容
-            this.$emit("editNodeDetails", value);
+            this.$emit('editNodeDetails', value);
         },
         nodesPersonalEvent(eventName, id) {
-            this.$emit("doSthPersonal", eventName, id);
+            this.$emit('doSthPersonal', eventName, id);
         }
     },
     data() {
         return {
+            item: {}, // 当前光标移入的节点的数据
+            visibleLog: false,
             svg_scale: null,
             choice: {
                 paneNode: [], // 选取的节点下标组
@@ -724,7 +738,7 @@ export default {
                 left: -1,
                 top: -1
             },
-            timeStamp: "",
+            timeStamp: '',
             is_edit_area: {
                 value: false,
                 x: -9999,
@@ -758,7 +772,8 @@ export default {
         EditArea,
         Control,
         SimulateSelArea,
-        mainBody
+        mainBody,
+        nodeRunStatus
     }
 };
 </script>

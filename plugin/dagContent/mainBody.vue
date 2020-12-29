@@ -3,7 +3,7 @@
     <foreignObject v-if="isVertical()" width="180" height="30" style="overflow: visible;">
         <body xmlns="http://www.w3.org/1999/xhtml" style="margin: 0" >
             <div :class="item.node_type">
-                <div :style="item.nodeStyle" :class="choice.paneNode.indexOf(item.id) !== -1 ? 'pane-node-content selected' : 'pane-node-content'" @mouseleave="changeVisibleLog(0)" @mousemove="changeVisibleLog(1)">
+                <div :style="item.nodeStyle" :class="choice.paneNode.indexOf(item.id) !== -1 ? 'pane-node-content selected' : 'pane-node-content'" @mouseleave="changeVisibleLog(0,item)" @mousemove="changeVisibleLog(1,item)">
                     <img v-if="item.iconClassName==='el-icon-circle-check'" src="../assets/success.png" class="status-img" alt="">
                     <img v-if="item.iconClassName==='el-icon-circle-close'" src="../assets/error.png" class="status-img" alt="">
                     <!--禁止用户修改节点名称 @change="$emit('change-node-name', item)" -->
@@ -34,13 +34,6 @@
                         </span>
 
                     </div>
-                </div>
-                <!--节点运行状态-->
-                <div class="runLog" v-if="visibleLog">
-                  <p>节点名称：{{item.name}}</p>
-                  <p>开始时间：{{item.startTime|converTime('YYYY-MM-DD HH:mm:ss')}}</p>
-                  <p>结束时间：{{item.endTime|converTime('YYYY-MM-DD HH:mm:ss')}}</p>
-                  <p>运行状态：{{item.iconClassName==='el-icon-circle-check'?'成功':'失败'}}</p>
                 </div>
             </div>
         </body>
@@ -100,18 +93,17 @@ export default {
         }
     },
     data() {
-        return {
-            visibleLog: false
-        };
+        return {};
     },
     methods: {
-        changeVisibleLog(str) {
+        changeVisibleLog(str, obj) {
+            // 鼠标移入 追加状态框
             switch (str) {
                 case 0:
-                    this.visibleLog = false;
+                    this.$emit('showRunStatus', obj, false);
                     break;
                 case 1:
-                    this.visibleLog = true;
+                    this.$emit('showRunStatus', obj, true);
                     break;
             }
         },
@@ -134,21 +126,6 @@ export default {
 </script>
 
 <style scoped>
-.runLog {
-    background: #2a2d36;
-    color: #fff;
-    padding: 4px 20px;
-    border-radius: 4px;
-    width: 200px;
-    text-align: left;
-    position: relative;
-    left: 0px;
-    top: 4px;
-    display: block;
-    font-size: 12px;
-    z-index: 9999;
-}
-
 .tips-in {
     background: #2a2d36;
     color: #fff;
