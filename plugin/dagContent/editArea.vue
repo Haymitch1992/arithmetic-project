@@ -5,6 +5,11 @@
             <div class="menu_contain">
                 <span @click="delEdges"><i class="el-icon-delete" style="margin-right:8px;"></i>删除节点</span>
                 <span v-if="isEditAreaShow.nodeName==='数据集'" @click="openData()"><i class="el-icon-receiving" style="margin-right:8px;"></i>查看数据</span>
+                <span class="line"></span>
+                <span @click="startNodeRun(isEditAreaShow)"><i class="el-icon-caret-right" style="margin-right:8px;"></i>从此处开始执行</span>
+                <span @click="endNodeRun(isEditAreaShow)"><i class="el-icon-finished" style="margin-right:8px;"></i>执行到此处</span>
+                <span @click="runCurrentNode(isEditAreaShow)"><i class="el-icon-refresh" style="margin-right:8px;"></i>执行此节点</span>
+                <span class="line"></span>
                 <span @click="openLog()"><i class="el-icon-receiving" style="margin-right:8px;"></i>查看日志</span>
                 <span v-if="isEditAreaShow.nodeType==='item-3'&&isEditAreaShow.nodeName!=='模型测试'" @click="openAnalysis()"><i class="el-icon-receiving" style="margin-right:8px;"></i>查看分析报告</span>
                 <!-- <span @click="changePort('in_ports')">添加输入</span> -->
@@ -36,6 +41,21 @@ export default {
         console.log('isEditAreaShow', this.isEditAreaShow);
     },
     methods: {
+        // 从此节点开始运行
+        startNodeRun(obj) {
+            // 当前节点ID obj.id
+            this.$parent.$parent.checkNodeData(obj.id, 0);
+        },
+        // 执行到此节点
+        endNodeRun(obj) {
+            // 当前节点ID obj.id
+            this.$parent.$parent.checkNodeData(0, obj.id);
+        },
+        // 执行当前节点
+        runCurrentNode(obj) {
+            // 当前节点ID obj.id
+            this.$parent.$parent.checkNodeData(obj.id, obj.id);
+        },
         openAnalysis() {
             this.$store.commit('handleNode', {
                 nodeTpye: 'analysisDialog',
@@ -129,12 +149,20 @@ export default {
 }
 .menu_contain span {
     width: 100%;
-    display: inline-block;
+    display: block;
     line-height: 30px;
     padding-left: 10px;
     box-sizing: border-box;
     font-size: 13px;
     color: #fff;
+}
+.menu_contain .line {
+    display: block;
+    line-height: 1px;
+    padding: 0;
+    height: 1px;
+    background: #666;
+    margin: 2px 0;
 }
 .menu_contain span:hover {
     background-color: rgba(40, 157, 233, 0.3);

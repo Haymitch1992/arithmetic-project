@@ -102,11 +102,11 @@
 </template>
 
 <script>
-import { POST_SEARCH_SET } from "../assets/url";
+import { POST_SEARCH_SET } from '../assets/url';
 
 export default {
-    name: "randomForest",
-    props: ["nodeData", "nodeTile", "componentId"],
+    name: 'randomForest',
+    props: ['nodeData', 'nodeTile', 'componentId'],
     data() {
         return {
             currentPage: 0,
@@ -118,68 +118,69 @@ export default {
                 node_params: {}
             },
             loading: false,
-            splitValue: ""
+            splitValue: ''
         };
     },
     watch: {
         nodeData() {
             // 当前节点是数据集的时候
             this.initData();
-
+            // 默认显示O
+            this.currentPage = 0;
             // 当前节点是拆分时
         }
     },
     methods: {
         initData() {
             switch (this.componentId) {
-                case "load_data":
+                case 'load_data':
                     if (this.nodeData[0].data[0].value.value) {
                         this.options = [this.nodeData[0].data[0].value.value];
                         this.value = this.nodeData[0].data[0].value.value.id;
                     }
                     break;
-                case "split_datasets":
-                    console.log("split_datasets");
+                case 'split_datasets':
+                    console.log('split_datasets');
                     this.splitValue = this.nodeData[0].data[0].value.node_params.split_prop;
                     break;
-                case "cla_knn":
-                    console.log("选择KNN");
+                case 'cla_knn':
+                    console.log('选择KNN');
                     this.splitValue = this.nodeData[1].data[0].value.node_params.n_neighbors;
                     break;
-                case "reg_knn":
-                    console.log("选择KNN");
+                case 'reg_knn':
+                    console.log('选择KNN');
                     this.splitValue = this.nodeData[1].data[0].value.node_params.n_neighbors;
                     break;
             }
         },
         saveItem(item) {
             // 数据集模糊匹配存储
-            let arr = item.data_path.split("/");
+            let arr = item.data_path.split('/');
             this.load_data.node_params.csv_name = arr[arr.length - 1];
             this.load_data.node_params.download_path =
                 this.globalUlr + item.data_path;
             this.load_data.node_params.data_name = item.data_name;
             this.load_data.node_params.set_id = item.id;
             this.load_data.value = item;
-            this.$store.commit("changeSetId", item.id);
+            this.$store.commit('changeSetId', item.id);
         },
         saveNodeParam() {
             // 将参数 存入节点
             switch (this.componentId) {
-                case "load_data":
-                    this.$emit("updateNodeParam", this.load_data, 0, 0);
+                case 'load_data':
+                    this.$emit('updateNodeParam', this.load_data, 0, 0);
                     break;
-                case "split_datasets":
+                case 'split_datasets':
                     this.load_data.node_params.split_prop = this.splitValue;
-                    this.$emit("updateNodeParam", this.load_data, 0, 0);
+                    this.$emit('updateNodeParam', this.load_data, 0, 0);
                     break;
-                case "cla_knn":
+                case 'cla_knn':
                     this.load_data.node_params.n_neighbors = this.splitValue;
-                    this.$emit("updateNodeParam", this.load_data, 1, 0);
+                    this.$emit('updateNodeParam', this.load_data, 1, 0);
                     break;
-                case "reg_knn":
+                case 'reg_knn':
                     this.load_data.node_params.n_neighbors = this.splitValue;
-                    this.$emit("updateNodeParam", this.load_data, 1, 0);
+                    this.$emit('updateNodeParam', this.load_data, 1, 0);
                     break;
             }
         },
@@ -189,14 +190,14 @@ export default {
         openSelectHeader(num, keyStr) {
             // 打开父页面 选择特征列的弹框
             this.$store.commit(
-                "changeSelectDate",
+                'changeSelectDate',
                 this.nodeData[0].data[num].value.node_params[keyStr]
             );
-            this.$store.commit("changeSelectNum", keyStr);
+            this.$store.commit('changeSelectNum', keyStr);
             this.$parent.showSelectDialog = true;
         },
         remoteMethod(query) {
-            if (query !== "") {
+            if (query !== '') {
                 this.loading = true;
                 this.searchSet(query);
                 setTimeout(() => {
@@ -212,21 +213,21 @@ export default {
         },
         // 获取数据集的信息
         searchSet(val) {
-            console.log("当前值", val);
+            console.log('当前值', val);
             this.$api
                 .post(POST_SEARCH_SET, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_set_name: val
                 })
                 .then(res => {
                     this.options = res.data.search_set;
-                    console.log("打印数据集", res);
+                    console.log('打印数据集', res);
                 });
         }
     },
     mounted() {
         this.initData();
-        console.log("节点名", this.nodeTile);
+        console.log('节点名', this.nodeTile);
     }
 };
 </script>
@@ -242,7 +243,7 @@ export default {
     display: block;
 }
 .select-ul:after {
-    content: "";
+    content: '';
     display: block;
     border-top: 10px solid transparent;
     border-right: 10px solid transparent;

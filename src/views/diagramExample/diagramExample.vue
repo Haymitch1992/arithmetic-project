@@ -506,20 +506,36 @@ export default {
                 }
             });
         },
-        checkNodeData() {
+        checkNodeData(start, end) {
             let nodeArr = this.yourJSONDataFillThere.nodes;
             let startNode = '';
             this.runArr = [];
+            let sliceStart = 0;
+            let sliceEnd = nodeArr.length;
+            // 根据参数进行切割
             // 从数据集开始 找到左侧第一个输出的点
             nodeArr.forEach((item, index, arr) => {
                 if (item.component_id === 'load_data') {
                     startNode = item;
                     this.runArr.push(startNode);
                 }
+                if (start && item.id === start) {
+                    sliceStart = index;
+                }
+                if (end && item.id === end) {
+                    sliceEnd = index;
+                }
             });
             this.circulation(startNode.id);
             // 根据连线 找到 输入的点 存入runArr 重复
-            console.log('查看当前上传数据集', this.runArr);
+            if (sliceStart === sliceEnd) sliceEnd++;
+            this.runArr = this.runArr.slice(sliceStart, sliceEnd);
+            console.log(
+                '查看当前上传数据集',
+                this.runArr,
+                sliceStart,
+                sliceEnd
+            );
         },
         circulation(currentId) {
             let edges = this.yourJSONDataFillThere.edges;
