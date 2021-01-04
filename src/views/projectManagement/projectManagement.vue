@@ -50,8 +50,8 @@
                     prop="address"
                     label="操作">
                     <template slot-scope="scope">
-                        <el-button type="text"  size="small" @click="goExperiment(scope.row.id, scope.row.project_name)">进入机器学习</el-button>
-                        <el-button type="text"  size="small" @click="deletePrject(scope.row.id)">删除</el-button>
+                        <el-button type="text"  @click="goExperiment(scope.row.id, scope.row.project_name)">进入机器学习</el-button>
+                        <el-button type="text" @click="deletePrject(scope.row.id)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>

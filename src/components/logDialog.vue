@@ -8,13 +8,12 @@
             width="50%"
             :before-close="handleClose">
             <div style="max-height:60vh;overflow-y:auto;">
-                <pre>
+                <pre style="color:#fff;">
                     2020-12-02 10:02:39 INFO Current task status:RUNNING
                     2020-12-02 10:02:39 INFO Start execute shell on node sh-base-biz-gateway16.cloud.em14.
                     2020-12-02 10:02:39 INFO Current working dir /home/admin/alisatasknode/taskinfo/20201202/phoenix/10/02/38/rkmd7hqybrij4v6vm39xhti7
                     2020-12-02 10:02:39 INFO Full Command ..
                     2020-12-02 10:02:39 INFO -------------------------
-                    2020-12-02 10:02:39 INFO /opt/taobao/tbdpapp/paiwrapper/paiservice.sh /home/admin/alisatasknode/taskinfo//20201202/phoenix/10/02/38/rkmd7hqybrij4v6vm39xhti7//P1871361 1067193273167722 PROD 1871361 http://100.67.93.146/ fromPaiweb
                     2020-12-02 10:02:39 INFO -------------------------
                     2020-12-02 10:02:39 INFO List of passing environment ..
                     2020-12-02 10:02:39 INFO -------------------------
@@ -123,11 +122,25 @@ export default {
     },
     methods: {
         handleClose() {
-            this.$store.commit("handleNode", {
-                nodeTpye: "logDialog",
+            this.$store.commit('handleNode', {
+                nodeTpye: 'logDialog',
                 status: false
             });
         }
     }
 };
 </script>
+<style lang="scss">
+.dataView {
+    .el-dialog,
+    .el-pager li {
+        background: #2a2d36 !important;
+    }
+    .el-dialog__title {
+        color: #fff;
+    }
+    .el-dialog__header {
+        border-bottom: 1px solid #3a404c;
+    }
+}
+</style>

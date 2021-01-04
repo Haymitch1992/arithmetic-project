@@ -51,13 +51,13 @@
                         min-width="140"
                         label="操作">
                         <template slot-scope="scope">
-                            <el-button type="text" size="small" @click="clickDelete(scope.row.id)">删除</el-button>
-                            <el-button type="text" size="small" @click="downLoadFile(scope.row.data_path)" v-if="scope.row.data_type!==3">导出数据集</el-button>
-                            <el-button type="text" size="small" @click="getDataNumber(scope.row)"  v-if="scope.row.data_type===3">导出数据集</el-button>
+                            <el-button type="text" @click="clickDelete(scope.row.id)">删除</el-button>
+                            <el-button type="text"  @click="downLoadFile(scope.row.data_path)" v-if="scope.row.data_type!==3">导出数据集</el-button>
+                            <el-button type="text"  @click="getDataNumber(scope.row)"  v-if="scope.row.data_type===3">导出数据集</el-button>
                             <el-button v-if="scope.row.data_lable===0||scope.row.data_lable===3" type="text" size="small" @click="createdTip(scope.row.id)"  style="margin-left: 0;">创建标注任务</el-button>
-                            <el-button v-if="scope.row.data_lable===1" type="text" size="small" @click="goDetail(scope.row.id)" style="margin-left: 0;">标注</el-button>
+                            <el-button v-if="scope.row.data_lable===1" type="text"  @click="goDetail(scope.row.id)" style="margin-left: 0;">标注</el-button>
                             <!-- <el-button v-if="scope.row.data_type===3" type="text" size="small" style="margin-left: 0;">不可标注</el-button> -->
-                            <el-button v-if="scope.row.data_lable===1" type="text" size="small" @click="changedTip(scope.row.id)" style="margin-left: 0;">修改</el-button>
+                            <el-button v-if="scope.row.data_lable===1" type="text"  @click="changedTip(scope.row.id)" style="margin-left: 0;">修改</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -109,7 +109,7 @@
                             prop="address"
                             label="操作">
                             <template slot-scope="scope">
-                            <el-button type="text" size="small" @click="oepnUserData(scope.row)">使用数据</el-button>
+                            <el-button type="text"  @click="oepnUserData(scope.row)">使用数据</el-button>
                         </template>
                         </el-table-column>
                     </el-table>
@@ -298,40 +298,40 @@ import {
     GET_SEARCH_DATA_NAME,
     GET_DATA_LENGTH,
     GET_COUNT_THEME
-} from "../../assets/url";
-import axios from "axios";
-import moment from "moment";
+} from '../../assets/url';
+import axios from 'axios';
+import moment from 'moment';
 export default {
-    name: "home",
+    name: 'home',
     filters: {
         modelStatusZn(val) {
             switch (val) {
                 case 0:
-                    return "未开始";
+                    return '未开始';
                 case 1:
-                    return "进行中";
+                    return '进行中';
                 case 2:
-                    return "已完成";
+                    return '已完成';
                 case 3:
-                    return "失败";
+                    return '失败';
                 case 4:
-                    return "已停止";
+                    return '已停止';
             }
         },
         create_time(val) {
-            if (!val) return "";
-            return moment(val).format("YYYY-MM-DD HH:mm:ss");
+            if (!val) return '';
+            return moment(val).format('YYYY-MM-DD HH:mm:ss');
         }
     },
 
     data() {
         return {
-            searchValue: "",
+            searchValue: '',
             resetObj: {
-                name: "",
-                id: ""
+                name: '',
+                id: ''
             },
-            activeName: "first",
+            activeName: 'first',
             saveObj: {},
             userDataDialog: false,
             dataStructure: false,
@@ -345,9 +345,9 @@ export default {
             dataInfoList: [],
             showThemeList: [],
             usertoken: {
-                usertoken: localStorage.getItem("data_user_token")
+                usertoken: localStorage.getItem('data_user_token')
             },
-            data_user_id: localStorage.getItem("data_user_id"),
+            data_user_id: localStorage.getItem('data_user_id'),
             isCreate: false,
             UPLOAD_FILE: UPLOAD_FILE,
             pageSize: 10,
@@ -356,92 +356,92 @@ export default {
                 name: [
                     {
                         required: true,
-                        message: "请输入数据集名称",
-                        trigger: "blur"
+                        message: '请输入数据集名称',
+                        trigger: 'blur'
                     },
                     {
                         min: 3,
                         max: 10,
-                        message: "长度在 3 到 10 个字符",
-                        trigger: "blur"
+                        message: '长度在 3 到 10 个字符',
+                        trigger: 'blur'
                     }
                 ],
                 path: [
                     {
                         required: true,
-                        message: "请选择存储路径",
-                        trigger: "change"
+                        message: '请选择存储路径',
+                        trigger: 'change'
                     }
                 ],
                 type: [
                     {
                         required: true,
-                        message: "请选择上传方式",
-                        trigger: "change"
+                        message: '请选择上传方式',
+                        trigger: 'change'
                     }
                 ],
                 databaseName: [
                     {
                         required: true,
-                        message: "请输入数据库名",
-                        trigger: "blur"
+                        message: '请输入数据库名',
+                        trigger: 'blur'
                     },
                     {
                         min: 3,
                         max: 5,
-                        message: "长度在 3 到 5 个字符",
-                        trigger: "blur"
+                        message: '长度在 3 到 5 个字符',
+                        trigger: 'blur'
                     }
                 ],
                 tableName: [
-                    { required: true, message: "请输入表名", trigger: "blur" },
+                    { required: true, message: '请输入表名', trigger: 'blur' },
                     {
                         min: 3,
                         max: 5,
-                        message: "长度在 3 到 5 个字符",
-                        trigger: "blur"
+                        message: '长度在 3 到 5 个字符',
+                        trigger: 'blur'
                     }
                 ],
                 userName: [
                     {
                         required: true,
-                        message: "请输入用户名",
-                        trigger: "blur"
+                        message: '请输入用户名',
+                        trigger: 'blur'
                     },
                     {
                         min: 3,
                         max: 5,
-                        message: "长度在 3 到 5 个字符",
-                        trigger: "blur"
+                        message: '长度在 3 到 5 个字符',
+                        trigger: 'blur'
                     }
                 ],
                 password: [
-                    { required: true, message: "请输入密码", trigger: "blur" },
+                    { required: true, message: '请输入密码', trigger: 'blur' },
                     {
                         min: 3,
                         max: 5,
-                        message: "长度在 3 到 5 个字符",
-                        trigger: "blur"
+                        message: '长度在 3 到 5 个字符',
+                        trigger: 'blur'
                     }
                 ]
             },
             headerList: [],
             formData: {
-                name: "",
-                type: "导入文件",
-                path: "/root/TCT_API_Develop/media/",
-                databaseName: "", // 数据库名
-                tableName: "", // 表名
-                userName: "", // 用户名
-                password: "", // 密码
-                data_theme_id: "",
-                data_theme_name: ""
+                name: '',
+                type: '导入文件',
+                path: '/root/TCT_API_Develop/media/',
+                databaseName: '', // 数据库名
+                tableName: '', // 表名
+                userName: '', // 用户名
+                password: '', // 密码
+                data_theme_id: '',
+                data_theme_name: ''
             },
             formData2: {
                 set_header_input: [],
-                set_header_type: "",
-                set_header_id: "",
-                data_set_id: "",
+                set_header_type: '',
+                set_header_id: '',
+                data_set_id: '',
                 data_user_id: this.data_user_id
             },
             fileList: [],
@@ -489,18 +489,18 @@ export default {
                 .then(res => {
                     this.$prompt(
                         `请输入请求数据条数(共${res.data.count})`,
-                        "提示",
+                        '提示',
                         {
-                            confirmButtonText: "确定",
-                            cancelButtonText: "取消",
+                            confirmButtonText: '确定',
+                            cancelButtonText: '取消',
                             inputPattern: /[0-9]/,
-                            inputErrorMessage: "请输入正确的数字"
+                            inputErrorMessage: '请输入正确的数字'
                         }
                     )
                         .then(({ value }) => {
                             if (value > res.data.count) {
                                 this.$message({
-                                    type: "error",
+                                    type: 'error',
                                     message: `请求数据不能超过${res.data.count}`
                                 });
                                 return;
@@ -509,8 +509,8 @@ export default {
                         })
                         .catch(() => {
                             this.$message({
-                                type: "info",
-                                message: "取消输入"
+                                type: 'info',
+                                message: '取消输入'
                             });
                         });
                 });
@@ -536,7 +536,7 @@ export default {
             // 找到当前的id 然后修改 isShow
             this.dataList.forEach((item, index) => {
                 if (item.id === obj.id) {
-                    this.$set(this.dataList[index], "isShow", true);
+                    this.$set(this.dataList[index], 'isShow', true);
                 }
             });
             let arr = this.dataList;
@@ -554,7 +554,7 @@ export default {
                 .then(res => {
                     if (res.data.code === 200) {
                         this.getAllData();
-                        this.$message.success("修改成功");
+                        this.$message.success('修改成功');
                     } else {
                         this.$message.error(res.data.mes);
                     }
@@ -576,8 +576,8 @@ export default {
                     if (res.data.code === 200) {
                         this.userDataDialog = false;
                         this.getAllData();
-                        this.activeName = "first";
-                        this.formData.name = "";
+                        this.activeName = 'first';
+                        this.formData.name = '';
                     } else {
                         this.$message.error(res.data.mes);
                     }
@@ -591,7 +591,7 @@ export default {
                 })
                 .then(res => {
                     if (res.data.code === 200) {
-                        this.themeLength = res.data.data[0]["COUNT(1)"];
+                        this.themeLength = res.data.data[0]['COUNT(1)'];
                         this.dataStructure = true;
                     } else {
                         this.themeLength = 0;
@@ -608,7 +608,7 @@ export default {
                     if (res.data.code === 200) {
                         this.dataStructureList = res.data.data;
                     } else {
-                        this.$message.error("当前主题下没有数据");
+                        this.$message.error('当前主题下没有数据');
                         this.dataStructureList = [{}];
                     }
                 });
@@ -655,19 +655,19 @@ export default {
         dataTypeZn(row, column) {
             switch (row.data_type) {
                 case 1:
-                    return "csv";
+                    return 'csv';
                 case 2:
-                    return "text";
+                    return 'text';
                 case 3:
-                    return "数据库";
+                    return '数据库';
             }
         },
         openUpload() {
             this.dialogTableVisible = true;
-            this.formData.name = "";
+            this.formData.name = '';
         },
         beforeAvatarUpload(file) {
-            console.log("文件类型", file.type);
+            console.log('文件类型', file.type);
             // const isJPG =
             //     file.type === "text/csv " ||
             //     file.type === "application/vnd.ms-excel";
@@ -676,7 +676,7 @@ export default {
             //     this.$message.error("上传文件只能是txt或csv格式!");
             // }
             if (!isLt2M) {
-                this.$message.error("上传文件大小不能超过 20MB!");
+                this.$message.error('上传文件大小不能超过 20MB!');
             }
             return isLt2M;
         },
@@ -689,9 +689,9 @@ export default {
             }
         },
         getFormValue(id) {
-            this.$api.get(GET_OPTIONS + "?data_set_id=" + id).then(res => {
+            this.$api.get(GET_OPTIONS + '?data_set_id=' + id).then(res => {
                 this.formData2.set_header_input = res.data.all_data_lable.set_header_input.split(
-                    ","
+                    ','
                 );
                 this.formData2.set_header_type =
                     res.data.all_data_lable.set_header_type;
@@ -733,9 +733,9 @@ export default {
             // 重置data数据
             this.formData2 = {
                 set_header_input: [],
-                set_header_type: "",
-                set_header_id: "",
-                data_set_id: "",
+                set_header_type: '',
+                set_header_id: '',
+                data_set_id: '',
                 data_user_id: this.data_user_id
             };
         },
@@ -769,18 +769,18 @@ export default {
             window.location.href = this.globalUlr + str;
         },
         clickDelete(id) {
-            this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
             })
                 .then(() => {
                     this.deleteItem(id);
                 })
                 .catch(() => {
                     this.$message({
-                        type: "info",
-                        message: "已取消删除"
+                        type: 'info',
+                        message: '已取消删除'
                     });
                 });
         },
@@ -822,13 +822,13 @@ export default {
         resetForm() {
             this.dialogTableVisible = false;
             this.formData = {
-                name: "",
-                type: "导入文件",
-                path: "",
-                databaseName: "", // 数据库名
-                tableName: "", // 表名
-                userName: "", // 用户名
-                password: "" // 密码
+                name: '',
+                type: '导入文件',
+                path: '',
+                databaseName: '', // 数据库名
+                tableName: '', // 表名
+                userName: '', // 用户名
+                password: '' // 密码
             };
         },
         handleRemove(file, fileList) {
@@ -849,14 +849,14 @@ export default {
                 if (valid) {
                     this.$refs.upload.submit();
                 } else {
-                    console.log("error submit!!");
+                    console.log('error submit!!');
                     return false;
                 }
             });
         },
         goDetail(id) {
             this.$router.push({
-                name: "dataTableDetail",
+                name: 'dataTableDetail',
                 params: { lableId: id }
             });
         }

@@ -208,16 +208,16 @@ export default {
     color: #ffffff;
 }
 .item-3 .pane-node-content {
-    border: 2px solid #6dd400;
-    background: #6dd400;
+    border: 2px solid#00D421;
+    background: #00d421;
 }
 .item-3 .pane-node-parent .space {
     border: 2px solid #ffffff;
-    background: #6dd400;
+    background: #00d421;
 }
 .item-3 .pane-node-children .space {
     border: 2px solid #ffffff;
-    background: #6dd400;
+    background: #00d421;
 }
 .item-3 .pane-node-content .name {
     color: #ffffff;

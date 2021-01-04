@@ -44,17 +44,17 @@ export default {
         // 从此节点开始运行
         startNodeRun(obj) {
             // 当前节点ID obj.id
-            this.$parent.$parent.checkNodeData(obj.id, 0);
+            this.$parent.$parent.autoPrepostion(obj.id, 0);
         },
         // 执行到此节点
         endNodeRun(obj) {
             // 当前节点ID obj.id
-            this.$parent.$parent.checkNodeData(0, obj.id);
+            this.$parent.$parent.autoPrepostion(0, obj.id);
         },
         // 执行当前节点
         runCurrentNode(obj) {
             // 当前节点ID obj.id
-            this.$parent.$parent.checkNodeData(obj.id, obj.id);
+            this.$parent.$parent.autoPrepostion(obj.id, obj.id);
         },
         openAnalysis() {
             this.$store.commit('handleNode', {
@@ -165,7 +165,7 @@ export default {
     margin: 2px 0;
 }
 .menu_contain span:hover {
-    background-color: rgba(40, 157, 233, 0.3);
+    background-color: #1777ff;
     cursor: pointer;
 }
 </style>

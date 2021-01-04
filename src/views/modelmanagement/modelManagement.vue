@@ -43,9 +43,9 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <el-button type="text" size="small" @click="editModel(scope.row.id,scope.row.model_name,scope.row.model_describe)">修改</el-button>
-                        <el-button type="text" size="small" @click="deleteModel(scope.row.id)">删除</el-button>
-                        <el-button type="text" size="small" @click="deploy(scope.row)">部署</el-button>
+                        <el-button type="text"  @click="editModel(scope.row.id,scope.row.model_name,scope.row.model_describe)">修改</el-button>
+                        <el-button type="text"  @click="deleteModel(scope.row.id)">删除</el-button>
+                        <el-button type="text"  @click="deploy(scope.row)">部署</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -89,29 +89,29 @@ import {
     POST_DELETE_MODEL,
     POST_DEPLOY_MODEL,
     POST_MODEL_DATA
-} from "../../assets/url";
-import moment from "moment";
+} from '../../assets/url';
+import moment from 'moment';
 
 export default {
-    name: "home",
+    name: 'home',
     filters: {
         modelStatusZn(val) {
             switch (val) {
                 case 0:
-                    return "未开始";
+                    return '未开始';
                 case 1:
-                    return "进行中";
+                    return '进行中';
                 case 2:
-                    return "已完成";
+                    return '已完成';
                 case 3:
-                    return "失败";
+                    return '失败';
                 case 4:
-                    return "已停止";
+                    return '已停止';
             }
         },
         create_time(val) {
-            if (!val) return "";
-            return moment(val).format("YYYY-MM-DD HH:mm:ss");
+            if (!val) return '';
+            return moment(val).format('YYYY-MM-DD HH:mm:ss');
         }
     },
     data() {
@@ -120,14 +120,14 @@ export default {
             dialogFormVisible2: false, // 导出模型
             currentPage4: 1,
             form: {
-                modelId: "",
-                newModelId: "", // 新
-                modelDescribe: "" // 模型描述
+                modelId: '',
+                newModelId: '', // 新
+                modelDescribe: '' // 模型描述
             },
             derive: {
-                url: "https://www.baidu.com",
-                fileName: "",
-                saveUrl: ""
+                url: 'https://www.baidu.com',
+                fileName: '',
+                saveUrl: ''
             },
             datalist: []
         };
@@ -137,16 +137,16 @@ export default {
     },
     methods: {
         deploy(item) {
-            this.$confirm("进行部署操作, 是否继续?", "提示", {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "warning"
+            this.$confirm('进行部署操作, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
             })
                 .then(() => {
                     this.$api
                         .post(POST_DEPLOY_MODEL, {
-                            user_id: localStorage.getItem("data_user_id"),
-                            user_name: "uesr1",
+                            user_id: localStorage.getItem('data_user_id'),
+                            user_name: 'uesr1',
                             experiment_name: item.model_test_name,
                             request_url: this.this.globalUlr,
                             model_path: item.model_path,
@@ -156,23 +156,23 @@ export default {
                         })
                         .then(res => {
                             this.$message({
-                                type: "success",
-                                message: "部署成功!"
+                                type: 'success',
+                                message: '部署成功!'
                             });
                             this.getModelData();
                         });
                 })
                 .catch(() => {
                     this.$message({
-                        type: "info",
-                        message: "已取消部署"
+                        type: 'info',
+                        message: '已取消部署'
                     });
                 });
         },
         changeModel(delId) {
             this.$api
                 .post(POST_CHANGE_MODEL, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_model_id: this.form.modelId,
                     data_model_name: this.form.newModelId,
                     data_model_describe: this.form.modelDescribe
@@ -180,8 +180,8 @@ export default {
                 .then(res => {
                     this.dialogFormVisible = false;
                     this.$message({
-                        type: "success",
-                        message: "修改成功!"
+                        type: 'success',
+                        message: '修改成功!'
                     });
                     this.getModelData();
                 });
@@ -189,13 +189,13 @@ export default {
         postDelete(delId) {
             this.$api
                 .post(POST_DELETE_MODEL, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_model_id: delId
                 })
                 .then(res => {
                     this.$message({
-                        type: "success",
-                        message: "删除成功!"
+                        type: 'success',
+                        message: '删除成功!'
                     });
                     this.getModelData();
                 });
@@ -204,7 +204,7 @@ export default {
             // 获取模型列表
             this.$api
                 .post(POST_MODEL_DATA, {
-                    data_user_id: localStorage.getItem("data_user_id")
+                    data_user_id: localStorage.getItem('data_user_id')
                 })
                 .then(res => {
                     this.datalist = res.data.model_data;
@@ -225,12 +225,12 @@ export default {
         },
         deleteModel(delId) {
             this.$confirm(
-                "是否确认删除模型及完成部署的环境资源, 是否继续?",
-                "提示",
+                '是否确认删除模型及完成部署的环境资源, 是否继续?',
+                '提示',
                 {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: "warning"
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
                 }
             )
                 .then(() => {
@@ -238,8 +238,8 @@ export default {
                 })
                 .catch(() => {
                     this.$message({
-                        type: "info",
-                        message: "已取消删除"
+                        type: 'info',
+                        message: '已取消删除'
                     });
                 });
         }

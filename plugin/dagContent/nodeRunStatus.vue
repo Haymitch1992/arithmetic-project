@@ -33,7 +33,7 @@ export default {
     color: #fff;
     padding: 4px 20px;
     border-radius: 6px;
-    width: 200px;
+    width: 180px;
     text-align: left;
     display: block;
     font-size: 12px;

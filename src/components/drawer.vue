@@ -121,8 +121,8 @@ export default {
     background: #fa6400;
 }
 .basic-node.item-3:hover {
-    border: 1px solid #6dd400;
-    background: #6dd400;
+    border: 1px solid #00D421;
+    background: #00D421;
 }
 .basic-node.item-4:hover {
     border: 1px solid #1677ff;

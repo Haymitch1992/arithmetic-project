@@ -307,8 +307,6 @@ export default {
         this.allTest();
         this.getNodeList();
         // this.getDataList()
-        console.log(this.$route.params.currentId);
-        console.log('当前参数名', this.$store.state);
         this.getNodeStair();
         this.postNodeStair();
         // 取 localStorage.setItem("data_project_id", "id");
@@ -529,13 +527,15 @@ export default {
             this.circulation(startNode.id);
             // 根据连线 找到 输入的点 存入runArr 重复
             if (sliceStart === sliceEnd) sliceEnd++;
+            this.runArr.forEach((item, index, arr) => {
+                if (start && item.id === start) {
+                    sliceStart = index;
+                }
+                if (end && item.id === end) {
+                    sliceEnd = index + 1;
+                }
+            });
             this.runArr = this.runArr.slice(sliceStart, sliceEnd);
-            console.log(
-                '查看当前上传数据集',
-                this.runArr,
-                sliceStart,
-                sliceEnd
-            );
         },
         circulation(currentId) {
             let edges = this.yourJSONDataFillThere.edges;
@@ -630,8 +630,8 @@ export default {
             });
             return returnObj;
         },
-        autoPrepostion() {
-            this.checkNodeData();
+        autoPrepostion(start, end) {
+            this.checkNodeData(start, end);
             this.loading = this.$loading({
                 lock: true,
                 text: 'Loading',
@@ -770,7 +770,6 @@ export default {
                 } else {
                     obj.is_generate_model = false;
                 }
-                console.log('打印当前要上传的参数', obj);
                 // console.log("当前节点的下标", this.runArr[this.currentNodeNum]);
                 this.$api
                     .post(POST_RUN_MODEL, {
@@ -861,7 +860,6 @@ export default {
                             this.data_test_id = res.data.search_test[0].id;
                             this.currentTest = res.data.search_test[0];
                             this.choiceNodeList.push(this.currentTest);
-                            console.log('当前实验id', this.data_test_id);
                             this.getNodeList();
                         }
                     });
@@ -1077,7 +1075,6 @@ export default {
             if (sessionStorage['dragDes']) {
                 dragDes = JSON.parse(sessionStorage['dragDes']);
             }
-            console.log('startNodesBus', e);
             if (dragDes && dragDes.drag) {
                 const x = e.pageX;
                 const y = e.pageY;
@@ -1161,7 +1158,6 @@ export default {
                         ...dragDes
                     }
                 };
-                console.log('123', params);
                 let currentId = new Date().getTime();
                 this.yourJSONDataFillThere.nodes.push({
                     ...params.desp,
@@ -1347,6 +1343,7 @@ export default {
         width: 230px;
         z-index: 0;
         height: calc(100vh - 70px);
+        overflow: auto;
         box-sizing: border-box;
         padding-top: 20px;
         background: #292c36;
