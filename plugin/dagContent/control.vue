@@ -4,30 +4,30 @@
         <foreignObject width="200px" height="104px" style="position: relative;padding-top: 74px">
         <body xmlns="http://www.w3.org/1999/xhtml">
             <div class="control_menu">
-                 <span @click="changeModelRunningStatus">
+                 <!-- <span @click="changeModelRunningStatus">
                   <i :class="modelRunningStatus ?  'el-icon-video-pause' : 'el-icon-video-play'"></i>
-                </span>
-                <span @click="sizeExpend">
+                </span> -->
+                <span @click="sizeExpend" title="放大">
                   <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-fangda"></use>
                   </svg>
                 </span>
-                <span @click="sizeShrink">
+                <span @click="sizeShrink" title="缩小">
                   <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-suoxiao"></use>
                   </svg>
                 </span>
-                <span @click="sizeInit">
+                <span @click="sizeInit"  title="调整位置">
                   <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-icon-test"></use>
                   </svg>
                 </span>
-                <span :class="['sel_area', 'sel_area_ing'].indexOf(currentEvent) !== -1 ? 'sel_ing' : ''" @click="sel_area($event)">
+                <span :class="['sel_area', 'sel_area_ing'].indexOf(currentEvent) !== -1 ? 'sel_ing' : ''" @click="sel_area($event)"  title="框选">
                   <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-duoxuankuang"></use>
                   </svg>
                 </span>
-                <span @click="fullScreen">
+                <span @click="fullScreen" title="全屏">
                   <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-quanping"></use>
                   </svg>

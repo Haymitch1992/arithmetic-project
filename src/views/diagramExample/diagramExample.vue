@@ -412,13 +412,15 @@ export default {
             });
         },
         // 找到节点 标记执行状态
-        changeNodeStatus(node_id, startTime, endTime) {
+        changeNodeStatus(node_id, startTime, endTime, output, run_uuid) {
             // 修改当前状态
             this.yourJSONDataFillThere.nodes.forEach(item => {
                 if (item.id === node_id) {
                     item.iconClassName = 'el-icon-circle-check';
                     item.startTime = startTime;
                     item.endTime = endTime;
+                    item.output = output;
+                    item.run_uuid = run_uuid;
                 }
             });
             let obj = this.yourJSONDataFillThere;
@@ -517,12 +519,12 @@ export default {
                     startNode = item;
                     this.runArr.push(startNode);
                 }
-                if (start && item.id === start) {
-                    sliceStart = index;
-                }
-                if (end && item.id === end) {
-                    sliceEnd = index;
-                }
+                // if (start && item.id === start) {
+                //     sliceStart = index;
+                // }
+                // if (end && item.id === end) {
+                //     sliceEnd = index;
+                // }
             });
             this.circulation(startNode.id);
             // 根据连线 找到 输入的点 存入runArr 重复
@@ -620,12 +622,17 @@ export default {
                     // 找到目标节点的id
                     let targetNodeId = item.src_node_id;
                     let targetNodeIndex = item.dst_input_idx;
-
-                    this.runArr.forEach(item2 => {
+                    // 修改目标节点
+                    this.yourJSONDataFillThere.nodes.forEach(item2 => {
                         if (item2.id === targetNodeId) {
                             returnObj = item2;
                         }
                     });
+                    // this.runArr.forEach(item2 => {
+                    //     if (item2.id === targetNodeId) {
+                    //         returnObj = item2;
+                    //     }
+                    // });
                 }
             });
             return returnObj;
@@ -638,7 +645,17 @@ export default {
                 spinner: 'el-icon-loading',
                 background: 'rgba(0, 0, 0, 0.7)'
             });
+            this.currentNodeNum = 0;
+            this.resetRunStatus();
             this.autoRun();
+        },
+        // 每次执行 都重置之前的运行状态
+        resetRunStatus() {
+            this.yourJSONDataFillThere.nodes.forEach(item => {
+                item.iconClassName = 'el-icon-loading';
+                item.startTime = '';
+                item.endTime = '';
+            });
         },
         // 自动执行
         autoRun() {
@@ -646,7 +663,6 @@ export default {
             if (this.currentNodeNum >= this.limit_num) {
                 this.currentNodeNum = 0;
                 // 判断终止条件
-                this.$message.info('整体运行完成！');
                 this.loading.close();
                 return false;
             } else {
@@ -777,10 +793,13 @@ export default {
                     })
                     .then(res => {
                         if (res.data.code === 200) {
+                            // 将runArr 中的数据保存至 this.yourJSONDataFillThere.nodes
                             this.changeNodeStatus(
                                 res.data.node_id,
                                 res.data.start_time,
-                                res.data.end_time
+                                res.data.end_time,
+                                res.data.output,
+                                res.data.run_uuid
                             );
                             this.runArr[this.currentNodeNum].output =
                                 res.data.output;

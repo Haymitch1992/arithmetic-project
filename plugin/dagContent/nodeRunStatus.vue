@@ -1,7 +1,7 @@
 <!-- 控制器 -->
 <template>
-     <g :transform="`translate(${item.pos_x}, ${item.pos_y + 36})`">
-        <foreignObject width="200px" height="300px">
+     <g :transform="`translate(${item.pos_x-18}, ${item.pos_y + 36})`">
+        <foreignObject width="220px" height="300px">
         <body xmlns="http://www.w3.org/1999/xhtml">
             <!--节点运行状态-->
             <div class="runLog">
@@ -33,7 +33,7 @@ export default {
     color: #fff;
     padding: 4px 20px;
     border-radius: 6px;
-    width: 180px;
+    width: 220px;
     text-align: left;
     display: block;
     font-size: 12px;
