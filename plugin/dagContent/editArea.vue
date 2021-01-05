@@ -5,6 +5,7 @@
             <div class="menu_contain">
                 <span @click="delEdges"><i class="el-icon-delete" style="margin-right:8px;"></i>删除节点</span>
                 <span v-if="isEditAreaShow.nodeName==='数据集'" @click="openData()"><i class="el-icon-receiving" style="margin-right:8px;"></i>查看数据</span>
+                <span v-if="isEditAreaShow.nodeName!=='数据集'"><i class="el-icon-receiving" style="margin-right:8px;"></i>查看数据</span>
                 <span class="line"></span>
                 <span @click="startNodeRun(isEditAreaShow)"><i class="el-icon-caret-right" style="margin-right:8px;"></i>从此处开始执行</span>
                 <span @click="endNodeRun(isEditAreaShow)"><i class="el-icon-finished" style="margin-right:8px;"></i>执行到此处</span>

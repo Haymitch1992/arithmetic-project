@@ -646,7 +646,7 @@ export default {
                 background: 'rgba(0, 0, 0, 0.7)'
             });
             this.currentNodeNum = 0;
-            this.resetRunStatus();
+            // this.resetRunStatus();
             this.autoRun();
         },
         // 每次执行 都重置之前的运行状态
