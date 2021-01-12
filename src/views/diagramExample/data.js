@@ -394,30 +394,31 @@ export const nodeList2 = [
         nodeSwitch: true,
         nodeItem: [{
             name: '特征尺度变换',
+            component_id: 'transform_feature',
             node_type: 'item-1',
             in_ports: [0],
             in_ports_text: ['输入'],
+            is_generate_model: "false",
+            in_ports_name: ['dataset_path'],
             out_ports: [0],
             out_ports_text: ['输出'],
             iconClassName: 'el-icon-loading',
+            out_ports_name: ['input_data_dummies'],
             form: [
                 {
                     "label": "字段设置",
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select', // 输入框
-                            "label": "选择特征",
-                            "placeholder": "选择要标注修改的表头",
-                            "value": "1",
-                            "tag": "select_characteristic"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "选择标签",
-                            "value": "2",
-                            "tag": "select_tag"
+                            "type": 'btn', // 输入框
+                            "label": "选择列",
+                            "placeholder": "选择列",
+                            "value": {
+                                "node_params": {
+                                    "select_columns": []
+                                }
+                            },
+                            "tag": "select_columns"
                         }
                     ]
                 }, {
@@ -425,17 +426,14 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "树的个数",
-                            "value": "3",
-                            "tag": "near_number"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "单棵树的最大深度",
-                            "value": "1",
-                            "tag": "near_number"
+                            "type": 'select-7', // 输入框
+                            "label": "选择尺度变换函数",
+                            "value": {
+                                "node_params": {
+                                    "transform_method": 'log2'
+                                }
+                            },
+                            "tag": "transform_method"
                         }
                     ]
                 }

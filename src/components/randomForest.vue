@@ -44,6 +44,15 @@
                             <el-option label="poly" value="poly"></el-option>
                             <el-option label="sigmoid" value="sigmoid"></el-option>
                         </el-select>
+                        <!--选择尺度变换函数-->
+                        <el-select v-if="itemInp.type==='select-7'" size="small"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
+                            <el-option label="log2" value="log2"></el-option>
+                            <el-option label="log10" value="log10"></el-option>
+                            <el-option label="ln" value="ln"></el-option>
+                            <el-option label="abs" value="abs"></el-option>
+                            <el-option label="sqrt" value="sqrt"></el-option>
+                            <el-option label="pow2" value="pow2"></el-option>
+                        </el-select>
                         <!-- 拆分输入框 -->
                         <el-input size="small" v-model="splitValue" v-if="itemInp.type==='split-input'" :placeholder="itemInp.desc"></el-input>
 
