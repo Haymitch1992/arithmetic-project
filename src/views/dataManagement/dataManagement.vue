@@ -460,7 +460,6 @@ export default {
     },
     mounted() {
         this.getAllData();
-        this.getThemeList();
     },
     methods: {
         getSearchDataName() {
@@ -562,6 +561,9 @@ export default {
         },
         handleClick(tab, event) {
             this.activeName = tab.name;
+            if (tab.name === 'second') {
+                this.getThemeList();
+            }
         },
         // 使用数据提交
         userDataSubmit() {
