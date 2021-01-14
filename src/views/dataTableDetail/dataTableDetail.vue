@@ -206,10 +206,10 @@
 </template>
 
 <script>
-import axios from "axios";
-import echarts from "echarts";
-import HighCharts from "highcharts";
-import histogram from "highcharts/modules/histogram-bellcurve";
+import axios from 'axios';
+import echarts from 'echarts';
+import HighCharts from 'highcharts';
+import histogram from 'highcharts/modules/histogram-bellcurve';
 import {
     SET_LABLE,
     SET_CHART_DATA,
@@ -221,23 +221,23 @@ import {
     TRAIT_GRADE_DATA,
     TRAIT_HISTOGRAM,
     HISTORY_MEAN_DATA
-} from "../../assets/url.js";
+} from '../../assets/url.js';
 histogram(HighCharts);
 export default {
-    name: "home",
+    name: 'home',
     filters: {
         modelStatusZn(val) {
             switch (val) {
                 case 0:
-                    return "未开始";
+                    return '未开始';
                 case 1:
-                    return "进行中";
+                    return '进行中';
                 case 2:
-                    return "已完成";
+                    return '已完成';
                 case 3:
-                    return "失败";
+                    return '失败';
                 case 4:
-                    return "已停止";
+                    return '已停止';
             }
         }
     },
@@ -248,40 +248,40 @@ export default {
     },
     data() {
         return {
-            currentItemId: "", // 检索激活项
+            currentItemId: '', // 检索激活项
             set_title: [],
-            zhifangText: "", // 直方图里面的文字
+            zhifangText: '', // 直方图里面的文字
             grade_data_message: [0, 0, 0], // 故障预测
             formData: {
-                id: "",
-                classify_content: "",
-                classify_name: ""
+                id: '',
+                classify_content: '',
+                classify_name: ''
             },
             addFormData: {
-                classify_content: "",
-                classify_name: ""
+                classify_content: '',
+                classify_name: ''
             },
             dialogVisible2: false, // 图例展示
             isCreateTab: false,
             biaozhuDialog: false,
             all_classify: [],
-            lable_type: "", // 当前id的标注状态
-            Len_set_lable: "", // 已标注数量
-            Len_set_line: "", // 数据集总数
-            data_id: "", // 当前待标注的数据
+            lable_type: '', // 当前id的标注状态
+            Len_set_lable: '', // 已标注数量
+            Len_set_line: '', // 数据集总数
+            data_id: '', // 当前待标注的数据
             progress_bar: 0,
             Set_Line_content: [],
             set_header_list: [],
-            data_set_id: "",
+            data_set_id: '',
             dialogVisible: false, // 直方图弹窗
-            myChart3: "", // 待标注序列图
-            myChart4: "", // 直方图
+            myChart3: '', // 待标注序列图
+            myChart4: '', // 直方图
             option: {
                 title: {
-                    text: "Beijing AQI"
+                    text: 'Beijing AQI'
                 },
                 tooltip: {
-                    trigger: "axis"
+                    trigger: 'axis'
                 },
                 xAxis: {
                     // data: []
@@ -289,57 +289,57 @@ export default {
                 yAxis: {},
                 dataZoom: [
                     {
-                        startValue: "2014-06-01"
+                        startValue: '2014-06-01'
                     },
                     {
-                        type: "inside"
+                        type: 'inside'
                     }
                 ],
                 series: {
-                    name: "Beijing AQI",
-                    type: "bar",
+                    name: 'Beijing AQI',
+                    type: 'bar',
                     data: []
                 }
             },
-            activeName: "first",
-            all_record_seem: "", // 待标注序列
-            activeName2: "first", // 历史特征序列
-            myChart_history: "",
+            activeName: 'first',
+            all_record_seem: '', // 待标注序列
+            activeName2: 'first', // 历史特征序列
+            myChart_history: '',
             mychart_data: {
                 title: {
-                    text: "待标注序列",
-                    subtext: "",
-                    top: "10px",
-                    left: "10px"
+                    text: '待标注序列',
+                    subtext: '',
+                    top: '10px',
+                    left: '10px'
                 },
                 tooltip: {
-                    trigger: "axis"
+                    trigger: 'axis'
                 },
                 legend: {
-                    top: "20px",
+                    top: '20px',
                     data: []
                 },
                 toolbox: {
                     show: true,
                     feature: {
                         dataZoom: {
-                            yAxisIndex: "none"
+                            yAxisIndex: 'none'
                         },
                         dataView: { readOnly: false },
-                        magicType: { type: ["line", "bar", "aaa"] },
+                        magicType: { type: ['line', 'bar', 'aaa'] },
                         restore: {},
                         saveAsImage: {}
                     }
                 },
                 xAxis: {
-                    type: "category",
+                    type: 'category',
                     boundaryGap: false,
                     data: []
                     // data: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 142, 144, 146, 148, 150, 152, 154, 156]
                 },
                 yAxis: {
                     // 纵轴标尺固定
-                    type: "value",
+                    type: 'value',
                     scale: true
                     // max: 20,
                     // min: 0,
@@ -350,13 +350,13 @@ export default {
             },
             myChart_along: {
                 // 数据格式
-                backgroundColor: "#ffffff",
+                backgroundColor: '#ffffff',
                 tooltip: {
-                    trigger: "axis"
+                    trigger: 'axis'
                 },
                 grid: {
-                    top: "10%",
-                    left: "5%"
+                    top: '10%',
+                    left: '5%'
                     // containLabel: true
                 },
                 xAxis: {
@@ -368,10 +368,10 @@ export default {
                     }
                 },
                 toolbox: {
-                    left: "center",
+                    left: 'center',
                     feature: {
                         dataZoom: {
-                            yAxisIndex: "none"
+                            yAxisIndex: 'none'
                         },
                         restore: {},
                         saveAsImage: {}
@@ -379,10 +379,10 @@ export default {
                 },
                 dataZoom: [
                     {
-                        startValue: "历史时序"
+                        startValue: '历史时序'
                     },
                     {
-                        type: "inside"
+                        type: 'inside'
                     }
                 ],
                 visualMap: {
@@ -392,13 +392,13 @@ export default {
                         {
                             gt: 0,
                             lte: 2,
-                            color: "#5CADAD"
+                            color: '#5CADAD'
                         }
                     ]
                 },
                 series: {
-                    name: "平均值",
-                    type: "line",
+                    name: '平均值',
+                    type: 'line',
                     data: [],
                     markLine: {
                         silent: true,
@@ -434,14 +434,14 @@ export default {
             searchList: [],
             tableData: [
                 {
-                    id: "200180",
-                    device: "9300",
-                    time: "2020-10-10 18:20:20",
-                    status: "未标注"
+                    id: '200180',
+                    device: '9300',
+                    time: '2020-10-10 18:20:20',
+                    status: '未标注'
                 }
             ],
             characteristicList: [], // 序列特征数据
-            loading: ""
+            loading: ''
         };
     },
     mounted() {
@@ -455,9 +455,9 @@ export default {
         this.getClassify();
         this.loading = this.$loading({
             lock: true,
-            text: "Loading",
-            spinner: "el-icon-loading",
-            background: "rgba(0, 0, 0, 0.7)"
+            text: 'Loading',
+            spinner: 'el-icon-loading',
+            background: 'rgba(0, 0, 0, 0.7)'
         });
     },
     methods: {
@@ -489,18 +489,18 @@ export default {
         // 查看图例
         viewChart(id) {
             this.dialogVisible2 = true;
-            this.getChartData("myChart5", id);
+            this.getChartData('myChart5', id);
         },
         // 重置分类数据
         resetFormData() {
             this.formData = {
-                id: "",
-                classify_content: "",
-                classify_name: ""
+                id: '',
+                classify_content: '',
+                classify_name: ''
             };
             this.addFormData = {
-                classify_content: "",
-                classify_name: ""
+                classify_content: '',
+                classify_name: ''
             };
         },
         // 监听select的变化
@@ -543,7 +543,7 @@ export default {
         getClassify() {
             // 提交保住信息
             this.$api
-                .get(GET_CLASSIFY + "?set_id=" + this.data_set_id)
+                .get(GET_CLASSIFY + '?set_id=' + this.data_set_id)
                 .then(res => {
                     this.all_classify = res.data.all_classify;
                     // 默认执行第一项
@@ -557,7 +557,7 @@ export default {
             // 下一个 通过id++ 如果返回 304 就是没有下一个了
             this.data_id++;
             this.getSetData();
-            this.getChartData("myChart3", this.data_id);
+            this.getChartData('myChart3', this.data_id);
         },
         // 上一个
         prev() {
@@ -565,7 +565,7 @@ export default {
             if (this.data_id > 1) {
                 this.data_id--;
                 this.getSetData();
-                this.getChartData("myChart3", this.data_id);
+                this.getChartData('myChart3', this.data_id);
             }
         },
         // 提交标注信息
@@ -579,15 +579,15 @@ export default {
                 .then(res => {
                     // 根据返回值 切换标注ID
                     this.data_id = res.data.data_id;
-                    console.log("当前id", this.data_id);
+                    console.log('当前id', this.data_id);
                     // 更新数据
                     this.getSetData();
-                    this.getChartData("myChart3", this.data_id);
+                    this.getChartData('myChart3', this.data_id);
                 });
         },
         // 返回列表页
         backList() {
-            this.$router.push("/dataManagement");
+            this.$router.push('/dataManagement');
         },
         // 获取待标注序列
         getChartData(locationID, data_id) {
@@ -605,26 +605,26 @@ export default {
                     this.all_record_seem = res.data;
                     // 循环处理数据
                     let color = [
-                        "#ff7f50",
-                        "#87cefa",
-                        "#da70d6",
-                        "#32cd32",
-                        "#6495ed",
-                        "#ff69b4",
-                        "#ba55d3",
-                        "#cd5c5c",
-                        "#ffa500",
-                        "#40e0d0",
-                        "#1e90ff",
-                        "#ff6347",
-                        "#7b68ee",
-                        "#d0648a",
-                        "#ffd700",
-                        "#6b8e23",
-                        "#4ea397",
-                        "#3cb371",
-                        "#b8860b",
-                        "#7bd9a5"
+                        '#ff7f50',
+                        '#87cefa',
+                        '#da70d6',
+                        '#32cd32',
+                        '#6495ed',
+                        '#ff69b4',
+                        '#ba55d3',
+                        '#cd5c5c',
+                        '#ffa500',
+                        '#40e0d0',
+                        '#1e90ff',
+                        '#ff6347',
+                        '#7b68ee',
+                        '#d0648a',
+                        '#ffd700',
+                        '#6b8e23',
+                        '#4ea397',
+                        '#3cb371',
+                        '#b8860b',
+                        '#7bd9a5'
                     ];
                     let colorIndex = 0;
                     let maxLength = 0;
@@ -632,7 +632,7 @@ export default {
                     this.mychart_data.series = [];
                     this.mychart_data.xAxis.data = [];
                     for (let k in res.data) {
-                        if (k !== "code") {
+                        if (k !== 'code') {
                             colorIndex++;
                             this.mychart_data.legend.data.push(k);
                             maxLength =
@@ -641,7 +641,7 @@ export default {
                                     : maxLength;
                             this.mychart_data.series.push({
                                 name: k,
-                                type: "line",
+                                type: 'line',
                                 data: res.data[k],
                                 itemStyle: {
                                     normal: {
@@ -664,7 +664,7 @@ export default {
                                             },
                                             {
                                                 offset: 1,
-                                                color: "#fff"
+                                                color: '#fff'
                                             }
                                         ]
                                     )
@@ -687,7 +687,7 @@ export default {
                 .then(res => {
                     this.data_id = res.data.data_id;
                     this.getSetData();
-                    this.getChartData("myChart3", this.data_id);
+                    this.getChartData('myChart3', this.data_id);
                 });
         },
         // 获取标注数据
@@ -698,23 +698,30 @@ export default {
                     data_id: this.data_id
                 })
                 .then(res => {
-                    this.loading.close();
-                    this.Set_Line_content = res.data.Set_Line_content || [
-                        "暂无数据"
-                    ];
-                    this.set_header_list = res.data.set_header_list || [
-                        "暂无数据"
-                    ];
-                    this.lable_type = res.data.lable_type;
-                    this.Len_set_lable = res.data.len_set_label || 0;
-                    this.Len_set_line = res.data.len_set_line || 0;
-                    this.progress_bar =
-                        parseFloat(
-                            (
-                                (this.Len_set_lable / this.Len_set_line) *
-                                100
-                            ).toFixed(2)
-                        ) || 0;
+                    // 305 重新赋值再请求
+                    if (res.data.code === 305) {
+                        this.data_id = res.data.data_id;
+                        this.getSetData();
+                        this.getChartData('myChart3', res.data.data_id);
+                    } else {
+                        this.loading.close();
+                        this.Set_Line_content = res.data.Set_Line_content || [
+                            '暂无数据'
+                        ];
+                        this.set_header_list = res.data.set_header_list || [
+                            '暂无数据'
+                        ];
+                        this.lable_type = res.data.lable_type;
+                        this.Len_set_lable = res.data.len_set_label || 0;
+                        this.Len_set_line = res.data.len_set_line || 0;
+                        this.progress_bar =
+                            parseFloat(
+                                (
+                                    (this.Len_set_lable / this.Len_set_line) *
+                                    100
+                                ).toFixed(2)
+                            ) || 0;
+                    }
                 });
         },
         // 改变当前查询id
@@ -732,47 +739,47 @@ export default {
         getHistogramData(obj, str) {
             // 处理数据
             let objCn = {
-                value: "_mean",
-                ptp: "_ptp",
-                standard: "_std",
-                median: "_amax",
-                long: "_median"
+                value: '_mean',
+                ptp: '_ptp',
+                standard: '_std',
+                median: '_amax',
+                long: '_median'
             };
             let objZn = {
-                value: "平局值",
-                ptp: "PTP",
-                standard: "标准差",
-                median: "中位数",
-                long: "长度"
+                value: '平局值',
+                ptp: 'PTP',
+                standard: '标准差',
+                median: '中位数',
+                long: '长度'
             };
-            this.zhifangText = obj.label + " " + objZn[str] + " : " + obj[str];
+            this.zhifangText = obj.label + ' ' + objZn[str] + ' : ' + obj[str];
             this.dialogVisible = true;
             this.$api
                 .get(
                     TRAIT_HISTOGRAM +
-                        "?data_set_id=" +
+                        '?data_set_id=' +
                         this.data_set_id +
-                        "&data_trait_name=" +
+                        '&data_trait_name=' +
                         obj.label +
                         objCn[str]
                 )
                 .then(res => {
                     let data = res.data.trait_data_list;
-                    HighCharts.chart("myChart4", {
+                    HighCharts.chart('myChart4', {
                         title: {
-                            text: "直方图（质量分布图）"
+                            text: '直方图（质量分布图）'
                         },
                         xAxis: [
                             {
-                                title: { text: "数量" }
+                                title: { text: '数量' }
                             },
                             {
-                                title: { text: "数值" },
+                                title: { text: '数值' },
                                 opposite: true,
                                 plotLines: [
                                     {
-                                        color: "red", // 线的颜色，定义为红色
-                                        dashStyle: "longdashdot", // 标示线的样式，默认是solid（实线），这里定义为长虚线
+                                        color: 'red', // 线的颜色，定义为红色
+                                        dashStyle: 'longdashdot', // 标示线的样式，默认是solid（实线），这里定义为长虚线
                                         value: obj[str], // 定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
                                         width: 1 // 标示线的宽度，2px
                                     }
@@ -782,33 +789,33 @@ export default {
 
                         yAxis: [
                             {
-                                title: { text: "范围" }
+                                title: { text: '范围' }
                             },
                             {
-                                title: { text: "计数" },
+                                title: { text: '计数' },
                                 opposite: true
                             },
                             {}
                         ],
                         series: [
                             {
-                                name: "计数：",
-                                type: "histogram",
+                                name: '计数：',
+                                type: 'histogram',
                                 xAxis: 1,
                                 yAxis: 1,
-                                baseSeries: "s1",
+                                baseSeries: 's1',
                                 zIndex: -1,
-                                color: "#4F9D9D"
+                                color: '#4F9D9D'
                             },
                             {
-                                name: "分布",
-                                type: "scatter",
+                                name: '分布',
+                                type: 'scatter',
                                 data: data,
-                                id: "s1",
+                                id: 's1',
                                 marker: {
                                     radius: 0
                                 },
-                                color: "#C07AB8"
+                                color: '#C07AB8'
                             }
                         ],
                         credits: {
@@ -823,15 +830,15 @@ export default {
             this.$api
                 .get(
                     HISTORY_MEAN_DATA +
-                        "?data_set_id=" +
+                        '?data_set_id=' +
                         this.data_set_id +
-                        "&data_name=" +
+                        '&data_name=' +
                         str +
-                        "_mean"
+                        '_mean'
                 )
                 .then(function(res) {
                     _this.myChart_history = echarts.init(
-                        document.getElementById("myChart_along")
+                        document.getElementById('myChart_along')
                     );
                     _this.myChart_along.series.data = res.data.mean_data_list;
                     let arr1 = new Array(res.data.mean_data_list.length);
@@ -963,7 +970,7 @@ export default {
             width: 4px;
             height: 20px;
             background-color: #00c0ff;
-            content: "";
+            content: '';
             position: absolute;
             left: 0;
             top: 5px;
@@ -1065,7 +1072,7 @@ export default {
             width: 4px;
             height: 20px;
             background-color: #00c0ff;
-            content: "";
+            content: '';
             position: absolute;
             left: 0;
             top: 5px;
