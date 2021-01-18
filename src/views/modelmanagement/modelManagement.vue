@@ -2,7 +2,7 @@
     <div class="bg">
         <div class="online-box modelManagement">
             <div class="inp-line">
-                <el-dropdown>
+                <!-- <el-dropdown>
                     <el-button size="small">
                         名称<i class="el-icon-arrow-down el-icon--right"></i>
                     </el-button>
@@ -16,7 +16,7 @@
                 </el-dropdown>
                 <el-input size="small" placeholder="请输入搜索内容" style="width: 300px"></el-input>
                 <el-button size="small">新增</el-button>
-                <el-button size="small">导入</el-button>
+                <el-button size="small">导入</el-button> -->
 <!--                <span class="float-btn">-->
 <!--                    <el-button size="small" type="primary">批量删除</el-button>-->
 <!--                    <el-button size="small">批量导出</el-button>-->
@@ -63,7 +63,7 @@
             </div>
             <!-- 修改模型 -->
             <el-dialog title="修改此模型信息" :visible.sync="dialogFormVisible">
-                <el-form :model="form" label-width="100px">
+                <el-form :model="form" label-width="120px">
                     <el-form-item label="当前模型名称" >
                         <span style="color:#1777FF;">{{form.modelId}}</span>
                     </el-form-item>

@@ -7,11 +7,7 @@
                     :data="tableData"
                     tooltip-effect="dark"
                     style="width: 100%"
-                    @selection-change="handleSelectionChange">
-                <el-table-column
-                        type="selection"
-                        width="55">
-                </el-table-column>
+                    >
                 <el-table-column
                         label="服务ID/名称"
                         align="center"
@@ -30,12 +26,12 @@
                 <el-table-column
                         prop="model_type"
                         label="模型格式"
-                        width="150">
+                       >
                 </el-table-column>
                 <el-table-column
                         prop="model_status"
                         label="模型状态"
-                        width="100">
+                       >
                     <template slot-scope="scope">
                         <span class="model-status" :class="'model-status-'+scope.row.model_status"></span>{{scope.row.model_status|modelStatusZn}}
                     </template>
@@ -43,8 +39,9 @@
                 <el-table-column
                         label="更新时间"
                         align="center"
+                         width="160"
                         sortable
-                        width="380">
+                        >
                     <template slot-scope="scope">
                         <span>{{scope.row.update_time | create_time}}</span>
                     </template>
@@ -52,10 +49,11 @@
                 <el-table-column
                         prop="model_describe"
                         label="模型描述"
-                        width="200">
+                        >
                 </el-table-column>
                 <el-table-column
                         label="操作"
+                        width="260"
                 >
                     <template slot-scope="scope">
                         <el-button type="text" >启动</el-button>
