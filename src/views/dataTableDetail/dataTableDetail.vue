@@ -584,6 +584,10 @@ export default {
                     // 更新数据
                     this.getSetData();
                     this.getChartData('myChart3', this.data_id);
+                    // 返回值是 201 提示用户 标注完成
+                    if (res.data.code === 201) {
+                        this.$messages.success('标注完成');
+                    }
                 });
         },
         // 返回列表页
