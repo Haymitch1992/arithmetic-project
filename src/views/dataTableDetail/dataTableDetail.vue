@@ -574,6 +574,7 @@ export default {
                 .post(SET_LABLE_TITLE, {
                     data_set_id: this.data_set_id,
                     data_id: this.data_id,
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_lable_type: num
                 })
                 .then(res => {
