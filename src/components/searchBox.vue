@@ -1,30 +1,15 @@
 <template>
     <div>
-        <div class="labeliing" @click="openNode(1)">
-            <span class="el-icon-caret-bottom" v-if="showItem" ></span>
-            <span class="el-icon-caret-right" v-if="!showItem" ></span>
-            <span class="iconfont iconwenjianjia" style="font-size: 14px;"></span>
-            <span>{{dataName}}</span>
-        </div>
-        <div v-if="showItem" class="node-item">
-            <div v-for="(item, i) in dataList" :key="i">
-                <div class="node-label" @click="currentNode(item)">
-                    <span class="el-icon-caret-bottom" v-if="item.nodeSwitch" ></span>
-                    <span class="el-icon-caret-right" v-if="!item.nodeSwitch" ></span>
-                    <span class="iconfont iconwenjianjia" style="font-size: 14px;"></span>
-                    <span >{{item.label}}</span>
-                </div>
-                <div
-                        class="basic-node"
-                        v-show="item.nodeSwitch"
-                        :class="item2.node_type"
-                        v-for="(item2, i) in item.nodeItem"
-                        :key="'nodes_basic' + i"
-                        @mousedown="dragIt(item2)"
-                >
-                <span class="icon-span" :class="item2.node_type"></span>
-                {{item2.name}}</div>
-            </div>
+        <div  class="node-item" style="padding-top:20px;">
+            <div
+                    class="basic-node"
+                    :class="item2.node_type"
+                    v-for="(item2, i) in dataList"
+                    :key="'nodes_basic' + i"
+                    @mousedown="dragIt(item2)"
+            >
+            <span class="icon-span" :class="item2.node_type"></span>
+            {{item2.name}}</div>
         </div>
     </div>
 </template>
@@ -33,7 +18,6 @@
 export default {
     name: 'drawer',
     props: {
-        showItem: Boolean,
         dataList: Array,
         dataName: String
     },
@@ -45,9 +29,6 @@ export default {
         dragIt(val) {
             console.log(val);
             this.$parent.dragIt(val);
-        },
-        openNode() {
-            this.$emit('openParentNode');
         }
     }
 };
@@ -110,7 +91,7 @@ export default {
     box-sizing: border-box;
     font-size: 14px;
     display: block;
-    padding-left: 56px;
+    padding-left: 26px;
 }
 .basic-node.item-1:hover {
     border: 1px solid #6236ff;

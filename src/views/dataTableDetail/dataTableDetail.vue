@@ -220,7 +220,8 @@ import {
     ALL_CLASSIFY,
     TRAIT_GRADE_DATA,
     TRAIT_HISTOGRAM,
-    HISTORY_MEAN_DATA
+    HISTORY_MEAN_DATA,
+    CHANGE_LABEL_NUM
 } from '../../assets/url.js';
 histogram(HighCharts);
 export default {
@@ -523,7 +524,7 @@ export default {
         saveAddFormData() {
             this.$api
                 .post(GET_CLASSIFY, {
-                    set_id: this.data_set_id,
+                    data_set_id: this.data_set_id,
                     classify_name: this.addFormData.classify_name,
                     classify_content: this.addFormData.classify_content
                 })
@@ -552,21 +553,35 @@ export default {
                     }
                 });
         },
+        changeLabelNum(type) {
+            this.$api
+                .post(CHANGE_LABEL_NUM, {
+                    data_set_id: this.data_set_id,
+                    data_id: this.data_id,
+                    boole_value: type
+                })
+                .then(res => {
+                    if (res.data.code === 200) {
+                        this.data_id = res.data.data_id;
+                        this.getSetData();
+                        this.getChartData('myChart3', this.data_id);
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: res.data.mesage
+                        });
+                    }
+                });
+        },
         // 下一个
         next() {
             // 下一个 通过id++ 如果返回 304 就是没有下一个了
-            this.data_id++;
-            this.getSetData();
-            this.getChartData('myChart3', this.data_id);
+            this.changeLabelNum(1);
         },
         // 上一个
         prev() {
             // 上一个 通过id-- 如果到1了 那就没上一个了
-            if (this.data_id > 1) {
-                this.data_id--;
-                this.getSetData();
-                this.getChartData('myChart3', this.data_id);
-            }
+            this.changeLabelNum(0);
         },
         // 提交标注信息
         postLableInfo(num) {
@@ -586,7 +601,10 @@ export default {
                     this.getChartData('myChart3', this.data_id);
                     // 返回值是 201 提示用户 标注完成
                     if (res.data.code === 201) {
-                        this.$messages.success('标注完成');
+                        this.$message({
+                            type: 'success',
+                            message: '标注完成'
+                        });
                     }
                 });
         },

@@ -23,6 +23,8 @@ export const GET_SEARCH_DATA_NAME = '/api/searchDataName/';
 
 // 数据标注-标注数据id
 export const SET_LABLE = '/api/lableSetid/';
+// 标注的下一条或者下一条切换
+export const CHANGE_LABEL_NUM = '/api/cutDataId/'
 // 数据标注-标注数据详细信息
 export const GAIN_SET_DATA = '/api/gainSetData/';
 // 数据标注-折线图数据

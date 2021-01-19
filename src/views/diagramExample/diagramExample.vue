@@ -51,31 +51,44 @@
             >
                 <!--左侧拖拽主体-->
                 <div class="page-left"  v-show="$store.state.count===1">
-                    <drawer :showItem="showItem1"
+                    <div class="search-node-box">
+                        <el-input placeholder="搜索组件" v-model="searchNode" @input="findNodeList"></el-input>
+                    </div>
+                    <!-- 搜索的返回值 -->
+                    <div v-if="searchNode">
+                        <search-box
+                            :dataList="searchNodeList"
+                            dataName="数据预处理"
+                           >
+                        </search-box>
+                    </div>
+                    <div v-if="!searchNode">
+                        <drawer :showItem="showItem1"
                             :dataList="nodeLabel1"
                             dataName="数据预处理"
                             @openParentNode="openNode(1)">
-                    </drawer>
-                    <drawer :showItem="showItem2"
-                            :dataList="nodeLabel2"
-                            dataName="特征工程"
-                            @openParentNode="openNode(2)">
-                    </drawer>
-                    <drawer :showItem="showItem3"
-                            :dataList="nodeLabel3"
-                            dataName="选择算法"
-                            @openParentNode="openNode(3)">
-                    </drawer>
-                    <drawer :showItem="showItem4"
-                            :dataList="nodeLabel4"
-                            dataName="算法评估"
-                            @openParentNode="openNode(4)">
-                    </drawer>
-                    <drawer :showItem="showItem5"
-                            :dataList="nodeLabel5"
-                            dataName="数据集"
-                            @openParentNode="openNode(5)">
-                    </drawer>
+                        </drawer>
+                        <drawer :showItem="showItem2"
+                                :dataList="nodeLabel2"
+                                dataName="特征工程"
+                                @openParentNode="openNode(2)">
+                        </drawer>
+                        <drawer :showItem="showItem3"
+                                :dataList="nodeLabel3"
+                                dataName="选择算法"
+                                @openParentNode="openNode(3)">
+                        </drawer>
+                        <drawer :showItem="showItem4"
+                                :dataList="nodeLabel4"
+                                dataName="算法评估"
+                                @openParentNode="openNode(4)">
+                        </drawer>
+                        <drawer :showItem="showItem5"
+                                :dataList="nodeLabel5"
+                                dataName="数据集"
+                                @openParentNode="openNode(5)">
+                        </drawer>
+                    </div>
                 </div>
                 <div class="page-left"  v-show="$store.state.count===2">
                     <div class="labeliing" @click="showItem6=!showItem6">
@@ -172,6 +185,7 @@ import experimentAttribute from '../../components/experimentAttribute';
 import automaticOptions from '../../components/automaticOptions';
 import shortcutBar from '../../components/shortcutBar';
 import drawer from '../../components/drawer';
+import searchBox from '../../components/searchBox';
 import selectHeader from '../../components/selectHeader';
 import demonStation from '../../components/demonStation';
 import dataDialog from '../../components/dataDialog';
@@ -191,7 +205,8 @@ export default {
         demonStation,
         dataDialog,
         logDialog,
-        analysisDialog
+        analysisDialog,
+        searchBox
     },
     computed: {
         currentTabNum() {
@@ -222,6 +237,8 @@ export default {
     props: {},
     data() {
         return {
+            searchNode: '',
+            searchNodeList: [],
             showSelectDialog: false,
             choiceNodeList: [],
             dialogTableVisible: false,
@@ -315,6 +332,30 @@ export default {
         this.onkeydown = null; // 销毁事件
     },
     methods: {
+        // 查找搜索的节点
+        findNodeList() {
+            let target = [];
+            target = target.concat(this.nodeLabel1[0].nodeItem);
+            target = target.concat(this.nodeLabel1[1].nodeItem);
+            target = target.concat(this.nodeLabel2[0].nodeItem);
+            target = target.concat(this.nodeLabel2[1].nodeItem);
+            target = target.concat(this.nodeLabel2[2].nodeItem);
+            target = target.concat(this.nodeLabel2[3].nodeItem);
+            target = target.concat(this.nodeLabel2[4].nodeItem);
+            target = target.concat(this.nodeLabel3[0].nodeItem);
+            target = target.concat(this.nodeLabel3[1].nodeItem);
+            target = target.concat(this.nodeLabel3[2].nodeItem);
+            target = target.concat(this.nodeLabel4[0].nodeItem);
+            target = target.concat(this.nodeLabel4[1].nodeItem);
+            target = target.concat(this.nodeLabel5[0].nodeItem);
+            this.searchNodeList = [];
+            target.forEach(item => {
+                if (item.name.indexOf(this.searchNode) !== -1) {
+                    this.searchNodeList.push(item);
+                }
+            });
+            console.log(this.searchNodeList);
+        },
         // 获取节点的一级菜单
         getNodeStair() {
             this.$api.get(GET_ALL_MODULE).then(res => {
@@ -1312,6 +1353,9 @@ export default {
                 font-size: 14px;
             }
         }
+    }
+    .search-node-box {
+        padding: 0 10px;
     }
     .node-item {
         text-align: left;
