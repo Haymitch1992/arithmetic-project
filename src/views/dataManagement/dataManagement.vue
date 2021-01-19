@@ -56,8 +56,8 @@
                             <!-- <el-button type="text"  @click="getDataNumber(scope.row)"  v-if="scope.row.data_type===3">导出数据集</el-button> -->
                             <!-- 2 不可标注 -->
                             <el-button v-if="scope.row.data_lable===0" type="text" size="small" @click="createdTip(scope.row.id)"  style="margin-left: 0;">创建标注任务</el-button>
-                            <el-button v-if="scope.row.data_lable===1||scope.row.data_type===3" type="text"  @click="goDetail(scope.row.id)" style="margin-left: 0;">标注</el-button>
-                            <el-button v-if="scope.row.data_lable===1" type="text"  @click="changedTip(scope.row.id)" style="margin-left: 0;">修改</el-button>
+                            <el-button v-if="scope.row.data_lable===1||scope.row.data_lable===3" type="text"  @click="goDetail(scope.row.id)" style="margin-left: 0;">标注</el-button>
+                            <el-button v-if="scope.row.data_lable===1||scope.row.data_lable===3" type="text"  @click="changedTip(scope.row.id)" style="margin-left: 0;">修改</el-button>
 
                         </template>
                     </el-table-column>

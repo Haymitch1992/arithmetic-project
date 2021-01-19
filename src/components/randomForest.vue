@@ -8,7 +8,7 @@
             <h3>{{nodeTile}}</h3>
             <div  v-for="(item, index) in nodeData" :key="index">
                 <el-form :model="formData"  ref="formData">
-                    <el-form-item :label="itemInp.label"  v-for="(itemInp, index2) in item.data" :key="index2" v-show="currentPage === index">
+                    <el-form-item :label="itemInp.label"  v-for="(itemInp, index2) in item.data" :key="index2" v-show="currentPage === index&&itemInp.label!=='置信范围2'">
                         <el-select v-if="itemInp.type==='select'" size="small"  v-model="itemInp.value" style="width: 100%" :placeholder="itemInp.placeholder">
                             <el-option label="区域一" value="shanghai"></el-option>
                             <el-option label="区域二" value="beijing"></el-option>
@@ -53,6 +53,19 @@
                             <el-option label="sqrt" value="sqrt"></el-option>
                             <el-option label="pow2" value="pow2"></el-option>
                         </el-select>
+                        <!--选择尺度变换函数-->
+                        <el-select v-if="itemInp.type==='select-8'" size="small" @change="transformFuc('change')"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
+                            <el-option label="Zscore平滑" value="zscore_soften"></el-option>
+                            <el-option label="百分位平滑" value="percentage_soften"></el-option>
+                            <el-option label="阈值平滑" value="threshold_soften"></el-option>
+                            <el-option label="箱线图平滑" value="boxplot_soften"></el-option>
+                        </el-select>
+                        <!--特征离散-->
+                        <el-select v-if="itemInp.type==='select-9'" size="small" v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
+                            <el-option label="等距离散" value="isometric_discretize"></el-option>
+                            <el-option label="等频离散" value="isofrequecy_discretize"></el-option>
+                        </el-select>
+                    <el-input size="small" v-model="itemInp.value.node_params[itemInp.tag]" v-if="itemInp.type==='input-default2'" :placeholder="itemInp.desc"></el-input>
                         <!-- 拆分输入框 -->
                         <el-input size="small" v-model="splitValue" v-if="itemInp.type==='split-input'" :placeholder="itemInp.desc"></el-input>
 
@@ -127,15 +140,34 @@ export default {
                 node_params: {}
             },
             loading: false,
-            splitValue: ''
+            splitValue: '',
+            optionTransform: {
+                zscore_soften: {
+                    lable: ['置信范围', '置信范围2'],
+                    value: [3, 3]
+                },
+                percentage_soften: {
+                    lable: ['百分位下限', '百分位上限'],
+                    value: [0, 100]
+                },
+                threshold_soften: {
+                    lable: ['阈值下限', '阈值下限上限'],
+                    value: [0, 1]
+                },
+                boxplot_soften: {
+                    lable: ['百分位下限', '百分位上限'],
+                    value: [0, 100]
+                }
+            }
         };
     },
     watch: {
-        nodeData() {
+        nodeData(val) {
             // 当前节点是数据集的时候
             this.initData();
             // 默认显示O
             this.currentPage = 0;
+            console.log('当前节点的nodeData', val);
             // 当前节点是拆分时
         }
     },
@@ -160,6 +192,39 @@ export default {
                     console.log('选择KNN');
                     this.splitValue = this.nodeData[1].data[0].value.node_params.n_neighbors;
                     break;
+                case 'soften_feature':
+                    this.transformFuc();
+                    break;
+            }
+        },
+        transformFuc(type) {
+            // 判断是否为特征异常平滑
+            // 根据当前选项 动态渲染参数值
+            let str = this.nodeData[1].data[0].value.node_params.soften_method;
+            let label1 = this.optionTransform[str].lable[0];
+            let label2 = this.optionTransform[str].lable[1];
+            // label 重新赋值
+            this.nodeData[1].data[1].label = label1;
+            this.nodeData[1].data[2].label = label2;
+            // 默认值重新赋值
+            let val1 = this.optionTransform[str].value[0];
+            let val2 = this.optionTransform[str].value[1];
+            if (type === 'change') {
+                this.nodeData[1].data[1].value.node_params.para1 = val1;
+                this.nodeData[1].data[2].value.node_params.para2 = val2;
+            } else {
+                this.nodeData[1].data[1].value.node_params.para1 =
+                    this.nodeData[1].data[1].value.node_params.para1 !== ''
+                        ? this.nodeData[1].data[1].value.node_params.para1
+                        : val1;
+                this.nodeData[1].data[2].value.node_params.para2 =
+                    this.nodeData[1].data[2].value.node_params.para2 !== ''
+                        ? this.nodeData[1].data[2].value.node_params.para2
+                        : val2;
+            }
+            // 去除掉 重复的值
+            if (str === 'zscore_soften') {
+                this.nodeData[1].data[2].value.node_params.para2 = '';
             }
         },
         saveItem(item) {

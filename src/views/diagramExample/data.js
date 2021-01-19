@@ -440,11 +440,15 @@ export const nodeList2 = [
             ]
         }, {
             name: '特征异常平滑',
-            node_type: 'item-1',
+                node_type: 'item-1',
+                component_id: 'soften_feature',
+            is_generate_model: "false",
             in_ports: [0],
-            in_ports_text: ['输入'],
+                in_ports_text: ['输入'],
+                in_ports_name: ['dataset_path'],
             out_ports: [0],
-            out_ports_text: ['输出'],
+                out_ports_text: ['输出'],
+                out_ports_name: ['input_data_dummies'],
             iconClassName: 'el-icon-loading',
             form: [
                 {
@@ -452,18 +456,15 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select', // 输入框
-                            "label": "选择特征",
-                            "placeholder": "选择要标注修改的表头",
-                            "value": "1",
-                            "tag": "select_characteristic"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "选择标签",
-                            "value": "2",
-                            "tag": "select_tag"
+                            "type": 'btn', // 输入框
+                            "label": "选择列",
+                            "placeholder": "选择列",
+                            "value": {
+                                "node_params": {
+                                    "select_columns": []
+                                }
+                            },
+                            "tag": "select_columns"
                         }
                     ]
                 }, {
@@ -471,28 +472,51 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "树的个数",
-                            "value": "3",
-                            "tag": "near_number"
+                            "type": 'select-8', // 输入框
+                            "label": "平滑方法",
+                            "value": {
+                                "node_params": {
+                                    "soften_method": 'zscore_soften'
+                                }
+                            },
+                            "tag": "soften_method"
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "单棵树的最大深度",
-                            "value": "1",
-                            "tag": "near_number"
+                            "type": 'input-default2', // 输入框
+                            "label": "采样比例",
+                            "value": {
+                                "node_params": {
+                                    "para1": ''
+                                }
+                            },
+                            "tag": "para1"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default2', // 输入框
+                            "label": "采样比例",
+                            "value": {
+                                "node_params": {
+                                    "para2": ''
+                                }
+                            },
+                            "tag": "para2"
                         }
                     ]
                 }
             ]
         }, {
-            name: '特征离散',
-            node_type: 'item-1',
+                name: '特征离散',
+                component_id: 'discretize_feature',
+                node_type: 'item-1',
+                is_generate_model: "false",
             in_ports: [0],
-            in_ports_text: ['输入'],
+                in_ports_text: ['输入'],
+                in_ports_name: ['dataset_path'],
             out_ports: [0],
-            out_ports_text: ['输出'],
+                out_ports_text: ['输出'],
+                out_ports_name: ['input_data_dummies'],
             iconClassName: 'el-icon-loading',
             form: [
                 {
@@ -500,18 +524,15 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select', // 输入框
-                            "label": "选择特征",
-                            "placeholder": "选择要标注修改的表头",
-                            "value": "1",
-                            "tag": "select_characteristic"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "选择标签",
-                            "value": "2",
-                            "tag": "select_tag"
+                            "type": 'btn', // 输入框
+                            "label": "选择列",
+                            "placeholder": "选择列",
+                            "value": {
+                                "node_params": {
+                                    "select_columns": []
+                                }
+                            },
+                            "tag": "select_columns"
                         }
                     ]
                 }, {
@@ -519,17 +540,25 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "树的个数",
-                            "value": "3",
-                            "tag": "near_number"
+                            "type": 'select-9', // 输入框
+                            "label": "离散方法",
+                            "value": {
+                                "node_params": {
+                                    "discretize_method": 'isometric_discretize'
+                                }
+                            },
+                            "tag": "discretize_method"
                         },
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "单棵树的最大深度",
-                            "value": "1",
-                            "tag": "near_number"
+                            "type": 'input-default', // 输入框
+                            "label": "离散区间",
+                            "value": {
+                                "node_params": {
+                                    "discretize_range": '100'
+                                }
+                            },
+                            "tag": "discretize_range"
                         }
                     ]
                 }
