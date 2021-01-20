@@ -105,7 +105,7 @@ export default {
     display: inline-block;
     cursor: pointer;
     user-select: none;
-    margin: 4px auto 10px;
+    margin: 4px auto 6px;
     text-align: left;
     box-sizing: border-box;
     font-size: 14px;

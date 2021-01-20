@@ -22,10 +22,10 @@
                 <el-menu-item index="5">
                     <span slot="title">模板部署</span>
                 </el-menu-item>
-                <el-menu-item index="6">
-                    <span slot="title">帮助中心</span>
-                </el-menu-item>
             </el-menu>
+            <div class="help-box">
+                <el-button type="text" @click="goHelpPage">帮助文档</el-button>
+            </div>
         </div>
     </div>
 </template>
@@ -64,10 +64,10 @@ export default {
                 case '5':
                     this.$router.push('/online');
                     break;
-                case '6':
-                    this.$router.push('/help');
-                    break;
             }
+        },
+        goHelpPage() {
+            this.$router.push('/help');
         }
     }
 };
@@ -98,6 +98,12 @@ export default {
 }
 </style>
 <style>
+.help-box {
+    position: absolute;
+    width: 100%;
+    bottom: 10px;
+    text-align: center;
+}
 .menu-box .el-menu {
     border-right: 0;
 }

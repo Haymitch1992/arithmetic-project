@@ -269,7 +269,7 @@
                 </div>
             </el-dialog>
             <el-dialog title="使用数据" v-if="userDataDialog" :visible.sync="userDataDialog">
-                <el-form label-width="100px" :model="formData" :rules="rules" ref="formData">
+                <el-form label-width="120px" :model="formData" :rules="rules" ref="formData">
                     <el-form-item label="数据集名称" prop="name">
                         <el-input size="small" v-model="formData.name" style="width: 400px"></el-input>
                     </el-form-item>
