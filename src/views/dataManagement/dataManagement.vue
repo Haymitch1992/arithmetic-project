@@ -149,7 +149,7 @@
                             </el-button>
                         </el-popover>
                     </el-form-item>
-                    <el-form-item label="存储路径" prop="path" v-if="formData.type==='导入文件'">
+                    <el-form-item label="存储路径" prop="path" v-if="formData.type==='导入文件'" v-show="false">
                         <el-input size="small" disabled v-model="formData.path" style="width: 400px" placeholder="请选择"></el-input>
                     </el-form-item>
                 </el-form>
@@ -178,7 +178,7 @@
                     <el-button size="small" @click="resetForm">取消</el-button>
                 </div>
             </el-dialog>
-            <el-dialog title="注册数参数配置" v-if="dialogTableVisible2" :visible.sync="dialogTableVisible2">
+            <el-dialog title="参数配置" v-if="dialogTableVisible2" :visible.sync="dialogTableVisible2">
                 <el-form label-width="120px" :model="formData"  ref="formData">
                     <el-form-item label="选择可视化列"  >
                         <el-select size="small" multiple v-model="formData2.set_header_input" style="width: 400px" placeholder="选择要输入的表头进行可视化">
@@ -194,10 +194,10 @@
                             </el-button>
                         </el-tooltip>
                     </el-form-item>
-                    <el-form-item label="选择标签列"  >
-                        <el-select  size="small" v-model="formData2.set_header_type" style="width: 400px" placeholder="选择要修改表头">
-                            <el-option label="空值" value="null"></el-option>
-                            <el-option :label="item" :value="item" v-for="(item, index) in headerList" :key="index"></el-option>
+                    <el-form-item label="默认标签列"  >
+                        <el-select  size="small" disabled v-model="formData2.set_header_type" style="width: 400px" placeholder="选择要修改表头">
+                            <el-option  label="默认值" value="null"></el-option>
+                            <!-- <el-option :label="item" :value="item" v-for="(item, index) in headerList" :key="index"></el-option> -->
                         </el-select>
                         <el-tooltip class="item" effect="dark"  placement="top-start">
                             <div slot="content">
@@ -443,7 +443,7 @@ export default {
             },
             formData2: {
                 set_header_input: [],
-                set_header_type: '',
+                set_header_type: 'null',
                 set_header_id: '',
                 data_set_id: '',
                 data_user_id: this.data_user_id
@@ -768,7 +768,7 @@ export default {
             // 重置data数据
             this.formData2 = {
                 set_header_input: [],
-                set_header_type: '',
+                set_header_type: 'null',
                 set_header_id: '',
                 data_set_id: '',
                 data_user_id: this.data_user_id
