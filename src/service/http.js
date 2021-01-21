@@ -14,6 +14,7 @@ service.interceptors.request.use(
     config => {
         // do something before request is sent
         config.headers["usertoken"] = localStorage.getItem('data_user_token');
+        config.headers["datauserid"] = localStorage.getItem('data_user_id');
         if (localStorage.getItem('data_user_token')) {
             // let each request carry token
             // ['X-Token'] is a custom headers key

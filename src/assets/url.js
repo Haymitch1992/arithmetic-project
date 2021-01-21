@@ -20,6 +20,8 @@ export const POST_DER_IVE_CSV_DATA = "/api/derIveCsvData/";
 export const GET_DATA_LENGTH = "/api/derIveCsvData/";
 // 数据中台 主题查询
 export const GET_SEARCH_DATA_NAME = '/api/searchDataName/';
+// 数据集任务列表
+export const GET_TASK = '/api/taskList/';
 
 // 数据标注-标注数据id
 export const SET_LABLE = '/api/lableSetid/';

@@ -298,6 +298,7 @@ import {
     POST_DER_IVE_CSV_DATA,
     GET_SEARCH_DATA_NAME,
     GET_DATA_LENGTH,
+    GET_TASK,
     GET_COUNT_THEME
 } from '../../assets/url';
 import axios from 'axios';
@@ -346,8 +347,10 @@ export default {
             dataInfoList: [],
             showThemeList: [],
             usertoken: {
-                usertoken: localStorage.getItem('data_user_token')
+                usertoken: localStorage.getItem('data_user_token'),
+                datauserid: localStorage.getItem('data_user_id')
             },
+            taskTimer: '', // 任务列表的定时器
             data_user_id: localStorage.getItem('data_user_id'),
             isCreate: false,
             UPLOAD_FILE: UPLOAD_FILE,
@@ -461,8 +464,36 @@ export default {
     },
     mounted() {
         this.getAllData();
+        this.findTask();
     },
     methods: {
+        // 查询任务列表
+        findTask() {
+            //
+            let switchPost = false;
+            this.$api
+                .post(GET_TASK, {
+                    data_user_id: this.data_user_id
+                })
+                .then(res => {
+                    this.$store.commit('saveTaskList', res.data.allTaskList);
+                    res.data.allTaskList.forEach(item => {
+                        if (item.task_plan === 0) {
+                            switchPost = true;
+                        }
+                    });
+                    if (switchPost) {
+                        // 停掉之前的定时任务
+                        clearTimeout(this.taskTimer);
+                        this.taskTimer = setTimeout(() => {
+                            this.findTask();
+                        }, 1000);
+                    } else {
+                        this.getAllData();
+                    }
+                    // 是否执行定时任务
+                });
+        },
         getSearchDataName() {
             // 监听是否非空
             if (this.searchValue) {
@@ -581,6 +612,7 @@ export default {
                         this.getAllData();
                         this.activeName = 'first';
                         this.formData.name = '';
+                        this.findTask();
                     } else {
                         this.$message.error(res.data.mes);
                     }

@@ -65,6 +65,15 @@
                             <el-option label="等距离散" value="isometric_discretize"></el-option>
                             <el-option label="等频离散" value="isofrequecy_discretize"></el-option>
                         </el-select>
+                        <!--生成统计类特征-->
+                        <el-select v-if="itemInp.type==='select-10'" size="small"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
+                            <el-option label="max" value="max"></el-option>
+                            <el-option label="min" value="min"></el-option>
+                            <el-option label="mean" value="mean"></el-option>
+                            <el-option label="median" value="median"></el-option>
+                            <el-option label="std" value="std"></el-option>
+                            <el-option label="var" value="var"></el-option>
+                        </el-select>
                     <el-input size="small" v-model="itemInp.value.node_params[itemInp.tag]" v-if="itemInp.type==='input-default2'" :placeholder="itemInp.desc"></el-input>
                         <!-- 拆分输入框 -->
                         <el-input size="small" v-model="splitValue" v-if="itemInp.type==='split-input'" :placeholder="itemInp.desc"></el-input>

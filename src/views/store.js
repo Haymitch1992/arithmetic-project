@@ -29,9 +29,13 @@ let store = new Vuex.Store({
     analysisDialog: false, // 分析结果展示
     currentDialog: {},
     current_set_id: '', // 当前数据集的id
-    run_uuid: ''
+    run_uuid: '',
+    taskList: [{"id": 5, "create_time": "2021-01-20T16:01:53.738490", "update_time": "2021-01-20T16:01:53.738525", "data_user_id": 6, "task_name": "9008023-主题数据创建使用", "task_plan": 0}] // 任务列表
   },
   mutations: {
+    saveTaskList(state, obj) {
+      state.taskList = obj;
+    },
     saveRunUuid(state, num) {
       state.run_uuid = num;
     },

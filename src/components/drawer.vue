@@ -78,7 +78,9 @@ export default {
     text-align: left;
     font-size: 14px;
     cursor: pointer;
-    padding: 14px 20px 10px 20px;
+    line-height: 32px;
+    height: 32px;
+    padding: 6px 20px 2px 20px;
     .folder-icon {
         color: #00c0ff;
         margin-left: 2px;
