@@ -403,7 +403,7 @@ export const nodeList2 = [
             out_ports: [0],
             out_ports_text: ['输出'],
             iconClassName: 'el-icon-loading',
-            out_ports_name: ['input_data_dummies'],
+            out_ports_name: ['input_data_transform'],
             form: [
                 {
                     "label": "字段设置",
@@ -448,7 +448,7 @@ export const nodeList2 = [
                 in_ports_name: ['dataset_path'],
             out_ports: [0],
                 out_ports_text: ['输出'],
-                out_ports_name: ['input_data_dummies'],
+                out_ports_name: ['input_data_soften'],
             iconClassName: 'el-icon-loading',
             form: [
                 {
@@ -516,7 +516,7 @@ export const nodeList2 = [
                 in_ports_name: ['dataset_path'],
             out_ports: [0],
                 out_ports_text: ['输出'],
-                out_ports_name: ['input_data_dummies'],
+                out_ports_name: ['input_data_discretize'],
             iconClassName: 'el-icon-loading',
             form: [
                 {
@@ -573,7 +573,7 @@ export const nodeList2 = [
             in_ports_name: ['dataset_path'],
             out_ports: [0],
                 out_ports_text: ['输出'],
-                out_ports_name: ['input_data_dummies'],
+                out_ports_name: ['input_data_statistics'],
             iconClassName: 'el-icon-loading',
             form: [
                 {
