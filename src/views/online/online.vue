@@ -190,10 +190,12 @@ export default {
             console.log(val);
         },
         handleSizeChange(val) {
+            this.pageSize = val;
             console.log(`每页 ${val} 条`);
             this.getList();
         },
         handleCurrentChange(val) {
+            this.currentPage4 = val;
             console.log(`当前页: ${val}`);
             this.getList();
         }
