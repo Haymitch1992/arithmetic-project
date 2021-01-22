@@ -17,7 +17,7 @@
                 </div>
             </el-dialog>
             <el-table
-                :data="showDataList"
+                :data="dataList"
                 class="dataTable"
                 style="width: 100%">
                 <el-table-column
@@ -64,7 +64,7 @@
                         :page-sizes="[10, 20, 30, 40]"
                         :page-size="pageSize"
                         layout="total, sizes, prev, pager, next, jumper"
-                        :total="dataList.length">
+                        :total="page_count">
                 </el-pagination>
             </div>
         </div>
@@ -113,6 +113,7 @@ export default {
             UPLOAD_FILE: UPLOAD_FILE,
             pageSize: 10,
             currentPage: 1,
+            page_count: 0,
             rules: {
                 project_name: [
                     {
@@ -165,14 +166,6 @@ export default {
             dialogTableVisible2: false,
             dataList: []
         };
-    },
-    computed: {
-        showDataList: function() {
-            return this.dataList.slice(
-                (this.currentPage - 1) * this.pageSize,
-                this.currentPage * this.pageSize
-            );
-        }
     },
     mounted() {
         this.getAllData();
@@ -308,10 +301,12 @@ export default {
         handleSizeChange(val) {
             this.pageSize = val;
             console.log(`每页 ${val} 条`);
+            this.getAllData();
         },
         handleCurrentChange(val) {
             this.currentPage = val;
             console.log(`当前页: ${val}`);
+            this.getAllData();
         },
         downLoadFile(str) {
             // 导出数据集
@@ -359,9 +354,12 @@ export default {
         getAllData() {
             this.$api
                 .post(GET_ALL_PROJECT, {
-                    data_user_id: localStorage.getItem('data_user_id')
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    size: this.pageSize,
+                    page: this.currentPage
                 })
                 .then(res => {
+                    this.page_count = res.data.count;
                     this.dataList = res.data.all_project;
                 });
         },

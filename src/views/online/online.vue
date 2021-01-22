@@ -69,10 +69,10 @@
                         background
                         @current-change="handleCurrentChange"
                         :current-page="currentPage4"
-                        :page-sizes="[100, 200, 300, 400]"
-                        :page-size="100"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="pageSize"
                         layout="total, sizes, prev, pager, next, jumper"
-                        :total="10">
+                        :total="page_count">
                 </el-pagination>
             </div>
         </div>
@@ -113,6 +113,8 @@ export default {
     data() {
         return {
             currentPage4: 1,
+            pageSize: 10,
+            page_count: 0,
             tableData: [] // 已部署模板列表
         };
     },
@@ -163,9 +165,12 @@ export default {
             this.$api
                 .post(POST_ALL_DEPLOY_MODEL, {
                     data_user_id: localStorage.getItem('data_user_id'),
-                    data_model_keyword: 1
+                    data_model_keyword: 1,
+                    size: this.pageSize,
+                    page: this.currentPage4
                 })
                 .then(res => {
+                    this.page_count = res.data.count;
                     this.tableData = res.data.model_data;
                     console.log(res.data.model_data);
                 });
@@ -186,9 +191,11 @@ export default {
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
+            this.getList();
         },
         handleCurrentChange(val) {
             console.log(`当前页: ${val}`);
+            this.getList();
         }
     }
 };

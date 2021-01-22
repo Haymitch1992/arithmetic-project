@@ -43,13 +43,18 @@
                             <el-badge :value="badgeNum" class="badgeItem">
                                 <el-button size="small">任务列表</el-button>
                                 <div class="task-box">
-                                    <ul class="task-ul" >
+                                    <div class="status-button-line">
+                                        <el-button size="small" @click="currnetStatus=0">未完成</el-button>
+                                        <el-button size="small" @click="currnetStatus=1">已完成</el-button>
+                                        <el-button size="small" @click="currnetStatus=2">失败</el-button>
+                                    </div>
+                                    <ul class="task-ul" v-if="showList.length!==0" >
                                          <li>
                                             <span class="textLimit" style="width:100px;"> 数据集名称</span>
                                             <span class="textLimit" style="margin-right:20px"> 创建时间</span>
                                             <span  style="vertical-align: top;">状态</span>
                                         </li>
-                                        <li v-for="item in $store.state.taskList" :key="item.id">
+                                        <li v-for="item in showList" :key="item.id">
                                             <span class="textLimit" style="width:100px;"> {{item.task_name}}</span>
                                             <span class="textLimit" style="margin-right:20px"> {{item.create_time|converTime('YYYY-MM-DD HH:mm:ss')}}</span>
                                             <el-tag style="vertical-align: top;" size="small" v-if="item.task_plan===1" type="success">已完成</el-tag>
@@ -57,6 +62,7 @@
                                             <el-tag style="vertical-align: top;"  size="small" v-if="item.task_plan===2" type="danger">失败</el-tag>
                                         </li>
                                     </ul>
+                                    <p class="task-text-info" v-if="showList.length===0">暂无数据</p>
                                 </div>
                             </el-badge>
                     </el-header>
@@ -80,10 +86,17 @@ export default {
     components: {
         MENU: MENU,
         experimentMenu: experimentMenu,
-        loginInfo: LoginInfo,
-        badgeNum: 0
+        loginInfo: LoginInfo
     },
     watch: {
+        currnetStatus: function() {
+            this.showList = [];
+            this.$store.state.taskList.forEach(item => {
+                if (item.task_plan === this.currnetStatus) {
+                    this.showList.push(item);
+                }
+            });
+        },
         // 监听任务列表
         '$store.state.taskList': function() {
             let num = 0;
@@ -132,6 +145,9 @@ export default {
     },
     data() {
         return {
+            showList: [],
+            currnetStatus: 0, // 查看状态
+            badgeNum: 0,
             currentModel: 1,
             currentMenu: 2,
             experimentArr: [
@@ -349,10 +365,11 @@ body {
     width: 390px;
     background: #fff;
     top: 32px;
-    left: -140px;
+    left: -150px;
     z-index: 999;
     border: 1px solid #eee;
-    height: 200px;
+    min-height: 200px;
+    max-height: 800px;
     overflow-y: auto;
     border-radius: 4px;
     -webkit-box-shadow: 2px 0px 6px #ddd;
@@ -362,11 +379,21 @@ body {
     list-style: none;
     margin: 0;
     padding: 0;
-    padding: 10px 20px;
+    padding: 0px 10px 10px;
 }
 .task-ul li {
     line-height: 30px;
     font-size: 14px;
     color: #666;
+}
+.status-button-line {
+    padding: 10px 10px;
+}
+.task-text-info {
+    color: #666;
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 80px;
 }
 </style>

@@ -56,9 +56,9 @@
                     @current-change="handleCurrentChange"
                     :current-page="currentPage4"
                     :page-sizes="[10, 20, 30, 40]"
-                    :page-size="10"
+                    :page-size="size"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="10">
+                    :total="page_count">
                 </el-pagination>
             </div>
             <!-- 修改模型 -->
@@ -119,6 +119,8 @@ export default {
             dialogFormVisible: false, // 修改模型信息弹框
             dialogFormVisible2: false, // 导出模型
             currentPage4: 1,
+            size: 10,
+            page_count: 0,
             form: {
                 modelId: '',
                 newModelId: '', // 新
@@ -204,10 +206,13 @@ export default {
             // 获取模型列表
             this.$api
                 .post(POST_MODEL_DATA, {
-                    data_user_id: localStorage.getItem('data_user_id')
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    page: this.currentPage4,
+                    size: this.size
                 })
                 .then(res => {
                     this.datalist = res.data.model_data;
+                    this.page_count = res.data.count;
                     console.log(res.data.model_data);
                 });
         },
@@ -219,9 +224,13 @@ export default {
         },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
+            this.size = val;
+            this.getModelData();
         },
         handleCurrentChange(val) {
+            this.currentPage4 = val;
             console.log(`当前页: ${val}`);
+            this.getModelData();
         },
         deleteModel(delId) {
             this.$confirm(

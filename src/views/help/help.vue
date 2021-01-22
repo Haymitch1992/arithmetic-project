@@ -302,12 +302,12 @@ export default {
     width: calc(100vw - 200px);
     overflow: auto;
     .content {
-        width: 900px;
+        width: 800px;
         float: left;
     }
     .list-container {
         position: fixed;
-        left: 1240px;
+        left: 1140px;
         width: 250px;
         border: 1px solid #efefef;
         border-radius: 3px;

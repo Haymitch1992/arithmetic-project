@@ -5,7 +5,7 @@
             <el-tabs  class="border-card-box" v-model="activeName"  @tab-click="handleClick">
                 <el-tab-pane label="已注册数据集"  name="first">
                     <el-table
-                    :data="showDataList"
+                    :data="dataList"
                     class="dataTable"
                     style="width: 100%">
                     <el-table-column
@@ -71,7 +71,7 @@
                             :page-sizes="[10, 20, 30, 40]"
                             :page-size="pageSize"
                             layout="total, sizes, prev, pager, next, jumper"
-                            :total="dataList.length">
+                            :total="page_count">
                     </el-pagination>
                 </div>
                 </el-tab-pane>
@@ -356,6 +356,7 @@ export default {
             UPLOAD_FILE: UPLOAD_FILE,
             pageSize: 10,
             currentPage: 1,
+            page_count: 0,
             rules: {
                 name: [
                     {
@@ -453,14 +454,6 @@ export default {
             dialogTableVisible2: false,
             dataList: []
         };
-    },
-    computed: {
-        showDataList: function() {
-            return this.dataList.slice(
-                (this.currentPage - 1) * this.pageSize,
-                this.currentPage * this.pageSize
-            );
-        }
     },
     mounted() {
         this.getAllData();
@@ -793,10 +786,12 @@ export default {
         },
         handleSizeChange(val) {
             this.pageSize = val;
+            this.getAllData();
             console.log(`每页 ${val} 条`);
         },
         handleCurrentChange(val) {
             this.currentPage = val;
+            this.getAllData();
             console.log(`当前页: ${val}`);
         },
         downLoadFile(str) {
@@ -845,10 +840,13 @@ export default {
         getAllData() {
             this.$api
                 .post(ALL_DATA_LIST, {
-                    data_user_id: this.data_user_id
+                    data_user_id: this.data_user_id,
+                    size: this.pageSize,
+                    page: this.currentPage
                 })
                 .then(res => {
-                    this.dataList = res.data.all_data_set.reverse();
+                    this.page_count = res.data.count;
+                    this.dataList = res.data.all_data_set;
                     this.dataList.forEach((item, index) => {
                         item.isShow = false;
                     });
