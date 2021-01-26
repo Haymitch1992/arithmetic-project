@@ -19,65 +19,20 @@
                             <el-option label="poly" value="poly"></el-option>
                             <el-option label="sigmoid" value="sigmoid"></el-option>
                         </el-select>
-                        <!--逻辑回归-->
-                        <el-select v-if="itemInp.type==='select-5'" size="small"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
-                            <el-option label="None" value="None"></el-option>
-                            <el-option label="L1" value="L1"></el-option>
-                            <el-option label="L2" value="L2"></el-option>
-                        </el-select>
-                        <!--分层采样-->
-                        <el-select v-if="itemInp.type==='select-3'" size="small"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
-                            <el-option label="A:0.5" value="0.5"></el-option>
-                            <el-option label="B:0.3" value="0.3"></el-option>
-                            <el-option label="C:0.7" value="0.7"></el-option>
-                        </el-select>
-                        <!--缺失值填充-->
-                        <el-select v-if="itemInp.type==='select-4'" size="small"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
-                            <el-option label="mean" value="mean"></el-option>
-                            <el-option label="mode" value="mode"></el-option>
-                            <el-option label="median" value="median"></el-option>
-                        </el-select>
-                        <!--缺失值填充-->
-                        <el-select v-if="itemInp.type==='select-6'" size="small"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
-                            <el-option label="rbf" value="rbf"></el-option>
-                            <el-option label="linear" value="linear"></el-option>
-                            <el-option label="poly" value="poly"></el-option>
-                            <el-option label="sigmoid" value="sigmoid"></el-option>
-                        </el-select>
-                        <!--选择尺度变换函数-->
-                        <el-select v-if="itemInp.type==='select-7'" size="small"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
-                            <el-option label="log2" value="log2"></el-option>
-                            <el-option label="log10" value="log10"></el-option>
-                            <el-option label="ln" value="ln"></el-option>
-                            <el-option label="abs" value="abs"></el-option>
-                            <el-option label="sqrt" value="sqrt"></el-option>
-                            <el-option label="pow2" value="pow2"></el-option>
-                        </el-select>
-                        <!--选择尺度变换函数-->
+                        <!--选择尺度变换函数 特殊处理 根据值得不同 显示不同参数-->
                         <el-select v-if="itemInp.type==='select-8'" size="small" @change="transformFuc('change')"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
                             <el-option label="Zscore平滑" value="zscore_soften"></el-option>
                             <el-option label="百分位平滑" value="percentage_soften"></el-option>
                             <el-option label="阈值平滑" value="threshold_soften"></el-option>
                             <el-option label="箱线图平滑" value="boxplot_soften"></el-option>
                         </el-select>
-                        <!--特征离散-->
-                        <el-select v-if="itemInp.type==='select-9'" size="small" v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
-                            <el-option label="等距离散" value="isometric_discretize"></el-option>
-                            <el-option label="等频离散" value="isofrequecy_discretize"></el-option>
+                        <!--带参数的选择框组件-->
+                        <el-select v-if="itemInp.type==='select-options'" size="small"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
+                            <el-option :label="selectItem.label" :value="selectItem.value" :key="index" v-for="(selectItem,index) in itemInp.options"></el-option>
                         </el-select>
-                        <!--生成统计类特征-->
-                        <el-select v-if="itemInp.type==='select-10'" size="small"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
-                            <el-option label="max" value="max"></el-option>
-                            <el-option label="min" value="min"></el-option>
-                            <el-option label="mean" value="mean"></el-option>
-                            <el-option label="median" value="median"></el-option>
-                            <el-option label="std" value="std"></el-option>
-                            <el-option label="var" value="var"></el-option>
-                        </el-select>
-                    <el-input size="small" v-model="itemInp.value.node_params[itemInp.tag]" v-if="itemInp.type==='input-default2'" :placeholder="itemInp.desc"></el-input>
+                        <el-input size="small" v-model="itemInp.value.node_params[itemInp.tag]" v-if="itemInp.type==='input-default2'" :placeholder="itemInp.desc"></el-input>
                         <!-- 拆分输入框 -->
                         <el-input size="small" v-model="splitValue" v-if="itemInp.type==='split-input'" :placeholder="itemInp.desc"></el-input>
-
                         <el-input size="small" v-model="itemInp.value.node_params[itemInp.tag]" v-if="itemInp.type==='input-default'" :placeholder="itemInp.desc"></el-input>
                         <p v-if="itemInp.label==='分层采样比例'" style="font-size:14px;line-height:28px;">
                             数字时：范围(0,1) 表示每个stratum的采样比例；字符串时：格式为strata0:r0,strata1:r1,strata2:r2,…</p>

@@ -330,13 +330,27 @@ export const nodeList = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select-4', // 输入框
+                            "type": 'select-options', // 输入框
                             "label": "填充方法",
                             "value": {
                                 "node_params": {
                                     "methods": 'mean'
                                 }
                             },
+                            "options": [
+                                {
+                                    "label": "mean",
+                                    "value": "mean"
+                                },
+                                {
+                                    "label": "mode",
+                                    "value": "mode"
+                                },
+                                {
+                                    "label": "median",
+                                    "value": "median"
+                                }
+                            ],
                             "tag": "methods"
                         }
                     ]
@@ -426,13 +440,39 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select-7', // 输入框
+                            "type": 'select-options', // 输入框
                             "label": "选择尺度变换函数",
                             "value": {
                                 "node_params": {
                                     "transform_method": 'log2'
                                 }
                             },
+                            "options": [
+                                {
+                                    "label": "log2",
+                                    "value": "log2"
+                                },
+                                {
+                                    "label": "log10",
+                                    "value": "log10"
+                                },
+                                {
+                                    "label": "ln",
+                                    "value": "ln"
+                                },
+                                {
+                                    "label": "abs",
+                                    "value": "abs"
+                                },
+                                {
+                                    "label": "sqrt",
+                                    "value": "sqrt"
+                                },
+                                {
+                                    "label": "pow2",
+                                    "value": "pow2"
+                                }
+                            ],
                             "tag": "transform_method"
                         }
                     ]
@@ -540,13 +580,23 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select-9', // 输入框
+                            "type": 'select-options', // 输入框
                             "label": "离散方法",
                             "value": {
                                 "node_params": {
                                     "discretize_method": 'isometric_discretize'
                                 }
                             },
+                            "options": [
+                                {
+                                    "label": "等距离散",
+                                    "value": "isometric_discretize"
+                                },
+                                {
+                                    "label": "等频离散",
+                                    "value": "isofrequecy_discretize"
+                                }
+                            ],
                             "tag": "discretize_method"
                         },
                         {
@@ -564,16 +614,16 @@ export const nodeList2 = [
                 }
             ]
         }, {
-                name: '生成统计类特征',
-                component_id: 'statistics_feature',
-                is_generate_model: "false",
+            name: '生成统计类特征',
+            component_id: 'statistics_feature',
+            is_generate_model: "false",
             node_type: 'item-1',
             in_ports: [0],
             in_ports_text: ['输入'],
             in_ports_name: ['dataset_path'],
             out_ports: [0],
-                out_ports_text: ['输出'],
-                out_ports_name: ['input_data_statistics'],
+            out_ports_text: ['输出'],
+            out_ports_name: ['input_data_statistics'],
             iconClassName: 'el-icon-loading',
             form: [
                 {
@@ -597,8 +647,35 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select-10', // 输入框
+                            "type": 'select-options', // 输入框
                             "label": "统计方法",
+                            // 参数列表
+                            "options": [
+                                {
+                                    "label": "max",
+                                    "value": "max"
+                                },
+                                {
+                                    "label": "min",
+                                    "value": "min"
+                                },
+                                {
+                                    "label": "mean",
+                                    "value": "mean"
+                                },
+                                {
+                                    "label": "median",
+                                    "value": "median"
+                                },
+                                {
+                                    "label": "std",
+                                    "value": "std"
+                                },
+                                {
+                                    "label": "var",
+                                    "value": "var"
+                                }
+                            ],
                             "value": {
                                 "node_params": {
                                     "statistics_method": 'max'
@@ -1076,13 +1153,27 @@ export const nodeList3 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select-5', // 输入框
+                            "type": 'select-options', // 输入框
                             "label": "正则项类型",
                             "value": {
                                 "node_params": {
                                     "regularization": 'L1'
                                 }
                             },
+                            "options": [
+                                {
+                                    "label": "None",
+                                    "value": "None"
+                                },
+                                {
+                                    "label": "L1",
+                                    "value": "L1"
+                                },
+                                {
+                                    "label": "L2",
+                                    "value": "L2"
+                                }
+                            ],
                             "tag": "regularization"
                         },
                         {
@@ -1146,13 +1237,31 @@ export const nodeList3 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select-6', // 输入框
+                            "type": 'select-options', // 输入框
                             "label": "核函数选择",
                             "value": {
                                 "node_params": {
                                     "select_kernel": 'rbf'
                                 }
                             },
+                            "options": [
+                                {
+                                    "label": "rbf",
+                                    "value": "rbf"
+                                },
+                                {
+                                    "label": "linear",
+                                    "value": "linear"
+                                },
+                                {
+                                    "label": "poly",
+                                    "value": "poly"
+                                },
+                                {
+                                    "label": "sigmoid",
+                                    "value": "sigmoid"
+                                }
+                            ],
                             "tag": "select_kernel"
                         },
                         {
@@ -1360,13 +1469,31 @@ export const nodeList3 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select-6', // 输入框
+                            "type": 'select-options', // 输入框
                             "label": "核函数选择",
                             "value": {
                                 "node_params": {
                                     "select_kernel": 'rbf'
                                 }
                             },
+                            "options": [
+                                {
+                                    "label": "rbf",
+                                    "value": "rbf"
+                                },
+                                {
+                                    "label": "linear",
+                                    "value": "linear"
+                                },
+                                {
+                                    "label": "poly",
+                                    "value": "poly"
+                                },
+                                {
+                                    "label": "sigmoid",
+                                    "value": "sigmoid"
+                                }
+                            ],
                             "tag": "select_kernel"
                         },
                         {

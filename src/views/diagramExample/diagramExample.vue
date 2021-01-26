@@ -63,6 +63,11 @@
                         </search-box>
                     </div>
                     <div v-if="!searchNode">
+                        <drawer :showItem="showItem5"
+                                :dataList="nodeLabel5"
+                                dataName="数据集"
+                                @openParentNode="openNode(5)">
+                        </drawer>
                         <drawer :showItem="showItem1"
                             :dataList="nodeLabel1"
                             dataName="数据预处理"
@@ -82,11 +87,6 @@
                                 :dataList="nodeLabel4"
                                 dataName="算法评估"
                                 @openParentNode="openNode(4)">
-                        </drawer>
-                        <drawer :showItem="showItem5"
-                                :dataList="nodeLabel5"
-                                dataName="数据集"
-                                @openParentNode="openNode(5)">
                         </drawer>
                     </div>
                 </div>
