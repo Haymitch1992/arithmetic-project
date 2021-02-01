@@ -250,11 +250,11 @@ import { GET_RESULT_REPORT } from '../assets/url.js';
 export default {
     data() {
         return {
-            // arr1: [[12, 0, 0], [0, 10, 1], [0, 0, 7]],
-            // arr2: [[1, 0.4, 0.6], [0, 0.9091, 0.0901], [0, 0, 1]],
-            arr1: [],
-            arr2: [],
-            LabelList: [],
+            arr1: [[12, 0, 0], [0, 10, 1], [0, 0, 7]],
+            arr2: [[1, 0.4, 0.6], [0, 0.9091, 0.0901], [0, 0, 1]],
+            // arr1: [],
+            // arr2: [],
+            LabelList: ['setosa', 'versicolor', 'virginica'],
             titleList: [
                 '聚类模型评估分析报告',
                 '回归-结果分析报告',
@@ -289,7 +289,9 @@ export default {
             // this.createData();
             this.getReport();
             this.currentTab = 0;
+            this.currentItem = 0;
             this.getRoc();
+            // 根据类型 判断请求
         }
     },
     methods: {
@@ -297,7 +299,7 @@ export default {
         getRoc() {
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: '20f1381e828c4d5e83b19452aabfd996',
+                    run_uuid: this.$store.state.currentDialog.run_uuid,
                     index: 'roc' // 列表
                 })
                 .then(res => {
@@ -395,17 +397,28 @@ export default {
                         type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
                     }
                 },
-                xAxis: [
-                    {
-                        type: 'category',
-                        data: ['1', '0']
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        magicType: {
+                            show: true,
+                            type: ['pie', 'funnel']
+                        },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
                     }
-                ],
-                yAxis: [
-                    {
-                        type: 'value'
-                    }
-                ],
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['1', '0'],
+                    name: 'Actual Class'
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Number of Predicted Class'
+                },
                 series: [
                     {
                         name: '1',
@@ -427,8 +440,12 @@ export default {
         drawPr(str) {
             let myChart = echarts.init(document.getElementById(str));
             let option = {
+                title: {
+                    text: 'PR'
+                },
                 xAxis: {
-                    type: 'category'
+                    type: 'category',
+                    name: 'Recal'
                 },
                 toolbox: {
                     show: true,
@@ -444,7 +461,8 @@ export default {
                     }
                 },
                 yAxis: {
-                    type: 'value'
+                    type: 'value',
+                    name: 'Precision'
                 },
                 series: [
                     {
@@ -459,8 +477,12 @@ export default {
         drawRoc(str) {
             let myChart = echarts.init(document.getElementById(str));
             let option = {
+                title: {
+                    text: 'AUC'
+                },
                 xAxis: {
-                    type: 'value'
+                    type: 'value',
+                    name: 'FPR'
                     // boundaryGap: false
                 },
                 toolbox: {
@@ -477,7 +499,8 @@ export default {
                     }
                 },
                 yAxis: {
-                    type: 'value'
+                    type: 'value',
+                    name: 'TPR'
                 },
                 series: [
                     {
@@ -493,8 +516,12 @@ export default {
         drawKs(str) {
             let myChart = echarts.init(document.getElementById(str));
             let option = {
+                title: {
+                    text: 'KS'
+                },
                 xAxis: {
-                    type: 'value'
+                    type: 'value',
+                    name: 'Threshold'
                     // boundaryGap: false
                 },
                 toolbox: {
@@ -511,7 +538,8 @@ export default {
                     }
                 },
                 yAxis: {
-                    type: 'value'
+                    type: 'value',
+                    name: 'FPR/TPR'
                 },
                 series: [
                     {
@@ -598,8 +626,12 @@ export default {
         createScatter(str) {
             let myChart = echarts.init(document.getElementById(str));
             let option = {
-                xAxis: {},
-                yAxis: {},
+                xAxis: {
+                    name: 'Predict Value'
+                },
+                yAxis: {
+                    name: 'Residual Value'
+                },
                 toolbox: {
                     show: true,
                     feature: {

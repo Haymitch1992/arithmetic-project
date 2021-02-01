@@ -18,8 +18,8 @@ module.exports = {
         // target: "http://192.168.7.45:15000", // 建志的本地服务
         // target:"http://192.168.30.110:15000",// 测试服务器
         // target: "http://192.168.6.159:15000", // 建辉的本地
-        target:"http://47.95.214.123:8080",// 测试服务器
-        //target:"http://192.168.61.106:5001",// 测试服务器 王殿文本地
+        // target:"http://47.95.214.123:8080",// 测试服务器
+        target:"http://192.168.59.11:5001",// 测试服务器 王殿文本地
         pathRewrite:{
           "^/api": ''
         },
@@ -27,7 +27,7 @@ module.exports = {
         ws: false, // proxy websockets
       },
       '/model': {//代理api
-        target:"http://192.168.59.166:5001",// 测试服务器 王殿文本地
+        target:"http://192.168.59.11:5001",// 测试服务器 王殿文本地
         pathRewrite:{
           "^/model": ''
         },
@@ -35,7 +35,7 @@ module.exports = {
         ws: false, // proxy websockets
       },
       '/debug': {//代理api
-        target:"http://192.168.59.166:50136",// 测试服务器 王殿文本地
+        target:"http://192.168.59.11:50136",// 测试服务器 王殿文本地
         pathRewrite:{
           "^/debug": ''
         },

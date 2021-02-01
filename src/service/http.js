@@ -1,7 +1,7 @@
 import axios from 'axios';
 // create an axios instance
 const service = axios.create({
-    timeout: 15000, // request timeout
+    timeout: 60000, // request timeout
     headers: {
         post: {
           'Content-Type': 'application/json;charset=UTF-8'
