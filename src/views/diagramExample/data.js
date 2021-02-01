@@ -1542,7 +1542,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择特征",
+                            "label": "选择标签",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
