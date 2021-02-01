@@ -70,6 +70,8 @@ export const GET_TEST_DELETE = '/api/delTest/';
 export const POST_SEARCH_TEST = '/api/searchTest/';
 // 搜索个人数据集
 export const POST_SEARCH_SET = '/api/searchSet/';
+// 分析报告接口
+export const GET_RESULT_REPORT = '/api/analysisReport/';
 
 // 登录
 export const POST_LOGIN_DATA = '/api/login/';

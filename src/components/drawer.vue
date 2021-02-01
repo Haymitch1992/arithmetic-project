@@ -8,7 +8,7 @@
         </div>
         <div v-if="showItem" class="node-item">
             <div v-for="(item, i) in dataList" :key="i">
-                <div class="node-label" @click="currentNode(item)">
+                <div class="node-label" @click="currentNode(item)" v-if="item.label!=='预测'">
                     <span class="el-icon-caret-bottom" v-if="item.nodeSwitch" ></span>
                     <span class="el-icon-caret-right" v-if="!item.nodeSwitch" ></span>
                     <span class="iconfont iconwenjianjia" style="font-size: 14px;"></span>

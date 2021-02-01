@@ -210,25 +210,25 @@
 </template>
 
 <script>
-import moment from "moment";
+import moment from 'moment';
 import {
     POST_LOG_QUERY,
     POST_MODEL_INFO,
     POST_MODEL_LOG,
     POST_MODEL_SHOW,
     POST_MODEL_STATUS
-} from "../../assets/url";
+} from '../../assets/url';
 export default {
-    name: "home",
+    name: 'home',
     filters: {
         typeZn(val) {
             switch (val) {
                 case 1:
-                    return "正常";
+                    return '正常';
                 case 0:
-                    return "失败";
+                    return '失败';
                 case 3:
-                    return "报警";
+                    return '报警';
             }
         },
         transferM(val) {
@@ -236,8 +236,8 @@ export default {
             return parseInt(val / 60);
         },
         create_time(val) {
-            if (!val) return "";
-            return moment(val).format("YYYY-MM-DD HH:mm:ss");
+            if (!val) return '';
+            return moment(val).format('YYYY-MM-DD HH:mm:ss');
         }
     },
     data() {
@@ -250,18 +250,18 @@ export default {
             },
             logJson: {},
             pageObj: {
-                create_time: "",
-                model_explain: "",
-                model_name: "",
-                model_server: "",
-                model_type: "",
-                update_time: ""
+                create_time: '',
+                model_explain: '',
+                model_name: '',
+                model_server: '',
+                model_type: '',
+                update_time: ''
             },
-            num: "",
-            num2: "",
+            num: '',
+            num2: '',
 
             value1: [],
-            activeName: "first",
+            activeName: 'first',
             isStart: true,
             dialogFormVisible: false,
             form: {},
@@ -271,38 +271,38 @@ export default {
             incidentList: [
                 {
                     type: 1,
-                    info: "模型部署成功并测试",
-                    time: "2020-7-12 20:20:10"
+                    info: '模型部署成功并测试',
+                    time: '2020-7-12 20:20:10'
                 },
                 {
                     type: 2,
-                    info: "生成可视化图表",
-                    time: "2020-7-12 20:20:10"
+                    info: '生成可视化图表',
+                    time: '2020-7-12 20:20:10'
                 },
                 {
                     type: 3,
-                    info: "事件发生时间",
-                    time: "2020-7-12 20:20:10"
+                    info: '事件发生时间',
+                    time: '2020-7-12 20:20:10'
                 }
             ],
-            mid: "",
+            mid: '',
             pageSize: 10
         };
     },
     methods: {
         backPage() {
-            this.$router.push("/online");
+            this.$router.push('/online');
         },
         postLogQuery() {
             if (!this.value1[0]) {
-                this.$message.error("请选择日期");
+                this.$message.error('请选择日期');
                 return;
             }
-            let startTimeList = this.value1[0].split("-");
-            let endTimeList = this.value1[1].split("-");
+            let startTimeList = this.value1[0].split('-');
+            let endTimeList = this.value1[1].split('-');
             this.$api
                 .post(POST_LOG_QUERY, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     deploy_model_id: this.mid,
                     start_time: {
                         start_year: parseInt(startTimeList[0]),
@@ -327,7 +327,7 @@ export default {
         changeStatus(statusNum) {
             this.$api
                 .post(POST_MODEL_STATUS, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     deploy_model_id: this.mid,
                     data_state: statusNum
                 })
@@ -341,7 +341,7 @@ export default {
         getEventInfo() {
             this.$api
                 .post(POST_MODEL_SHOW, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     deploy_model_id: this.mid
                 })
                 .then(res => {
@@ -354,7 +354,7 @@ export default {
         getLogInfo() {
             this.$api
                 .post(POST_MODEL_LOG, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     deploy_model_id: this.mid
                 })
                 .then(res => {
@@ -364,7 +364,7 @@ export default {
         getInfo() {
             this.$api
                 .post(POST_MODEL_INFO, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     deploy_model_id: this.mid
                 })
                 .then(res => {
@@ -386,7 +386,7 @@ export default {
             }
         },
         goDebug() {
-            this.$router.push("/debug");
+            this.$router.push('/debug');
         },
         handleSizeChange(val) {
             this.pageSize = val;
@@ -411,7 +411,7 @@ export default {
             this.getEventInfo();
             console.log(this.$route.params.mid);
         } else {
-            console.log("没有参数");
+            console.log('没有参数');
         }
     }
 };
@@ -427,6 +427,9 @@ export default {
     border-top-left-radius: 50px;
     padding: 20px 30px;
     box-sizing: border-box;
+    /deep/ .el-dialog {
+        width: 500px;
+    }
     .back-line {
         font-size: 16px;
         color: #333;
@@ -578,10 +581,7 @@ export default {
 }
 </style>
 <style>
-.onlineDetail-box .el-dialog {
-    width: 500px;
-}
-.onlineDetail-box .el-table td {
+.onlineDetail-box .onlineDetail-box .el-table td {
     padding: 16px 0;
 }
 .onlineDetail-box .el-table th .cell {

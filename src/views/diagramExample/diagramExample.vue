@@ -146,7 +146,7 @@
         <!-- 数据集数据展示 -->
         <dataDialog ></dataDialog>
         <logDialog v-if="this.$store.state.logDialog"></logDialog>
-        <analysisDialog v-if="this.$store.state.analysisDialog"></analysisDialog>
+        <analysisDialog ></analysisDialog>
         <selectHeader v-if="showSelectDialog" :selectValue="nodeForm" @saveSelect="saveSelect"></selectHeader>
     </div>
 

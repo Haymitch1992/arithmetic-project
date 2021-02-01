@@ -45,6 +45,7 @@ let store = new Vuex.Store({
     handleNode(state, obj) {
       state[obj.nodeTpye] = obj.status;
       state.currentDialog.nodeName = obj.nodeName;
+      state.currentDialog.run_uuid = obj.run_uuid;
     },
     changeStep(state, num) {
       state.step = num;

@@ -58,9 +58,12 @@ export default {
             this.$parent.$parent.autoPrepostion(obj.id, obj.id);
         },
         openAnalysis() {
+            // 判断是否存在run_uuid 不存在提示
+            console.log(this.isEditAreaShow.run_uuid);
             this.$store.commit('handleNode', {
                 nodeTpye: 'analysisDialog',
                 status: true,
+                run_uuid: this.isEditAreaShow.run_uuid,
                 nodeName: this.isEditAreaShow.nodeName
             });
             // 当前节点参数保存 id 节点名称

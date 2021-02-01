@@ -365,7 +365,7 @@ body {
     width: 390px;
     background: #fff;
     top: 32px;
-    left: -150px;
+    left: -185px;
     z-index: 999;
     border: 1px solid #eee;
     min-height: 200px;
