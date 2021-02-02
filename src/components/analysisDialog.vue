@@ -287,9 +287,7 @@ export default {
         }
     },
     watch: {
-        dialogVisible2(newVal, oldVal) {
-            console.log('wangzhiwei***************f******', newVal, oldVal);
-            // this.createData();
+        dialogVisible2() {
             this.getReport();
             this.currentTab = 0;
             this.currentItem = 0;
@@ -379,7 +377,7 @@ export default {
                         for (let k in item) {
                             this.tableData.push({
                                 label: k,
-                                value: item[k][0]
+                                value: item[k][0] + ''
                             });
                             if (k === 'AUC') {
                                 this.AUC = item[k][0];
@@ -645,9 +643,11 @@ export default {
                             ]
                         },
                         markLine: {
+                            symbol: ['none', 'none'],
                             lineStyle: {
                                 width: 4,
-                                type: 'dashed'
+                                type: 'dashed',
+                                color: '#EC5156'
                             },
                             data: [
                                 [
@@ -719,6 +719,9 @@ export default {
             let option = {
                 backgroundColor: '#3A3D4A',
                 color: this.colorList,
+                tooltip: {
+                    trigger: 'axis'
+                },
                 textStyle: {
                     color: '#fff'
                 },
@@ -757,21 +760,13 @@ export default {
                         data: this.echartsData,
                         type: 'scatter',
                         markLine: {
+                            symbol: ['none', 'none'],
                             lineStyle: {
                                 width: 4,
                                 type: 'dashed',
                                 color: '#EC5156'
                             },
-                            data: [
-                                [
-                                    {
-                                        coord: [0, 0]
-                                    },
-                                    {
-                                        coord: [25, 0]
-                                    }
-                                ]
-                            ]
+                            data: [{ yAxis: 0 }]
                         }
                     }
                 ]
