@@ -8,7 +8,7 @@
                 </li>
                 <li :class="{'active':this.$store.state.count===0}" @click="handleMenu(0)">
                     <i class="iconfont iconmoxingguanli"></i>
-                    <span class="menu-label">模型</span>
+                    <span class="menu-label">实验</span>
                 </li>
                 <li :class="{'active':this.$store.state.count===1}" @click="handleMenu(1)">
                     <i class="iconfont iconpintu"></i>
@@ -32,22 +32,22 @@ export default {
         handleMenu(num) {
             switch (num) {
                 case 99:
-                    this.$store.commit("changeCount", 99);
-                    this.$router.push("/plan");
+                    this.$store.commit('changeCount', 99);
+                    this.$router.push('/plan');
                     break;
                 case 0:
-                    this.$store.commit("changeCount", 0);
-                    this.$router.push("/diagramExample");
+                    this.$store.commit('changeCount', 0);
+                    this.$router.push('/diagramExample');
                     break;
                 case 1:
                     // 修改模型页左侧的内容显示 为组件
-                    this.$store.commit("changeCount", 1);
-                    this.$router.push("/diagramExample");
+                    this.$store.commit('changeCount', 1);
+                    this.$router.push('/diagramExample');
                     break;
                 case 2:
                     // 修改模型页左侧的内容显示 为数据
-                    this.$store.commit("changeCount", 2);
-                    this.$router.push("/diagramExample");
+                    this.$store.commit('changeCount', 2);
+                    this.$router.push('/diagramExample');
                     break;
             }
         }

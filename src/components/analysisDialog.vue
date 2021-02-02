@@ -1,10 +1,10 @@
 <template>
-  <div class="report-dialog" v-if="this.$store.state.analysisDialog">
+  <div class="report-dialog" v-show="this.$store.state.analysisDialog">
    <!-- 数据集数据展示 -->
         <el-dialog
             :title="`${this.$store.state.currentDialog.nodeName}-分析报告`"
              class="dataView"
-            :visible.sync="dialogVisible"
+            :visible.sync="this.$store.state.analysisDialog"
             width="50%"
             :before-close="handleClose">
             <!--聚类-->
@@ -175,8 +175,8 @@
                 <!--图-->
                 <el-button-group>
                     <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0)">指标数据</el-button>
-                    <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2)">混淆矩阵</el-button>
-                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(1)">比例矩阵</el-button>
+                    <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(1,'confusion_matrix')">混淆矩阵</el-button>
+                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(2,'scale_matrix')">比例矩阵</el-button>
                     <el-button :type="currentTab===3?'primary':'default'" size="small" @click="handelMatrix(3)">预测类别分析</el-button>
                 </el-button-group>
                 <!--表格-->
@@ -266,16 +266,19 @@ export default {
             currentTab: 0,
             dialogVisible: true,
             colorList: [
+                '#6699FF',
                 '#B3CDFF',
                 '#9580FF',
                 '#BFB3FF',
                 '#52CCA3',
-                '#1677FF',
-                '#6699FF'
+                '#1677FF'
             ],
             echartsData: [],
             tableData: [], // 列表
-            rocData: {}
+            rocData: {},
+            AUC: '',
+            KS: '',
+            F1_Score: ''
         };
     },
     computed: {
@@ -304,6 +307,9 @@ export default {
                 })
                 .then(res => {
                     console.log(res);
+                    if (res.data.code !== 200) {
+                        return;
+                    }
                     // 处理ks 数据
                     this.rocData = res.data;
                     let arr1 = [];
@@ -374,6 +380,13 @@ export default {
                                 label: k,
                                 value: item[k][0]
                             });
+                            if (k === 'AUC') {
+                                this.AUC = item[k][0];
+                            } else if (k === 'K-S') {
+                                this.KS = item[k][0];
+                            } else if (k === 'F1_Score') {
+                                this.F1_Score = item[k][0];
+                            }
                         }
                     });
                 });
@@ -390,6 +403,11 @@ export default {
         drawCPR(str) {
             var myChart = echarts.init(document.getElementById(str));
             let option = {
+                backgroundColor: '#3A3D4A',
+                color: this.colorList,
+                textStyle: {
+                    color: '#fff'
+                },
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
@@ -413,23 +431,35 @@ export default {
                 xAxis: {
                     type: 'category',
                     data: ['1', '0'],
-                    name: 'Actual Class'
+                    name: 'Actual',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
                 },
                 yAxis: {
                     type: 'value',
-                    name: 'Number of Predicted Class'
+                    name: 'Number',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
                 },
                 series: [
                     {
                         name: '1',
                         type: 'bar',
                         stack: 'cpr',
+                        barWidth: '20%',
                         data: this.rocData.class_predict_report[0][1]
                     },
                     {
                         name: '0',
                         type: 'bar',
                         stack: 'cpr',
+                        barWidth: '20%',
                         data: this.rocData.class_predict_report[1][0]
                     }
                 ]
@@ -440,12 +470,25 @@ export default {
         drawPr(str) {
             let myChart = echarts.init(document.getElementById(str));
             let option = {
+                backgroundColor: '#3A3D4A',
+                color: this.colorList,
+                textStyle: {
+                    color: '#fff'
+                },
                 title: {
-                    text: 'PR'
+                    subtextStyle: {
+                        color: '#fff'
+                    },
+                    subtext: `PR ${this.F1_Score}`
                 },
                 xAxis: {
                     type: 'category',
-                    name: 'Recal'
+                    name: 'Recal',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
                 },
                 toolbox: {
                     show: true,
@@ -462,11 +505,16 @@ export default {
                 },
                 yAxis: {
                     type: 'value',
-                    name: 'Precision'
+                    name: 'Precision',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
                 },
                 series: [
                     {
-                        data: this.rocData.pr,
+                        data: this.rocData.pr.reverse(),
                         type: 'line'
                     }
                 ]
@@ -477,12 +525,25 @@ export default {
         drawRoc(str) {
             let myChart = echarts.init(document.getElementById(str));
             let option = {
+                backgroundColor: '#3A3D4A',
+                color: this.colorList,
+                textStyle: {
+                    color: '#fff'
+                },
                 title: {
-                    text: 'AUC'
+                    subtextStyle: {
+                        color: '#fff'
+                    },
+                    subtext: `AUC ${this.AUC}`
                 },
                 xAxis: {
                     type: 'value',
-                    name: 'FPR'
+                    name: 'FPR',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
                     // boundaryGap: false
                 },
                 toolbox: {
@@ -500,7 +561,12 @@ export default {
                 },
                 yAxis: {
                     type: 'value',
-                    name: 'TPR'
+                    name: 'TPR',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
                 },
                 series: [
                     {
@@ -516,12 +582,31 @@ export default {
         drawKs(str) {
             let myChart = echarts.init(document.getElementById(str));
             let option = {
+                backgroundColor: '#3A3D4A',
+                color: this.colorList,
+                textStyle: {
+                    color: '#fff'
+                },
+                legend: {
+                    data: ['FPR', 'TPR'],
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
                 title: {
-                    text: 'KS'
+                    subtextStyle: {
+                        color: '#fff'
+                    },
+                    subtext: `KS ${this.KS}`
                 },
                 xAxis: {
                     type: 'value',
-                    name: 'Threshold'
+                    // name: 'Threshold',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
                     // boundaryGap: false
                 },
                 toolbox: {
@@ -539,11 +624,17 @@ export default {
                 },
                 yAxis: {
                     type: 'value',
-                    name: 'FPR/TPR'
+                    name: 'FPR/TPR',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
                 },
                 series: [
                     {
                         data: this.rocData.arr1,
+                        name: 'FPR',
                         type: 'line',
                         markPoint: {
                             data: [
@@ -572,6 +663,7 @@ export default {
                         }
                     },
                     {
+                        name: 'TPR',
                         data: this.rocData.arr2,
                         type: 'line'
                     }
@@ -626,11 +718,26 @@ export default {
         createScatter(str) {
             let myChart = echarts.init(document.getElementById(str));
             let option = {
+                backgroundColor: '#3A3D4A',
+                color: this.colorList,
+                textStyle: {
+                    color: '#fff'
+                },
                 xAxis: {
-                    name: 'Predict Value'
+                    name: 'Predict Value',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
                 },
                 yAxis: {
-                    name: 'Residual Value'
+                    name: 'Residual Value',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
                 },
                 toolbox: {
                     show: true,
@@ -653,7 +760,8 @@ export default {
                         markLine: {
                             lineStyle: {
                                 width: 4,
-                                type: 'dashed'
+                                type: 'dashed',
+                                color: '#EC5156'
                             },
                             data: [
                                 [
@@ -661,7 +769,7 @@ export default {
                                         coord: [0, 0]
                                     },
                                     {
-                                        coord: [30, 0]
+                                        coord: [25, 0]
                                     }
                                 ]
                             ]
@@ -1009,8 +1117,8 @@ export default {
         .chart-right {
             width: 78%;
             float: left;
-            background-color: #ddd;
             height: 360px;
+            background: #3a3d4a;
         }
     }
     .el-dialog {
