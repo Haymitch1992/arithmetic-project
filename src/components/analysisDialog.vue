@@ -336,6 +336,7 @@ export default {
                     this.rocData.arr2 = arr2;
                     this.rocData.ks = ks;
                     this.rocData.ks_value = ks_value;
+                    this.KS = ks_value;
                     this.drawRoc('main7');
                 });
         },
@@ -382,8 +383,6 @@ export default {
                             });
                             if (k === 'AUC') {
                                 this.AUC = item[k][0];
-                            } else if (k === 'K-S') {
-                                this.KS = item[k][0];
                             } else if (k === 'F1_Score') {
                                 this.F1_Score = item[k][0];
                             }
@@ -483,7 +482,7 @@ export default {
                 },
                 xAxis: {
                     type: 'category',
-                    name: 'Recal',
+                    name: 'Recall',
                     axisLine: {
                         lineStyle: {
                             color: '#fff'
