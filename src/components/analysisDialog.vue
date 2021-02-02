@@ -54,7 +54,7 @@
                     style="width: 100%">
                     <el-table-column
                         prop="label"
-                        label="指标"
+                        label="指标数据"
                         >
                     </el-table-column>
                     <el-table-column
@@ -93,7 +93,7 @@
                     style="width: 100%">
                     <el-table-column
                         prop="label"
-                        label="指标"
+                        label="指标数据"
                         >
                     </el-table-column>
                     <el-table-column
@@ -189,7 +189,7 @@
                     style="width: 100%">
                     <el-table-column
                         prop="label"
-                        label="指标"
+                        label="指标数据"
                         >
                     </el-table-column>
                     <el-table-column

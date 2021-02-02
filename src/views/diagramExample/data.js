@@ -1959,7 +1959,7 @@ export const nodeList5 = [
                             {
                                 // 类型判断 下拉框|输入框
                                 "type": 'autoSelect', // 输入框
-                                "label": "预测结果列名",
+                                "label": "数据集名称",
                                 "placeholder": "选择要标注修改的表头",
                                 "value": "1",
                                 "tag": 'csv_name,download_path'
