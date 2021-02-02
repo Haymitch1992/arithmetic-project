@@ -478,6 +478,9 @@ export default {
                     },
                     subtext: `PR ${this.F1_Score}`
                 },
+                tooltip: {
+                    trigger: 'axis'
+                },
                 xAxis: {
                     type: 'category',
                     name: 'Recall',
@@ -526,6 +529,9 @@ export default {
                 color: this.colorList,
                 textStyle: {
                     color: '#fff'
+                },
+                tooltip: {
+                    trigger: 'axis'
                 },
                 title: {
                     subtextStyle: {
@@ -583,6 +589,9 @@ export default {
                 color: this.colorList,
                 textStyle: {
                     color: '#fff'
+                },
+                tooltip: {
+                    trigger: 'axis'
                 },
                 legend: {
                     data: ['FPR', 'TPR'],
