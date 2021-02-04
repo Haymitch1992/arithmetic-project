@@ -59,7 +59,6 @@ export default {
         },
         openAnalysis() {
             // 判断是否存在run_uuid 不存在提示
-
             if (this.isEditAreaShow.run_uuid) {
                 this.$store.commit('handleNode', {
                     nodeTpye: 'analysisDialog',

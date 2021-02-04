@@ -279,8 +279,6 @@ export default {
         return {
             arr1: [[12, 0, 0], [0, 10, 1], [0, 0, 7]],
             arr2: [[1, 0.4, 0.6], [0, 0.9091, 0.0901], [0, 0, 1]],
-            // arr1: [],
-            // arr2: [],
             LabelList: ['setosa', 'versicolor', 'virginica'],
             titleList: [
                 '聚类模型评估分析报告',
@@ -307,7 +305,7 @@ export default {
             AUC: '',
             KS: '',
             F1_Score: '',
-            run_uuid: '20f1381e828c4d5e83b19452aabfd996' // this.$store.state.currentDialog.run_uuid
+            run_uuid: this.$store.state.currentDialog.run_uuid // this.$store.state.currentDialog.run_uuid
         };
     },
     computed: {

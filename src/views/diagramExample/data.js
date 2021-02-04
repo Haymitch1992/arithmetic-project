@@ -3,88 +3,6 @@
  */
 export const nodeList = [
     {
-        label: '采样与过滤',
-        nodeSwitch: true,
-        nodeItem: [{
-            name: '随机采样',
-            component_id: 'random_sample',
-            node_type: 'item-4',
-            iconClassName: 'el-icon-loading',
-            in_ports: [0],
-            is_generate_model: "false",
-            in_ports_text: ['输入'],
-            in_ports_name: ['dataset_path'],
-            out_ports: [0],
-            out_ports_text: ['输出'],
-            out_ports_name: ['input_data_random_sample'],
-            form: [
-                {
-                    "label": "字段设置",
-                    "data": [
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "采样比例",
-                            "value": {
-                                "node_params": {
-                                    "sample_prop": 0.8
-                                }
-                            },
-                            "tag": "sample_prop"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            name: '分层采样',
-            component_id: 'level_sample',
-            node_type: 'item-4',
-            iconClassName: 'el-icon-loading',
-            in_ports: [0],
-            is_generate_model: "false",
-            in_ports_text: ['输入'],
-            in_ports_name: ['dataset_path'],
-            out_ports: [0],
-            out_ports_text: ['输出'],
-            out_ports_name: ['input_data_level_sample'],
-            form: [
-                {
-                    "label": "字段设置",
-                    "data": [
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'btn', // 输入框
-                            "label": "选择分组列",
-                            "placeholder": "选择分组列",
-                            "value": {
-                                "node_params": {
-                                    "select_target_column": []
-                                }
-                            },
-                            "tag": "select_target_column"
-                        }
-                    ]
-                }, {
-                    "label": "参数设置",
-                    "data": [
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "分层采样比例",
-                            "value": {
-                                "node_params": {
-                                    "sample_prop_dict": "A:0.2,B:0.5,C:0.3"
-                                }
-                            },
-                            "tag": "sample_prop_dict"
-                        }
-                    ]
-                }
-            ]
-        }]
-    },
-    {
         label: '数据合并',
         nodeSwitch: true,
         nodeItem: [{
@@ -395,6 +313,88 @@ export const nodeList = [
                                 }
                             },
                             "tag": "select_target_columns"
+                        }
+                    ]
+                }
+            ]
+        }]
+    },
+    {
+        label: '采样与过滤',
+        nodeSwitch: true,
+        nodeItem: [{
+            name: '随机采样',
+            component_id: 'random_sample',
+            node_type: 'item-4',
+            iconClassName: 'el-icon-loading',
+            in_ports: [0],
+            is_generate_model: "false",
+            in_ports_text: ['输入'],
+            in_ports_name: ['dataset_path'],
+            out_ports: [0],
+            out_ports_text: ['输出'],
+            out_ports_name: ['input_data_random_sample'],
+            form: [
+                {
+                    "label": "字段设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default', // 输入框
+                            "label": "采样比例",
+                            "value": {
+                                "node_params": {
+                                    "sample_prop": 0.8
+                                }
+                            },
+                            "tag": "sample_prop"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            name: '分层采样',
+            component_id: 'level_sample',
+            node_type: 'item-4',
+            iconClassName: 'el-icon-loading',
+            in_ports: [0],
+            is_generate_model: "false",
+            in_ports_text: ['输入'],
+            in_ports_name: ['dataset_path'],
+            out_ports: [0],
+            out_ports_text: ['输出'],
+            out_ports_name: ['input_data_level_sample'],
+            form: [
+                {
+                    "label": "字段设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'btn', // 输入框
+                            "label": "选择分组列",
+                            "placeholder": "选择分组列",
+                            "value": {
+                                "node_params": {
+                                    "select_target_column": []
+                                }
+                            },
+                            "tag": "select_target_column"
+                        }
+                    ]
+                }, {
+                    "label": "参数设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default', // 输入框
+                            "label": "分层采样比例",
+                            "value": {
+                                "node_params": {
+                                    "sample_prop_dict": "A:0.2,B:0.5,C:0.3"
+                                }
+                            },
+                            "tag": "sample_prop_dict"
                         }
                     ]
                 }

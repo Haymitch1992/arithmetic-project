@@ -326,6 +326,7 @@ export default {
         // this.getDataList()
         this.getNodeStair();
         this.postNodeStair();
+        this.$store.commit('changeCount', 0);
         // 取 localStorage.setItem("data_project_id", "id");
     },
     beforeDestroy() {
