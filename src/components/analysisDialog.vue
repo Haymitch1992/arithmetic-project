@@ -11,31 +11,30 @@
             <div style="max-height:60vh;overflow-y:auto;" v-show="this.$store.state.currentDialog.nodeName==='聚类评估'">
                 <el-button-group>
                     <el-button  :type="currentTab===0?'primary':'default'" size="small" @click="changejulei(0)">指标数据</el-button>
-                    <el-button  :type="currentTab===1?'primary':'default'" size="small"  @click="changejulei(1)">饼图</el-button>
-                    <el-button  :type="currentTab===2?'primary':'default'" size="small" @click="changejulei(2)">柱形图</el-button>
+                    <el-button  :type="currentTab===1?'primary':'default'" size="small"  @click="changejulei(1,'pie_data')">饼图</el-button>
+                    <el-button  :type="currentTab===2?'primary':'default'" size="small" @click="changejulei(2,'bar_data')">柱形图</el-button>
                 </el-button-group>
                 <!--表格-->
-                <table class="report-table" v-show="currentTab===0">
-                    <tr>
-                        <td>总记录数</td>
-                        <td>123</td>
-                    </tr>
-                     <tr>
-                        <td>聚类中心数</td>
-                        <td>123</td>
-                    </tr>
-                     <tr>
-                        <td>Calinski Harabasz 指标</td>
-                        <td>123</td>
-                    </tr>
-                     <tr>
-                        <td>轮廓系数指标</td>
-                        <td>123</td>
-                    </tr>
-                </table>
+                <el-table
+                    :data="tableData"
+                    class="data-table"
+                     v-show="currentTab===0"
+                    border
+                    stripe
+                    style="width: 100%">
+                    <el-table-column
+                        prop="label"
+                        label="指标数据"
+                        >
+                    </el-table-column>
+                    <el-table-column
+                        prop="value"
+                        label="值">
+                    </el-table-column>
+                </el-table>
                 <!--图-->
-                <div id="main" v-show="currentTab===1" style="width:750px;height:400px;"></div>
-                <div id="main2" v-show="currentTab===2" style="width:750px;height:400px;"></div>
+                <div id="main12" v-show="currentTab===1" style="width:750px;height:400px;"></div>
+                <div id="main13" v-show="currentTab===2" style="width:750px;height:400px;"></div>
             </div>
             <!--回归-->
             <div style="max-height:60vh;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='回归评估'">
@@ -178,7 +177,7 @@
                     <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(1,'confusion_matrix')">混淆矩阵</el-button>
                     <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2,'scale_matrix')">比例矩阵</el-button>
                     <el-button :type="currentTab===4?'primary':'default'" size="small" @click="handelMatrix(4,'class_statistics')">统计信息 </el-button>
-                    <el-button :type="currentTab===3?'primary':'default'" size="small" @click="handelMatrix(3)">预测类别分析</el-button>
+                    <el-button :type="currentTab===3?'primary':'default'" size="small" @click="handelMatrix(3,'class_predict_report')">预测类别分析</el-button>
                 </el-button-group>
                 <!--表格-->
                 <el-table
@@ -240,7 +239,34 @@
                         <span class="pos-span-2">真实</span>
                     </div>
                 </div>
-                <div id="main6" v-show="currentTab==3" style="width:750px;height:400px;"></div>
+                <div v-show="currentTab==4">
+                    <el-table
+                    :data="duofenleiData"
+                    class="data-table"
+                    border
+                    stripe
+                    style="width: 100%">
+                    <div v-for="(value,key,index) in duofenleiData[0]" :key="index">
+                        <el-table-column
+                                :prop="key"
+                                :label="key"
+                                >
+                        </el-table-column>
+                    </div>
+                </el-table>
+                    <!-- duofenleiData -->
+                </div>
+                <div class="chart-box"  v-show="currentTab===3">
+                    <div class="chart-left">
+                        <div class="chart-item">
+                            <span :class="currentItem===0?'active':''">Class Predict Report</span>
+                            <img src="../assets/img/charts-icon-4.png" alt="">
+                        </div>
+                    </div>
+                    <div class="chart-right">
+                        <div id="main11" v-show="currentItem===0" style="width:580px;height:360px;"></div>
+                    </div>
+                </div>
             </div>
         </el-dialog>
   </div>
@@ -363,33 +389,248 @@ export default {
                     index: 'class_predict_report' // 列表
                 })
                 .then(res => {
+                    let serveData = [];
+                    let labelData = [];
+                    res.data.class_predict_report.forEach(item => {
+                        for (let j in item) {
+                            serveData.push({
+                                name: j,
+                                type: 'bar',
+                                stack: 'cpr',
+                                barWidth: '20%',
+                                data: item[j]
+                            });
+                            labelData.push(j);
+                        }
+                    });
+                    var myChart = echarts.init(
+                        document.getElementById('main11')
+                    );
+                    let option = {
+                        backgroundColor: '#3A3D4A',
+                        color: this.colorList,
+                        textStyle: {
+                            color: '#fff'
+                        },
+                        tooltip: {
+                            trigger: 'axis',
+                            axisPointer: {
+                                // 坐标轴指示器，坐标轴触发有效
+                                type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                            }
+                        },
+                        toolbox: {
+                            show: true,
+                            feature: {
+                                mark: { show: true },
+                                dataView: { show: true, readOnly: false },
+                                magicType: {
+                                    show: true,
+                                    type: ['pie', 'funnel']
+                                },
+                                restore: { show: true },
+                                saveAsImage: { show: true }
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            data: labelData,
+                            name: 'Actual',
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff'
+                                }
+                            }
+                        },
+                        yAxis: {
+                            type: 'value',
+                            name: 'Number',
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff'
+                                }
+                            }
+                        },
+                        series: serveData
+                    };
+                    myChart.setOption(option);
                     console.log(res);
+                });
+        },
+        drawJuleiBar(str, obj, type) {
+            let labelData = [];
+            let pieData = [];
+            obj.forEach((item, index) => {
+                for (let j in item) {
+                    pieData.push(item[j][0]);
+                    labelData.push(j);
+                }
+            });
+            var myChart = echarts.init(document.getElementById(str));
+            let option = {
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        magicType: {
+                            show: true,
+                            type: ['pie', 'funnel']
+                        },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: labelData,
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#fff'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        data: pieData,
+                        barWidth: 20,
+                        showBackground: true,
+                        backgroundStyle: {
+                            color: '#50545C'
+                        },
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(
+                                0,
+                                0,
+                                0,
+                                1,
+                                [
+                                    { offset: 0, color: '#83bff6' },
+                                    { offset: 0.5, color: '#188df0' },
+                                    { offset: 1, color: '#6699FF' }
+                                ]
+                            )
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(
+                                    0,
+                                    0,
+                                    0,
+                                    1,
+                                    [
+                                        { offset: 0, color: '#2378f7' },
+                                        { offset: 0.7, color: '#2378f7' },
+                                        { offset: 1, color: '#6699FF' }
+                                    ]
+                                )
+                            }
+                        },
+                        type: 'bar'
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        },
+        drawJulei(str, obj, type) {
+            let labelData = [];
+            let pieData = [];
+            obj.forEach((item, index) => {
+                for (let j in item) {
+                    pieData.push({
+                        value: item[j][0],
+                        name: j,
+                        itemStyle: {
+                            color: this.colorList[index]
+                        }
+                    });
+                    labelData.push(j);
+                }
+            });
+            let myChart = echarts.init(document.getElementById(str));
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b} : {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    top: '40px',
+                    right: 'right',
+                    data: labelData,
+                    textStyle: {
+                        color: '#fff'
+                    }
+                },
+                toolbox: {
+                    show: true,
+                    feature: {
+                        mark: { show: true },
+                        dataView: { show: true, readOnly: false },
+                        magicType: {
+                            show: true,
+                            type: ['pie', 'funnel']
+                        },
+                        restore: { show: true },
+                        saveAsImage: { show: true }
+                    }
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: type,
+                        radius: '55%',
+                        center: ['50%', '60%'],
+                        data: pieData,
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        }
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+        },
+        // 获取聚类数据
+        getBar() {
+            // class_statistics
+            this.$api
+                .get(GET_RESULT_REPORT, {
+                    run_uuid: this.run_uuid,
+                    index: 'bar_data' // 列表
+                })
+                .then(res => {
+                    console.log(res.data.bar_data);
+                    this.drawJuleiBar('main13', res.data.bar_data, 'bar');
+                });
+        },
+        getPie() {
+            // class_statistics
+            this.$api
+                .get(GET_RESULT_REPORT, {
+                    run_uuid: this.run_uuid,
+                    index: 'pie_data' // 列表
+                })
+                .then(res => {
+                    console.log(res.data.pie_data);
+                    this.drawJulei('main12', res.data.pie_data, 'pie');
                 });
         },
         // 获取多分类
         getClassStatistics() {
-            let obj = [
-                {
-                    virginica: 1,
-                    versicolor: 2,
-                    setosa: 3
-                },
-                {
-                    virginica: 1,
-                    versicolor: 2,
-                    setosa: 3
-                },
-                {
-                    virginica: 1,
-                    versicolor: 2,
-                    setosa: 3
-                },
-                {
-                    virginica: 0,
-                    versicolor: 0,
-                    setosa: 0
-                }
-            ];
             // class_statistics
             this.$api
                 .get(GET_RESULT_REPORT, {
@@ -397,17 +638,8 @@ export default {
                     index: 'class_statistics' // 列表
                 })
                 .then(res => {
-                    this.duofenleiData = [];
-                    // res.data.class_predict_report.forEach(item => {
-                    //     for (let k in item) {
-                    //         this.duofenleiData.push([]);
-                    //         for (let j = 0; j < item[k].length; j++) {
-                    //             this.duofenleiData[j][k] = item[k][j];
-                    //         }
-                    //     }
-                    //     this.duofenleiData.push(obj);
-                    // });
-                    console.log(res.data.class_predict_report);
+                    this.duofenleiData = res.data.class_statistics;
+                    console.log(res.data.class_statistics);
                 });
         },
         // 获取 比例矩阵
@@ -754,7 +986,7 @@ export default {
         },
         handelMatrix(num, type) {
             this.currentTab = num;
-            this.createMatrix();
+            // this.createMatrix();
             // 聚类矩阵
             if (type === 'confusion_matrix') {
                 this.getConfusionMatrix();
@@ -763,25 +995,17 @@ export default {
                 this.getScalenMatrix();
             } else if (type === 'class_statistics') {
                 this.getClassStatistics();
+            } else if (type === 'class_predict_report') {
+                this.getClassPredictReport();
             }
 
             this.createScatter('main4');
-            this.createBarData('main6');
         },
         handleClose() {
             this.$store.commit('handleNode', {
                 nodeTpye: 'analysisDialog',
                 status: false
             });
-        },
-        // 创建矩阵
-        createMatrix() {
-            let arr1 = [[12, 0, 0], [0, 10, 1], [0, 0, 7]];
-            let arr2 = [
-                [1, 0, 0],
-                [0, 0.9090909090909091, 0.09090909090909091],
-                [0, 0, 1]
-            ];
         },
         // 创建散点图
         createScatter(str) {
@@ -843,212 +1067,22 @@ export default {
             };
             myChart.setOption(option);
         },
-        createData(str) {
-            // 出事haul
-            let myChart = echarts.init(document.getElementById(str));
-            let option = {
-                tooltip: {
-                    trigger: 'item',
-                    formatter: '{a} <br/>{b} : {c} ({d}%)'
-                },
-                legend: {
-                    orient: 'vertical',
-                    top: '40px',
-                    right: 'right',
-                    data: [
-                        '直接访问',
-                        '邮件营销',
-                        '联盟广告',
-                        '视频广告',
-                        '搜索引擎'
-                    ],
-                    textStyle: {
-                        color: '#fff'
-                    }
-                },
-                toolbox: {
-                    show: true,
-                    feature: {
-                        mark: { show: true },
-                        dataView: { show: true, readOnly: false },
-                        magicType: {
-                            show: true,
-                            type: ['pie', 'funnel']
-                        },
-                        restore: { show: true },
-                        saveAsImage: { show: true }
-                    }
-                },
-                series: [
-                    {
-                        name: '访问来源',
-                        type: 'pie',
-                        radius: '55%',
-                        center: ['50%', '60%'],
-                        data: [
-                            {
-                                value: 335,
-                                name: '直接访问',
-                                itemStyle: {
-                                    color: this.colorList[0]
-                                }
-                            },
-                            {
-                                value: 310,
-                                name: '邮件营销',
-                                itemStyle: {
-                                    color: this.colorList[1]
-                                }
-                            },
-                            {
-                                value: 234,
-                                name: '联盟广告',
-                                itemStyle: {
-                                    color: this.colorList[2]
-                                }
-                            },
-                            {
-                                value: 135,
-                                name: '视频广告',
-                                itemStyle: {
-                                    color: this.colorList[3]
-                                }
-                            },
-                            {
-                                value: 1548,
-                                name: '搜索引擎',
-                                itemStyle: {
-                                    color: this.colorList[4]
-                                }
-                            }
-                        ],
-                        emphasis: {
-                            itemStyle: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
-                    }
-                ]
-            };
-            // 使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);
-        },
-        changejulei(num) {
+        changejulei(num, type) {
             this.currentTab = num;
-            this.createData('main');
-            this.createBarData('main2');
+            switch (type) {
+                case 'bar_data':
+                    this.getBar();
+                    // 获取柱状图
+                    break;
+                case 'pie_data':
+                    this.getPie();
+                    // 获取饼图状图
+                    break;
+            }
         },
         changeTab(num) {
             this.currentTab = num;
             this.createScatter('main3');
-        },
-        createBarData(str) {
-            var myChart = echarts.init(document.getElementById(str));
-            let option = {
-                toolbox: {
-                    show: true,
-                    feature: {
-                        mark: { show: true },
-                        dataView: { show: true, readOnly: false },
-                        magicType: {
-                            show: true,
-                            type: ['pie', 'funnel']
-                        },
-                        restore: { show: true },
-                        saveAsImage: { show: true }
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    data: [
-                        'Mon',
-                        'Tue',
-                        'Wed',
-                        'Thu',
-                        'Fri',
-                        'Sat',
-                        'Sun',
-                        'Mon',
-                        'Tue',
-                        'Wed',
-                        'Thu',
-                        'Fri',
-                        'Sat',
-                        'Sun'
-                    ],
-                    axisLabel: {
-                        textStyle: {
-                            color: '#fff'
-                        }
-                    }
-                },
-                yAxis: {
-                    type: 'value',
-                    axisLabel: {
-                        textStyle: {
-                            color: '#999'
-                        }
-                    }
-                },
-                series: [
-                    {
-                        data: [
-                            120,
-                            200,
-                            150,
-                            80,
-                            70,
-                            110,
-                            130,
-                            120,
-                            200,
-                            150,
-                            80,
-                            70,
-                            110,
-                            130
-                        ],
-                        barWidth: 20,
-                        showBackground: true,
-                        backgroundStyle: {
-                            color: '#50545C'
-                        },
-                        itemStyle: {
-                            color: new echarts.graphic.LinearGradient(
-                                0,
-                                0,
-                                0,
-                                1,
-                                [
-                                    { offset: 0, color: '#83bff6' },
-                                    { offset: 0.5, color: '#188df0' },
-                                    { offset: 1, color: '#6699FF' }
-                                ]
-                            )
-                        },
-                        emphasis: {
-                            itemStyle: {
-                                color: new echarts.graphic.LinearGradient(
-                                    0,
-                                    0,
-                                    0,
-                                    1,
-                                    [
-                                        { offset: 0, color: '#2378f7' },
-                                        { offset: 0.7, color: '#2378f7' },
-                                        { offset: 1, color: '#6699FF' }
-                                    ]
-                                )
-                            }
-                        },
-                        type: 'bar'
-                    }
-                ]
-            };
-            // 使用刚指定的配置项和数据显示图表。
-            myChart.setOption(option);
         }
     },
     mounted() {}
