@@ -59,23 +59,17 @@ export default {
         },
         openAnalysis() {
             // 判断是否存在run_uuid 不存在提示
-            console.log(this.isEditAreaShow.run_uuid);
-            this.$store.commit('handleNode', {
-                nodeTpye: 'analysisDialog',
-                status: true,
-                run_uuid: this.isEditAreaShow.run_uuid,
-                nodeName: this.isEditAreaShow.nodeName
-            });
-            // if (this.isEditAreaShow.run_uuid) {
-            //     this.$store.commit('handleNode', {
-            //         nodeTpye: 'analysisDialog',
-            //         status: true,
-            //         run_uuid: this.isEditAreaShow.run_uuid,
-            //         nodeName: this.isEditAreaShow.nodeName
-            //     });
-            // } else {
-            //     this.$message.error('请先运行试验');
-            // }
+
+            if (this.isEditAreaShow.run_uuid) {
+                this.$store.commit('handleNode', {
+                    nodeTpye: 'analysisDialog',
+                    status: true,
+                    run_uuid: this.isEditAreaShow.run_uuid,
+                    nodeName: this.isEditAreaShow.nodeName
+                });
+            } else {
+                this.$message.error('请先运行试验');
+            }
             // // 当前节点参数保存 id 节点名称
             // console.log('查看当前节点参数', this.isEditAreaShow);
         },
