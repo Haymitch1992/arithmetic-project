@@ -175,8 +175,9 @@
                 <!--图-->
                 <el-button-group>
                     <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0)">指标数据</el-button>
-                    <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(1,'confusion_matrix')">混淆矩阵</el-button>
-                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(2,'scale_matrix')">比例矩阵</el-button>
+                    <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(1,'confusion_matrix')">混淆矩阵</el-button>
+                    <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2,'scale_matrix')">比例矩阵</el-button>
+                    <el-button :type="currentTab===4?'primary':'default'" size="small" @click="handelMatrix(4,'class_statistics')">统计信息 </el-button>
                     <el-button :type="currentTab===3?'primary':'default'" size="small" @click="handelMatrix(3)">预测类别分析</el-button>
                 </el-button-group>
                 <!--表格-->
@@ -275,10 +276,12 @@ export default {
             ],
             echartsData: [],
             tableData: [], // 列表
+            duofenleiData: [],
             rocData: {},
             AUC: '',
             KS: '',
-            F1_Score: ''
+            F1_Score: '',
+            run_uuid: '20f1381e828c4d5e83b19452aabfd996' // this.$store.state.currentDialog.run_uuid
         };
     },
     computed: {
@@ -300,7 +303,7 @@ export default {
         getRoc() {
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.$store.state.currentDialog.run_uuid,
+                    run_uuid: this.run_uuid,
                     index: 'roc' // 列表
                 })
                 .then(res => {
@@ -334,6 +337,7 @@ export default {
                     this.rocData.arr2 = arr2;
                     this.rocData.ks = ks;
                     this.rocData.ks_value = ks_value;
+                    this.rocData.pr = this.rocData.pr.reverse();
                     this.KS = ks_value;
                     this.drawRoc('main7');
                 });
@@ -342,7 +346,7 @@ export default {
         getConfusionMatrix() {
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.$store.state.currentDialog.run_uuid,
+                    run_uuid: this.run_uuid,
                     index: 'confusion_matrix' // 列表
                 })
                 .then(res => {
@@ -351,11 +355,66 @@ export default {
                     console.log(res);
                 });
         },
+        // 获取多分类统计信息
+        getClassPredictReport() {
+            this.$api
+                .get(GET_RESULT_REPORT, {
+                    run_uuid: this.run_uuid,
+                    index: 'class_predict_report' // 列表
+                })
+                .then(res => {
+                    console.log(res);
+                });
+        },
+        // 获取多分类
+        getClassStatistics() {
+            let obj = [
+                {
+                    virginica: 1,
+                    versicolor: 2,
+                    setosa: 3
+                },
+                {
+                    virginica: 1,
+                    versicolor: 2,
+                    setosa: 3
+                },
+                {
+                    virginica: 1,
+                    versicolor: 2,
+                    setosa: 3
+                },
+                {
+                    virginica: 0,
+                    versicolor: 0,
+                    setosa: 0
+                }
+            ];
+            // class_statistics
+            this.$api
+                .get(GET_RESULT_REPORT, {
+                    run_uuid: this.run_uuid,
+                    index: 'class_statistics' // 列表
+                })
+                .then(res => {
+                    this.duofenleiData = [];
+                    // res.data.class_predict_report.forEach(item => {
+                    //     for (let k in item) {
+                    //         this.duofenleiData.push([]);
+                    //         for (let j = 0; j < item[k].length; j++) {
+                    //             this.duofenleiData[j][k] = item[k][j];
+                    //         }
+                    //     }
+                    //     this.duofenleiData.push(obj);
+                    // });
+                    console.log(res.data.class_predict_report);
+                });
+        },
         // 获取 比例矩阵
         getScalenMatrix() {
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.$store.state.currentDialog.run_uuid,
+                    run_uuid: this.run_uuid,
                     index: 'scale_matrix' // 列表
                 })
                 .then(res => {
@@ -368,7 +427,7 @@ export default {
         getReport() {
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.$store.state.currentDialog.run_uuid,
+                    run_uuid: this.run_uuid,
                     index: 'metrics_data' // 列表
                 })
                 .then(res => {
@@ -389,7 +448,7 @@ export default {
                 });
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.$store.state.currentDialog.run_uuid,
+                    run_uuid: this.run_uuid,
                     index: 'residual' // 图表
                 })
                 .then(res => {
@@ -514,7 +573,7 @@ export default {
                 },
                 series: [
                     {
-                        data: this.rocData.pr.reverse(),
+                        data: this.rocData.pr,
                         type: 'line'
                     }
                 ]
@@ -702,6 +761,8 @@ export default {
             } else if (type === 'scale_matrix') {
                 // 比例矩阵
                 this.getScalenMatrix();
+            } else if (type === 'class_statistics') {
+                this.getClassStatistics();
             }
 
             this.createScatter('main4');

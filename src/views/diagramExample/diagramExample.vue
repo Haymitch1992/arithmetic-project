@@ -1103,7 +1103,7 @@ export default {
         findNodeMaxNumber(str) {
             // 通过传入的节点名称 进行查找
             let targetArr = this.uploadJSONDataFillThere.nodes;
-            let resultNum = 1; // 初始值是1
+            let resultNum = 0; // 初始值是0
             targetArr.forEach(item => {
                 if (item.name.indexOf(str) !== -1) {
                     let splitArr = item.name.split('-');

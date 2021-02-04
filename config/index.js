@@ -6,20 +6,13 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {//代理api
-        // target: "http://10.8.3.61:12199",//本地y
-        // target: "http://192.168.7.61:12199",//本地
-        // target: "http://192.168.30.47:12199",//服务器
-        // target: "http://192.168.7.45:15000", // 建志的本地服务
-        // target:"http://192.168.30.110:15000",// 测试服务器
-        // target: "http://192.168.6.159:15000", // 建辉的本地
-        // target:"http://47.95.214.123:8080",// 测试服务器
-        target:"http://192.168.59.11:5001",// 测试服务器 王殿文本地
+        target:"http://47.95.214.123:8080",// 测试服务器
+        //target:"http://192.168.59.11:5001",// 测试服务器 王殿文本地
         pathRewrite:{
           "^/api": ''
         },
