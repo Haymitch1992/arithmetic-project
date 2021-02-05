@@ -202,7 +202,7 @@
                         <div class="matrix-line" v-for="(item ,index) in arr1" :key="index">
                             <div class="matrix-td" :style="{backgroundColor:`rgba(100,147,248,${1*item2/12})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
                         </div>
-                        <div class="matrix-tool-x" >
+                        <div class="matrix-tool-x"  :style="{width:arr1.length*100+'px'}">
                             <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
                                 <i></i>
                                 <span>{{item}}</span>
@@ -223,7 +223,7 @@
                         <div class="matrix-line" v-for="(item ,index) in arr2" :key="index">
                             <div class="matrix-td"  :style="{backgroundColor:`rgba(100,147,248,${1*item2/1})`}" v-for="(item2,index2) in item" :key="index2">{{item2}}</div>
                         </div>
-                        <div class="matrix-tool-x" >
+                        <div class="matrix-tool-x"  :style="{width:arr1.length*100+'px'}">
                             <div class="matrix-tool-item" v-for="item in LabelList" :key="item">
                                 <i></i>
                                 <span>{{item}}</span>
@@ -246,13 +246,12 @@
                     border
                     stripe
                     style="width: 100%">
-                    <div v-for="(value,key,index) in duofenleiData[0]" :key="index">
                         <el-table-column
-                                :prop="key"
+                         v-for="(value,key,index) in duofenleiData[0]" :key="index"
+                                :prop="label_list_duofen[index]"
                                 :label="key"
                                 >
                         </el-table-column>
-                    </div>
                 </el-table>
                     <!-- duofenleiData -->
                 </div>
@@ -277,6 +276,13 @@ import { GET_RESULT_REPORT } from '../assets/url.js';
 export default {
     data() {
         return {
+            label_list_duofen: [
+                'category',
+                'f1-score',
+                'precision',
+                'recall',
+                'total'
+            ],
             arr1: [[12, 0, 0], [0, 10, 1], [0, 0, 7]],
             arr2: [[1, 0.4, 0.6], [0, 0.9091, 0.0901], [0, 0, 1]],
             LabelList: ['setosa', 'versicolor', 'virginica'],
@@ -305,7 +311,7 @@ export default {
             AUC: '',
             KS: '',
             F1_Score: '',
-            run_uuid: this.$store.state.currentDialog.run_uuid // this.$store.state.currentDialog.run_uuid
+            run_uuid: this.$store.state.currentDialog.run_uuid
         };
     },
     computed: {
@@ -395,7 +401,7 @@ export default {
                                 name: j,
                                 type: 'bar',
                                 stack: 'cpr',
-                                barWidth: '20%',
+                                barWidth: 20,
                                 data: item[j]
                             });
                             labelData.push(j);
@@ -420,12 +426,6 @@ export default {
                         toolbox: {
                             show: true,
                             feature: {
-                                mark: { show: true },
-                                dataView: { show: true, readOnly: false },
-                                magicType: {
-                                    show: true,
-                                    type: ['pie', 'funnel']
-                                },
                                 restore: { show: true },
                                 saveAsImage: { show: true }
                             }
@@ -466,15 +466,17 @@ export default {
             });
             var myChart = echarts.init(document.getElementById(str));
             let option = {
+                color: this.colorList,
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: { show: true },
-                        dataView: { show: true, readOnly: false },
-                        magicType: {
-                            show: true,
-                            type: ['pie', 'funnel']
-                        },
                         restore: { show: true },
                         saveAsImage: { show: true }
                     }
@@ -501,38 +503,7 @@ export default {
                         data: pieData,
                         barWidth: 20,
                         showBackground: true,
-                        backgroundStyle: {
-                            color: '#50545C'
-                        },
-                        itemStyle: {
-                            color: new echarts.graphic.LinearGradient(
-                                0,
-                                0,
-                                0,
-                                1,
-                                [
-                                    { offset: 0, color: '#83bff6' },
-                                    { offset: 0.5, color: '#188df0' },
-                                    { offset: 1, color: '#6699FF' }
-                                ]
-                            )
-                        },
-                        emphasis: {
-                            itemStyle: {
-                                color: new echarts.graphic.LinearGradient(
-                                    0,
-                                    0,
-                                    0,
-                                    1,
-                                    [
-                                        { offset: 0, color: '#2378f7' },
-                                        { offset: 0.7, color: '#2378f7' },
-                                        { offset: 1, color: '#6699FF' }
-                                    ]
-                                )
-                            }
-                        },
-                        type: 'bar'
+                        type: type
                     }
                 ]
             };
@@ -556,6 +527,7 @@ export default {
             });
             let myChart = echarts.init(document.getElementById(str));
             let option = {
+                color: this.colorList,
                 tooltip: {
                     trigger: 'item',
                     formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -572,12 +544,6 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: { show: true },
-                        dataView: { show: true, readOnly: false },
-                        magicType: {
-                            show: true,
-                            type: ['pie', 'funnel']
-                        },
                         restore: { show: true },
                         saveAsImage: { show: true }
                     }
@@ -588,14 +554,7 @@ export default {
                         type: type,
                         radius: '55%',
                         center: ['50%', '60%'],
-                        data: pieData,
-                        emphasis: {
-                            itemStyle: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
+                        data: pieData
                     }
                 ]
             };
@@ -603,7 +562,7 @@ export default {
             myChart.setOption(option);
         },
         // 获取聚类数据
-        getBar() {
+        getJuleiEchartData(type) {
             // class_statistics
             this.$api
                 .get(GET_RESULT_REPORT, {
@@ -611,20 +570,18 @@ export default {
                     index: 'bar_data' // 列表
                 })
                 .then(res => {
-                    console.log(res.data.bar_data);
-                    this.drawJuleiBar('main13', res.data.bar_data, 'bar');
-                });
-        },
-        getPie() {
-            // class_statistics
-            this.$api
-                .get(GET_RESULT_REPORT, {
-                    run_uuid: this.run_uuid,
-                    index: 'pie_data' // 列表
-                })
-                .then(res => {
-                    console.log(res.data.pie_data);
-                    this.drawJulei('main12', res.data.pie_data, 'pie');
+                    switch (type) {
+                        case 'bar':
+                            this.drawJuleiBar(
+                                'main13',
+                                res.data.bar_data,
+                                'bar'
+                            );
+                            break;
+                        case 'pie':
+                            this.drawJulei('main12', res.data.bar_data, 'pie');
+                            break;
+                    }
                 });
         },
         // 获取多分类
@@ -653,6 +610,17 @@ export default {
                     console.log(res);
                 });
         },
+        // 文字转换
+        transformZn(str) {
+            switch (str) {
+                case 'Number_of_Samples':
+                    return '样本总数';
+                case 'Clusters':
+                    return '类别数量';
+                default:
+                    return str.replace(/_/g, ' ');
+            }
+        },
         // 获取 20f1381e828c4d5e83b19452aabfd996 数据
         getReport() {
             this.$api
@@ -662,10 +630,11 @@ export default {
                 })
                 .then(res => {
                     this.tableData = [];
+
                     res.data.metrics_data.forEach(item => {
                         for (let k in item) {
                             this.tableData.push({
-                                label: k,
+                                label: this.transformZn(k),
                                 value: item[k][0] + ''
                             });
                             if (k === 'AUC') {
@@ -704,12 +673,6 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: { show: true },
-                        dataView: { show: true, readOnly: false },
-                        magicType: {
-                            show: true,
-                            type: ['pie', 'funnel']
-                        },
                         restore: { show: true },
                         saveAsImage: { show: true }
                     }
@@ -782,12 +745,6 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: { show: true },
-                        dataView: { show: true, readOnly: false },
-                        magicType: {
-                            show: true,
-                            type: ['pie', 'funnel']
-                        },
                         restore: { show: true },
                         saveAsImage: { show: true }
                     }
@@ -841,12 +798,6 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: { show: true },
-                        dataView: { show: true, readOnly: false },
-                        magicType: {
-                            show: true,
-                            type: ['pie', 'funnel']
-                        },
                         restore: { show: true },
                         saveAsImage: { show: true }
                     }
@@ -907,12 +858,6 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: { show: true },
-                        dataView: { show: true, readOnly: false },
-                        magicType: {
-                            show: true,
-                            type: ['pie', 'funnel']
-                        },
                         restore: { show: true },
                         saveAsImage: { show: true }
                     }
@@ -1036,12 +981,6 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        mark: { show: true },
-                        dataView: { show: true, readOnly: false },
-                        magicType: {
-                            show: true,
-                            type: ['pie', 'funnel']
-                        },
                         restore: { show: true },
                         saveAsImage: { show: true }
                     }
@@ -1069,11 +1008,11 @@ export default {
             this.currentTab = num;
             switch (type) {
                 case 'bar_data':
-                    this.getBar();
+                    this.getJuleiEchartData('bar');
                     // 获取柱状图
                     break;
                 case 'pie_data':
-                    this.getPie();
+                    this.getJuleiEchartData('pie');
                     // 获取饼图状图
                     break;
             }

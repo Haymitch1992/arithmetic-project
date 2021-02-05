@@ -128,7 +128,7 @@
         </div>
         <demonStation v-if="this.$store.state.demoStationStatus"></demonStation>
         <!--创建实验-->
-        <el-dialog title="创建实验" :visible.sync="dialogFormVisible" :before-close="closeDialog" class="create-test">
+        <el-dialog title="创建实验" :visible.sync="dialogFormVisible" :close-on-click-modal="false"  class="create-test">
             <el-form>
                 <el-form-item label="实验名称" >
                     <el-input v-model="form.test_name" autocomplete="off"></el-input>
@@ -216,27 +216,13 @@ export default {
     watch: {
         currentTabNum(newNum, oldNum) {
             // 没有实验不允许用户切换
-            if (this.choiceNodeList.length === 0) {
-                this.$confirm('没有实验对象，请先创建实验', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                })
-                    .then(() => {
-                        this.dialogFormVisible = true;
-                    })
-                    .catch(() => {
-                        this.$message({
-                            type: 'info',
-                            message: '已取消'
-                        });
-                    });
-            }
+            this.isShowDialog();
         }
     },
     props: {},
     data() {
         return {
+            getAllTestStatus: false,
             searchNode: '',
             searchNodeList: [],
             showSelectDialog: false,
@@ -333,6 +319,26 @@ export default {
         this.onkeydown = null; // 销毁事件
     },
     methods: {
+        // 是否展示创建弹窗
+        isShowDialog() {
+            if (this.choiceNodeList.length === 0 && this.getAllTestStatus) {
+                // 初始化的时候 等于0 且接口返回完数据
+                this.$confirm('没有实验对象，请先创建实验', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                })
+                    .then(() => {
+                        this.dialogFormVisible = true;
+                    })
+                    .catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消'
+                        });
+                    });
+            }
+        },
         // 查找搜索的节点
         findNodeList() {
             let target = [];
@@ -1035,6 +1041,12 @@ export default {
                     data_project_id: this.data_project_id
                 })
                 .then(res => {
+                    if (res.data.all_project.length === 0) {
+                        this.getAllTestStatus = true;
+                        this.isShowDialog();
+                    } else {
+                        this.getAllTestStatus = false;
+                    }
                     this.all_project = res.data.all_project;
                     // 默认拿 第一个实验
                     if (

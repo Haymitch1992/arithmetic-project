@@ -67,5 +67,5 @@ conn
         port: server.port,
         username: server.username,
         password: server.password
-        //privateKey: require('fs').readFileSync('/home/admin/.ssh/id_dsa')
+        // privateKey: require('fs').readFileSync('/home/admin/.ssh/id_dsa')
     });
