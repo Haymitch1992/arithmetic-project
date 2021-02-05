@@ -10,7 +10,7 @@
             <!--聚类-->
             <div style="max-height:60vh;overflow-y:auto;" v-show="this.$store.state.currentDialog.nodeName==='聚类评估'">
                 <el-button-group>
-                    <el-button  :type="currentTab===0?'primary':'default'" size="small" @click="changejulei(0)">指标数据</el-button>
+                    <el-button  :type="currentTab===0?'primary':'default'" size="small" @click="changejulei(0,'')">指标数据</el-button>
                     <el-button  :type="currentTab===1?'primary':'default'" size="small"  @click="changejulei(1,'pie_data')">饼图</el-button>
                     <el-button  :type="currentTab===2?'primary':'default'" size="small" @click="changejulei(2,'bar_data')">柱形图</el-button>
                 </el-button-group>
@@ -77,10 +77,10 @@
             <div style="max-height:60vh;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='二分类评估'">
                 <!--图-->
                 <el-button-group>
-                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0)">指标数据</el-button>
+                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0,'')">指标数据</el-button>
                     <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(1,'confusion_matrix')">混淆矩阵</el-button>
                     <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2,'scale_matrix')">比例矩阵</el-button>
-                    <el-button :type="currentTab===3?'primary':'default'" size="small" @click="handelMatrix(3)">图表</el-button>
+                    <el-button :type="currentTab===3?'primary':'default'" size="small" @click="handelMatrix(3,'')">图表</el-button>
                 </el-button-group>
                 <!--表格-->
                 <el-table
@@ -173,7 +173,7 @@
             <div style="max-height:60vh;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='多分类评估'">
                 <!--图-->
                 <el-button-group>
-                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0)">指标数据</el-button>
+                    <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0,'')">指标数据</el-button>
                     <el-button :type="currentTab===1?'primary':'default'" size="small" @click="handelMatrix(1,'confusion_matrix')">混淆矩阵</el-button>
                     <el-button :type="currentTab===2?'primary':'default'" size="small" @click="handelMatrix(2,'scale_matrix')">比例矩阵</el-button>
                     <el-button :type="currentTab===4?'primary':'default'" size="small" @click="handelMatrix(4,'class_statistics')">统计信息 </el-button>
@@ -549,7 +549,6 @@ export default {
                 },
                 series: [
                     {
-                        name: '访问来源',
                         type: type,
                         radius: '55%',
                         center: ['50%', '60%'],

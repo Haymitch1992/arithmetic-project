@@ -1009,6 +1009,10 @@ export default {
                 });
         },
         saveNode() {
+            // 判断当前数据 是否是空
+            if (this.yourJSONDataFillThere.nodes.length === 0) {
+                return;
+            }
             this.$api
                 .post(SAVE_NODES, {
                     data_user_id: localStorage.getItem('data_user_id'),
