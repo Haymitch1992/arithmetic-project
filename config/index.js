@@ -11,8 +11,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {//代理api
-        target:"http://47.95.214.123:8080",// 测试服务器
-        //target:"http://192.168.59.11:5001",// 测试服务器 王殿文本地
+        // target:"http://47.95.214.123:8080",// 测试服务器
+        target:"http://192.168.59.11:5001",// 测试服务器 王殿文本地
         pathRewrite:{
           "^/api": ''
         },

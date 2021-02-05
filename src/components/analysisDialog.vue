@@ -310,8 +310,7 @@ export default {
             rocData: {},
             AUC: '',
             KS: '',
-            F1_Score: '',
-            run_uuid: this.$store.state.currentDialog.run_uuid
+            F1_Score: ''
         };
     },
     computed: {
@@ -333,7 +332,7 @@ export default {
         getRoc() {
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.run_uuid,
+                    run_uuid: this.$store.state.currentDialog.run_uuid,
                     index: 'roc' // 列表
                 })
                 .then(res => {
@@ -376,7 +375,7 @@ export default {
         getConfusionMatrix() {
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.run_uuid,
+                    run_uuid: this.$store.state.currentDialog.run_uuid,
                     index: 'confusion_matrix' // 列表
                 })
                 .then(res => {
@@ -389,7 +388,7 @@ export default {
         getClassPredictReport() {
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.run_uuid,
+                    run_uuid: this.$store.state.currentDialog.run_uuid,
                     index: 'class_predict_report' // 列表
                 })
                 .then(res => {
@@ -566,7 +565,7 @@ export default {
             // class_statistics
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.run_uuid,
+                    run_uuid: this.$store.state.currentDialog.run_uuid,
                     index: 'bar_data' // 列表
                 })
                 .then(res => {
@@ -589,7 +588,7 @@ export default {
             // class_statistics
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.run_uuid,
+                    run_uuid: this.$store.state.currentDialog.run_uuid,
                     index: 'class_statistics' // 列表
                 })
                 .then(res => {
@@ -601,7 +600,7 @@ export default {
         getScalenMatrix() {
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.run_uuid,
+                    run_uuid: this.$store.state.currentDialog.run_uuid,
                     index: 'scale_matrix' // 列表
                 })
                 .then(res => {
@@ -625,7 +624,7 @@ export default {
         getReport() {
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.run_uuid,
+                    run_uuid: this.$store.state.currentDialog.run_uuid,
                     index: 'metrics_data' // 列表
                 })
                 .then(res => {
@@ -647,7 +646,7 @@ export default {
                 });
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.run_uuid,
+                    run_uuid: this.$store.state.currentDialog.run_uuid,
                     index: 'residual' // 图表
                 })
                 .then(res => {
