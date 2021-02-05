@@ -991,6 +991,10 @@ export default {
         },
         getNodeList() {
             // GET_NODE_INFORMATION
+            this.yourJSONDataFillThere = {
+                nodes: [],
+                edges: []
+            };
             this.$api
                 .get(
                     GET_NODE_INFORMATION +
