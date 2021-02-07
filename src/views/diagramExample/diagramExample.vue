@@ -1181,7 +1181,11 @@ export default {
         },
         // 追加模型测试节点
         addNodeModelTest(pos_x, pos_y, node_id, str) {
-            let obj = this.nodeLabel4[0].nodeItem[0]; // 拿到模型数据模板
+            // 克隆对象
+            let obj = JSON.parse(
+                JSON.stringify(this.nodeLabel4[0].nodeItem[0])
+            );
+            // 重置模板数据
             let component_id = str + obj.component_id;
             const params = {
                 model_id: sessionStorage['newGraph'],

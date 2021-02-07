@@ -5,7 +5,7 @@
             :title="`${this.$store.state.currentDialog.nodeName}-分析报告`"
              class="dataView"
             :visible.sync="this.$store.state.analysisDialog"
-            width="50%"
+            width="70%"
             :before-close="handleClose">
             <!--聚类-->
             <div style="max-height:60vh;overflow-y:auto;" v-show="this.$store.state.currentDialog.nodeName==='聚类评估'">
@@ -117,8 +117,8 @@
                                 <span>{{item}}</span>
                             </div>
                         </div>
-                        <span class="pos-span-1">预测</span>
-                        <span class="pos-span-2">真实</span>
+                        <span class="pos-span-1" :style="{top:arr1.length*100/2- 10+'px'}">预测</span>
+                        <span class="pos-span-2" :style="{left:arr1.length*100/2- 30+'px'}">真实</span>
                     </div>
                 </div>
                 <div style="height:360px;" v-show="currentTab===2">
@@ -138,8 +138,8 @@
                                 <span>{{item}}</span>
                             </div>
                         </div>
-                        <span class="pos-span-1">预测</span>
-                        <span class="pos-span-2">真实</span>
+                        <span class="pos-span-1" :style="{top:arr1.length*100/2 - 10+'px'}">预测</span>
+                        <span class="pos-span-2" :style="{left:arr1.length*100/2 - 30+'px'}">真实</span>
                     </div>
                 </div>
                 <div class="chart-box"  v-show="currentTab===3">
@@ -170,7 +170,7 @@
                 </div>
             </div>
             <!--多分类-->
-            <div style="max-height:60vh;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='多分类评估'">
+            <div style="max-height:80vh;overflow-y:auto;"  v-show="this.$store.state.currentDialog.nodeName==='多分类评估'">
                 <!--图-->
                 <el-button-group>
                     <el-button :type="currentTab===0?'primary':'default'" size="small"  @click="handelMatrix(0,'')">指标数据</el-button>
@@ -214,8 +214,8 @@
                                 <span>{{item}}</span>
                             </div>
                         </div>
-                        <span class="pos-span-1">预测</span>
-                        <span class="pos-span-2">真实</span>
+                        <span class="pos-span-1" :style="{top:arr1.length*100/2- 10+'px'}">预测</span>
+                        <span class="pos-span-2" :style="{left:arr1.length*100/2- 30+'px'}">真实</span>
                     </div>
                 </div>
                 <div style="height:360px;" v-show="currentTab===2">
@@ -235,8 +235,8 @@
                                 <span>{{item}}</span>
                             </div>
                         </div>
-                        <span class="pos-span-1">预测</span>
-                        <span class="pos-span-2">真实</span>
+                        <span class="pos-span-1" :style="{top:arr1.length*100/2- 10+'px'}">预测</span>
+                        <span class="pos-span-2" :style="{left:arr1.length*100/2- 30+'px'}">真实</span>
                     </div>
                 </div>
                 <div v-show="currentTab==4">
@@ -425,14 +425,13 @@ export default {
                         toolbox: {
                             show: true,
                             feature: {
-                                restore: { show: true },
                                 saveAsImage: { show: true }
                             }
                         },
                         xAxis: {
                             type: 'category',
                             data: labelData,
-                            name: 'Actual',
+                            name: 'Actual Class',
                             axisLine: {
                                 lineStyle: {
                                     color: '#fff'
@@ -441,7 +440,7 @@ export default {
                         },
                         yAxis: {
                             type: 'value',
-                            name: 'Number',
+                            name: 'Number of Predicted Class',
                             axisLine: {
                                 lineStyle: {
                                     color: '#fff'
@@ -476,13 +475,13 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        restore: { show: true },
                         saveAsImage: { show: true }
                     }
                 },
                 xAxis: {
                     type: 'category',
                     data: labelData,
+                    name: 'Class Name',
                     axisLine: {
                         lineStyle: {
                             color: '#fff'
@@ -491,6 +490,7 @@ export default {
                 },
                 yAxis: {
                     type: 'value',
+                    name: 'Number of Samples',
                     axisLine: {
                         lineStyle: {
                             color: '#fff'
@@ -543,7 +543,6 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        restore: { show: true },
                         saveAsImage: { show: true }
                     }
                 },
@@ -627,6 +626,9 @@ export default {
                     index: 'metrics_data' // 列表
                 })
                 .then(res => {
+                    if (res.data.code !== 200) {
+                        return;
+                    }
                     this.tableData = [];
 
                     res.data.metrics_data.forEach(item => {
@@ -655,6 +657,10 @@ export default {
         // 渲染pr数据
         drawCPR(str) {
             var myChart = echarts.init(document.getElementById(str));
+            console.log(
+                '我要渲染的数据是啥？',
+                this.rocData.class_predict_report[0][1]
+            );
             let option = {
                 backgroundColor: '#3A3D4A',
                 color: this.colorList,
@@ -671,14 +677,13 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        restore: { show: true },
                         saveAsImage: { show: true }
                     }
                 },
                 xAxis: {
                     type: 'category',
                     data: ['1', '0'],
-                    name: 'Actual',
+                    name: 'Actual Class',
                     axisLine: {
                         lineStyle: {
                             color: '#fff'
@@ -687,7 +692,7 @@ export default {
                 },
                 yAxis: {
                     type: 'value',
-                    name: 'Number',
+                    name: 'Number of Predicted Class',
                     axisLine: {
                         lineStyle: {
                             color: '#fff'
@@ -700,14 +705,14 @@ export default {
                         type: 'bar',
                         stack: 'cpr',
                         barWidth: '20%',
-                        data: this.rocData.class_predict_report[0][1]
+                        data: this.rocData.class_predict_report[0][0]
                     },
                     {
                         name: '0',
                         type: 'bar',
                         stack: 'cpr',
                         barWidth: '20%',
-                        data: this.rocData.class_predict_report[1][0]
+                        data: this.rocData.class_predict_report[1][1]
                     }
                 ]
             };
@@ -743,7 +748,6 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        restore: { show: true },
                         saveAsImage: { show: true }
                     }
                 },
@@ -796,7 +800,6 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        restore: { show: true },
                         saveAsImage: { show: true }
                     }
                 },
@@ -845,7 +848,7 @@ export default {
                 },
                 xAxis: {
                     type: 'value',
-                    // name: 'Threshold',
+                    name: 'Threshold',
                     axisLine: {
                         lineStyle: {
                             color: '#fff'
@@ -856,7 +859,6 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        restore: { show: true },
                         saveAsImage: { show: true }
                     }
                 },
@@ -979,7 +981,6 @@ export default {
                 toolbox: {
                     show: true,
                     feature: {
-                        restore: { show: true },
                         saveAsImage: { show: true }
                     }
                 },
@@ -1037,13 +1038,20 @@ export default {
         position: relative;
         .pos-span-1 {
             position: absolute;
-            left: -40px;
+            left: -80px;
             top: 0px;
+            transform: rotateZ(-90deg);
+            display: inline-block;
+            width: 60px;
+            text-align: center;
         }
         .pos-span-2 {
             position: absolute;
             bottom: -55px;
             left: 136px;
+            display: inline-block;
+            width: 60px;
+            text-align: center;
         }
         .matrix-line {
             display: flex;

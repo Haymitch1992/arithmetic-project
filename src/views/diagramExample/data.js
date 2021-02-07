@@ -701,7 +701,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'select', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": "1",
                             "tag": "select_characteristic"
@@ -709,7 +709,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'input', // 输入框
-                            "label": "选择标签",
+                            "label": "选择标签列",
                             "value": "2",
                             "tag": "select_tag"
                         }
@@ -749,7 +749,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'select', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": "1",
                             "tag": "select_characteristic"
@@ -757,7 +757,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'input', // 输入框
-                            "label": "选择标签",
+                            "label": "选择标签列",
                             "value": "2",
                             "tag": "select_tag"
                         }
@@ -802,7 +802,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'select', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": "1",
                             "tag": "select_characteristic"
@@ -810,7 +810,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'input', // 输入框
-                            "label": "选择标签",
+                            "label": "选择标签列",
                             "value": "2",
                             "tag": "select_tag"
                         }
@@ -850,7 +850,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'select', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": "1",
                             "tag": "select_characteristic"
@@ -858,7 +858,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'input-default', // 输入框
-                            "label": "选择标签",
+                            "label": "选择标签列",
                             "value": "2",
                             "tag": "select_tag"
                         }
@@ -903,7 +903,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'select', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": "1",
                             "tag": "select_characteristic"
@@ -911,7 +911,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'input-default', // 输入框
-                            "label": "选择标签",
+                            "label": "选择标签列",
                             "value": "2",
                             "tag": "select_tag"
                         }
@@ -956,7 +956,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'select', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": "1",
                             "tag": "select_characteristic"
@@ -964,7 +964,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'input-default', // 输入框
-                            "label": "选择标签",
+                            "label": "选择标签列",
                             "value": "2",
                             "tag": "select_tag"
                         }
@@ -1009,7 +1009,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'select', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": "1",
                             "tag": "select_characteristic"
@@ -1017,7 +1017,7 @@ export const nodeList2 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'input-default', // 输入框
-                            "label": "选择标签",
+                            "label": "选择标签列",
                             "value": "2",
                             "tag": "select_tag"
                         }
@@ -1069,7 +1069,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
@@ -1081,7 +1081,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择标签",
+                            "label": "选择标签列",
                             "value": {
                                 "node_params": {
                                     "select_target_columns": []
@@ -1127,7 +1127,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
@@ -1139,7 +1139,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择标签",
+                            "label": "选择标签列",
                             "value": {
                                 "node_params": {
                                     "select_target_columns": []
@@ -1210,7 +1210,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
@@ -1222,8 +1222,8 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择标签",
-                            "placeholder": "选择标签",
+                            "label": "选择标签列",
+                            "placeholder": "选择标签列",
                             "value": {
                                 "node_params": {
                                     "select_target_columns": []
@@ -1298,7 +1298,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
@@ -1310,7 +1310,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
@@ -1384,7 +1384,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
@@ -1396,7 +1396,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择标签",
+                            "label": "选择标签列",
                             "value": {
                                 "node_params": {
                                     "select_target_columns": []
@@ -1442,7 +1442,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
@@ -1454,8 +1454,8 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择标签",
-                            "placeholder": "选择标签",
+                            "label": "选择标签列",
+                            "placeholder": "选择标签列",
                             "value": {
                                 "node_params": {
                                     "select_target_columns": []
@@ -1530,7 +1530,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
@@ -1542,7 +1542,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择标签",
+                            "label": "选择标签列",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
@@ -1617,7 +1617,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
@@ -1665,7 +1665,7 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'btn', // 输入框
-                            "label": "选择特征",
+                            "label": "选择特征列",
                             "placeholder": "选择要标注修改的表头",
                             "value": {
                                 "node_params": {
@@ -1730,7 +1730,7 @@ export const nodeList4 = [
                             {
                                 // 类型判断 下拉框|输入框
                                 "type": 'btn', // 输入框
-                                "label": "选择特征",
+                                "label": "选择特征列",
                                 "placeholder": "选择要标注修改的表头",
                                 "value": {
                                     "node_params": {
@@ -1742,7 +1742,7 @@ export const nodeList4 = [
                             {
                                 // 类型判断 下拉框|输入框
                                 "type": 'btn', // 输入框
-                                "label": "选择标签",
+                                "label": "选择标签列",
                                 "value": {
                                     "node_params": {
                                         "select_target_columns": []

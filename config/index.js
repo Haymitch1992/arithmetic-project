@@ -12,7 +12,7 @@ module.exports = {
     proxyTable: {
       '/api': {//代理api
         // target:"http://47.95.214.123:8080",// 测试服务器
-        target:"http://192.168.59.11:5001",// 测试服务器 王殿文本地
+        target:"http://192.168.62.170:5001",// 测试服务器 王殿文本地
         pathRewrite:{
           "^/api": ''
         },
@@ -20,7 +20,7 @@ module.exports = {
         ws: false, // proxy websockets
       },
       '/model': {//代理api
-        target:"http://192.168.59.11:5001",// 测试服务器 王殿文本地
+        target:"http://192.168.62.170:5001",// 测试服务器 王殿文本地
         pathRewrite:{
           "^/model": ''
         },
@@ -28,7 +28,7 @@ module.exports = {
         ws: false, // proxy websockets
       },
       '/debug': {//代理api
-        target:"http://192.168.59.11:50136",// 测试服务器 王殿文本地
+        target:"http://192.168.62.170:50136",// 测试服务器 王殿文本地
         pathRewrite:{
           "^/debug": ''
         },
