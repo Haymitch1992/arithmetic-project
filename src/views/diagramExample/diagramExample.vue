@@ -40,7 +40,7 @@
             <!-- 右侧表单  -->
             <div class="right-form">
                 <!-- 随机森林 -->
-                <randomForest v-if="isShowNode" @updateNodeParam="updateNodeParam" :nodeData="nodeForm" :componentId="componentId" :nodeId="ndoeId" :nodeTile="nodeTitle"></randomForest>
+                <randomForest v-if="isShowNode" @clearLink="clearLink"  @updateNodeParam="updateNodeParam" :nodeData="nodeForm" :componentId="componentId" :nodeId="ndoeId" :nodeTile="nodeTitle"></randomForest>
                 <!-- 实验属性 -->
                 <experimentalDetail v-if="!isShowNode" :currentTest="currentTest" @saveChange="editeTest" @delelteNode="deleteTest"></experimentalDetail>
             </div>
@@ -319,6 +319,23 @@ export default {
         this.onkeydown = null; // 销毁事件
     },
     methods: {
+        clearLink() {
+            // 清空 因数据集变化关联的节点参数
+            let nodeArr = this.yourJSONDataFillThere.nodes;
+            nodeArr.forEach(item => {
+                // 找到特定节点
+                item.form[0].data.forEach(item2 => {
+                    let key = item2.tag;
+                    if (
+                        key === 'select_feature_columns' ||
+                        key === 'select_target_columns' ||
+                        key === 'original_target_columns'
+                    ) {
+                        item2.value.node_params[key] = [];
+                    }
+                });
+            });
+        },
         // 是否展示创建弹窗
         isShowDialog() {
             if (this.choiceNodeList.length === 0 && this.getAllTestStatus) {

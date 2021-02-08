@@ -198,6 +198,14 @@ export default {
             this.load_data.node_params.download_path =
                 this.globalUlr + item.data_path;
             this.load_data.node_params.data_name = item.data_name;
+            // 两次数据集ID不一致的时候调用
+            if (
+                this.load_data.node_params.set_id &&
+                this.load_data.node_params.set_id !== item.id
+            ) {
+                // 置空数据集关联的数据
+                this.$emit('clearLink');
+            }
             this.load_data.node_params.set_id = item.id;
             this.load_data.value = item;
             this.$store.commit('changeSetId', item.id);
