@@ -201,6 +201,14 @@
                     <el-button type="primary" @click="saveAddFormData">保存</el-button>
                 </div>
             </el-dialog>
+            <el-dialog
+                    :visible.sync="progress_box"
+                    style="text-align:center;"
+                    width="400px"
+            >
+                <el-progress type="circle" :percentage="progress_num" width="200"  :status="progress_status"></el-progress>
+            </el-dialog>
+            
         </div>
     </div>
 </template>
@@ -221,6 +229,7 @@ import {
     TRAIT_GRADE_DATA,
     TRAIT_HISTOGRAM,
     HISTORY_MEAN_DATA,
+    GET_TASK_PROGRESS,
     CHANGE_LABEL_NUM
 } from '../../assets/url.js';
 histogram(HighCharts);
@@ -249,6 +258,9 @@ export default {
     },
     data() {
         return {
+            progress_box: false,
+            progress_status: '',
+            progress_num: 0,
             currentItemId: '', // 检索激活项
             set_title: [],
             zhifangText: '', // 直方图里面的文字
@@ -454,14 +466,33 @@ export default {
         this.getJsonData();
         this.getLable();
         this.getClassify();
-        this.loading = this.$loading({
-            lock: true,
-            text: 'Loading',
-            spinner: 'el-icon-loading',
-            background: 'rgba(0, 0, 0, 0.7)'
-        });
+
+        // 获取数据标注进度
+        this.getTaskProgress();
     },
     methods: {
+        // 获取标注进度
+        getTaskProgress() {
+            this.$api
+                .get(GET_TASK_PROGRESS, {
+                    task_id: this.data_set_id
+                })
+                .then(res => {
+                    // 判断还在或过程中 再次调用
+                    if (res.data.task && res.data.task.progress <= 1) {
+                        this.progress_box = true;
+                        setTimeout(() => {
+                            this.progress_num = res.data.task.progress * 100;
+                            this.getTaskProgress();
+                        }, 1000);
+                    } else {
+                        this.progress_status = 'success';
+                        this.progress_box = false;
+                    }
+                    // 判断一结束
+                    console.log(res);
+                });
+        },
         // 获取数据特征及预测分数获取
         getGarde() {
             this.$api
@@ -727,7 +758,6 @@ export default {
                         this.getSetData();
                         this.getChartData('myChart3', res.data.data_id);
                     } else {
-                        this.loading.close();
                         this.Set_Line_content = res.data.Set_Line_content || [
                             '暂无数据'
                         ];

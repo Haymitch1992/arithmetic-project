@@ -46,6 +46,9 @@ export const TRAIT_HISTOGRAM = '/api/traitHistogram/';
 // 数据标注- 获取历史序列图
 export const HISTORY_MEAN_DATA = '/api/historyMeanData/';
 
+// 获取数据标注进度
+export const GET_TASK_PROGRESS = '/api/getTaskProgress/';
+
 // 模型开发和训练
 // 创建新项目
 export const CREATE_PROJECT = '/api/new_project/';
