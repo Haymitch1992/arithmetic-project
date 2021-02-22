@@ -208,7 +208,6 @@
             >
                 <el-progress type="circle" :percentage="progress_num" width="200"  :status="progress_status"></el-progress>
             </el-dialog>
-            
         </div>
     </div>
 </template>

@@ -462,20 +462,14 @@ export default {
     methods: {
         // 查询任务列表
         findTask() {
-            //
-            let switchPost = false;
             this.$api
                 .post(GET_TASK, {
                     data_user_id: this.data_user_id
                 })
                 .then(res => {
-                    this.$store.commit('saveTaskList', res.data.allTaskList);
-                    res.data.allTaskList.forEach(item => {
-                        if (item.task_plan === 0) {
-                            switchPost = true;
-                        }
-                    });
-                    if (switchPost) {
+                    this.$store.commit('saveTaskList', res.data);
+                    // unfinished_task 是否为空
+                    if (res.data.unfinished_task.length !== 0) {
                         // 停掉之前的定时任务
                         clearTimeout(this.taskTimer);
                         this.taskTimer = setTimeout(() => {

@@ -40,30 +40,8 @@
                             <span @click="goPersonalPage()">{{$store.state.userName}}</span>
                             <loginInfo></loginInfo>
                         </span>
-                            <el-badge :value="badgeNum" class="badgeItem">
+                            <el-badge :value="this.$store.state.taskList.unfinished_task.length" class="badgeItem" @click.native="openProgressTaskDialog">
                                 <el-button size="small">任务列表</el-button>
-                                <div class="task-box">
-                                    <div class="status-button-line">
-                                        <el-button size="small" @click="currnetStatus=0">未完成</el-button>
-                                        <el-button size="small" @click="currnetStatus=1">已完成</el-button>
-                                        <el-button size="small" @click="currnetStatus=2">失败</el-button>
-                                    </div>
-                                    <ul class="task-ul" v-if="showList.length!==0" >
-                                         <li>
-                                            <span class="textLimit" style="width:100px;"> 数据集名称</span>
-                                            <span class="textLimit" style="margin-right:20px"> 创建时间</span>
-                                            <span  style="vertical-align: top;">状态</span>
-                                        </li>
-                                        <li v-for="item in showList" :key="item.id">
-                                            <span class="textLimit" style="width:100px;"> {{item.task_name}}</span>
-                                            <span class="textLimit" style="margin-right:20px"> {{item.create_time|converTime('YYYY-MM-DD HH:mm:ss')}}</span>
-                                            <el-tag style="vertical-align: top;" size="small" v-if="item.task_plan===1" type="success">已完成</el-tag>
-                                            <el-tag style="vertical-align: top;"  size="small" v-if="item.task_plan===0" type="info">未完成</el-tag>
-                                            <el-tag style="vertical-align: top;"  size="small" v-if="item.task_plan===2" type="danger">失败</el-tag>
-                                        </li>
-                                    </ul>
-                                    <p class="task-text-info" v-if="showList.length===0">暂无数据</p>
-                                </div>
                             </el-badge>
                     </el-header>
                     <el-main style="padding: 0;">
@@ -71,13 +49,15 @@
                     </el-main>
                 </el-container>
             </div>
-
+            <!-- 任务列表弹框 -->
+            <progressTask></progressTask>
         </el-container>
     </div>
 </template>
 
 <script>
 import getBrowserCore from './model/getBrowserCore';
+import progressTask from './components/progressTask';
 import MENU from './components/menu';
 import experimentMenu from './components/menu-2';
 import LoginInfo from './components/logo-info';
@@ -86,29 +66,10 @@ export default {
     components: {
         MENU: MENU,
         experimentMenu: experimentMenu,
-        loginInfo: LoginInfo
+        loginInfo: LoginInfo,
+        progressTask: progressTask
     },
     watch: {
-        currnetStatus: function() {
-            this.showList = [];
-            this.$store.state.taskList.forEach(item => {
-                if (item.task_plan === this.currnetStatus) {
-                    this.showList.push(item);
-                }
-            });
-        },
-        // 监听任务列表
-        '$store.state.taskList': function() {
-            let num = 0;
-            this.badgeNum = this.$store.state.taskList.length;
-            // 便利数组 找到状态为零的数据
-            this.$store.state.taskList.forEach(item => {
-                if (item.task_plan === 0) {
-                    num++;
-                }
-            });
-            this.badgeNum = num;
-        },
         $route: {
             handler(newRouter) {
                 console.log(newRouter);
@@ -166,7 +127,11 @@ export default {
             this.$message.error('为了保证拖拽效果，建议使用chrome浏览器');
         }
     },
-    methods: {}
+    methods: {
+        openProgressTaskDialog() {
+            this.$store.commit('changeProgressDialog', true);
+        }
+    }
 };
 </script>
 
@@ -200,13 +165,7 @@ body {
 #app {
     background-color: #f7f7f8;
 }
-.textLimit {
-    display: inline-block;
-    width: 140px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
+
 .machine-box {
     display: flex;
     width: 100%;

@@ -20,6 +20,7 @@ let store = new Vuex.Store({
     userEmail: '',
     currentSelectDate: [],
     currentSelectNum: 0,
+    progressDialog: false,
     set_id: '',
     deployId: '', // 部署ID
     demoStationStatus: true,
@@ -30,9 +31,16 @@ let store = new Vuex.Store({
     currentDialog: {},
     current_set_id: '', // 当前数据集的id
     run_uuid: '',
-    taskList: [{"id": 5, "create_time": "2021-01-20T16:01:53.738490", "update_time": "2021-01-20T16:01:53.738525", "data_user_id": 6, "task_name": "9008023-主题数据创建使用", "task_plan": 0}] // 任务列表
+    taskList: {
+      completed_task: [],
+      unfinished_task: [],
+      fail_task: []
+    }// 任务列表
   },
   mutations: {
+    changeProgressDialog(state, obj) {
+      state.progressDialog = obj;
+    },
     saveTaskList(state, obj) {
       state.taskList = obj;
     },
