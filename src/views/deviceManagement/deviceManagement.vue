@@ -4,14 +4,18 @@
             <div class="device-container">
                 <div class="item device-video">
                     <h3>视频源 202102221001.mp4</h3>
-                    <iframe
-                        style="width: 100%;height: 420px"
-                        frameborder="no"
-                        allowfullscreen
-                        mozallowfullscreen
-                        webkitallowfullscreen
-                        src="http://go.plvideo.cn/front/video/preview?vid=63d455972f3fc30564a91cdeef097dde_6"
-                    ></iframe>
+                    <div
+                        style="width: 100%;height: 420px;background:rgb(81 83 107);"
+                    >
+                        <iframe
+                            style="width: 100%;height: 420px"
+                            frameborder="no"
+                            allowfullscreen
+                            mozallowfullscreen
+                            webkitallowfullscreen
+                            src="http://go.plvideo.cn/front/video/preview?vid=63d455972f3fc30564a91cdeef097dde_6"
+                        ></iframe>
+                    </div>
                 </div>
                 <div class="item device-box">
                     <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -173,47 +177,109 @@
                     </el-tabs>
                 </div>
                 <div class="item device-img">
-                    <h3>分析结果-识别目标</h3>
-                    <div class="device-img-item">
-                        <el-image
-                            :preview-src-list="srcList"
-                            :src="
-                                'http://47.95.214.123:8080/media/test/safe-item-1.jpg/'
-                            "
-                            style="width: 100%; height: 130px"
-                        ></el-image>
-                        <p class="device-result-text">2020-02-22 15:32:22</p>
-                    </div>
-                    <div class="device-img-item">
-                        <el-image
-                            :preview-src-list="srcList"
-                            :src="
-                                'http://47.95.214.123:8080/media/test/safe-item-2.jpg/'
-                            "
-                            style="width: 100%; height: 130px"
-                        ></el-image>
-                        <p class="device-result-text">2020-02-22 15:32:22</p>
-                    </div>
-                    <div class="device-img-item">
-                        <el-image
-                            :preview-src-list="srcList"
-                            :src="
-                                'http://47.95.214.123:8080/media/test/safe-item-3.jpg/'
-                            "
-                            style="width: 100%; height: 130px"
-                        ></el-image>
-                        <p class="device-result-text">2020-02-22 15:32:22</p>
-                    </div>
-                    <div class="device-img-item">
-                        <el-image
-                            :preview-src-list="srcList"
-                            :src="
-                                'http://47.95.214.123:8080/media/test/safe-item-4.jpg/'
-                            "
-                            style="width: 100%; height: 130px"
-                        ></el-image>
-                        <p class="device-result-text">2020-02-22 15:32:22</p>
-                    </div>
+                    <h3>分析结果-识别目标(未正确佩戴安全帽)</h3>
+                    <el-carousel height="150px">
+                        <el-carousel-item>
+                            <div class="device-img-item">
+                                <el-image
+                                    :preview-src-list="srcList"
+                                    :src="
+                                        'http://47.95.214.123:8080/media/test/safe-item-1.jpg/'
+                                    "
+                                    style="width: 100%; height: 130px"
+                                ></el-image>
+                                <p class="device-result-text">
+                                    2020-02-22 15:32:22
+                                </p>
+                            </div>
+                            <div class="device-img-item">
+                                <el-image
+                                    :preview-src-list="srcList"
+                                    :src="
+                                        'http://47.95.214.123:8080/media/test/safe-item-2.jpg/'
+                                    "
+                                    style="width: 100%; height: 130px"
+                                ></el-image>
+                                <p class="device-result-text">
+                                    2020-02-22 15:32:22
+                                </p>
+                            </div>
+                            <div class="device-img-item">
+                                <el-image
+                                    :preview-src-list="srcList"
+                                    :src="
+                                        'http://47.95.214.123:8080/media/test/safe-item-3.jpg/'
+                                    "
+                                    style="width: 100%; height: 130px"
+                                ></el-image>
+                                <p class="device-result-text">
+                                    2020-02-22 15:32:22
+                                </p>
+                            </div>
+                            <div class="device-img-item">
+                                <el-image
+                                    :preview-src-list="srcList"
+                                    :src="
+                                        'http://47.95.214.123:8080/media/test/safe-item-4.jpg/'
+                                    "
+                                    style="width: 100%; height: 130px"
+                                ></el-image>
+                                <p class="device-result-text">
+                                    2020-02-22 15:32:22
+                                </p>
+                            </div>
+                        </el-carousel-item>
+                        <el-carousel-item>
+                            <div class="device-img-item">
+                                <el-image
+                                    :preview-src-list="srcList"
+                                    :src="
+                                        'http://47.95.214.123:8080/media/test/safe-item-5.jpg/'
+                                    "
+                                    style="width: 100%; height: 130px"
+                                ></el-image>
+                                <p class="device-result-text">
+                                    2020-02-22 15:32:22
+                                </p>
+                            </div>
+                            <div class="device-img-item">
+                                <el-image
+                                    :preview-src-list="srcList"
+                                    :src="
+                                        'http://47.95.214.123:8080/media/test/safe-item-6.jpg/'
+                                    "
+                                    style="width: 100%; height: 130px"
+                                ></el-image>
+                                <p class="device-result-text">
+                                    2020-02-22 15:32:22
+                                </p>
+                            </div>
+                            <div class="device-img-item">
+                                <el-image
+                                    :preview-src-list="srcList"
+                                    :src="
+                                        'http://47.95.214.123:8080/media/test/safe-item-7.jpg/'
+                                    "
+                                    style="width: 100%; height: 130px"
+                                ></el-image>
+                                <p class="device-result-text">
+                                    2020-02-22 15:32:22
+                                </p>
+                            </div>
+                            <div class="device-img-item">
+                                <el-image
+                                    :preview-src-list="srcList"
+                                    :src="
+                                        'http://47.95.214.123:8080/media/test/safe-item-8.jpg/'
+                                    "
+                                    style="width: 100%; height: 130px"
+                                ></el-image>
+                                <p class="device-result-text">
+                                    2020-02-22 15:32:22
+                                </p>
+                            </div>
+                        </el-carousel-item>
+                    </el-carousel>
                 </div>
             </div>
         </div>
@@ -230,7 +296,11 @@ export default {
                 'http://47.95.214.123:8080/media/test/safe-item-1.jpg/',
                 'http://47.95.214.123:8080/media/test/safe-item-2.jpg/',
                 'http://47.95.214.123:8080/media/test/safe-item-3.jpg/',
-                'http://47.95.214.123:8080/media/test/safe-item-4.jpg/'
+                'http://47.95.214.123:8080/media/test/safe-item-4.jpg/',
+                'http://47.95.214.123:8080/media/test/safe-item-5.jpg/',
+                'http://47.95.214.123:8080/media/test/safe-item-6.jpg/',
+                'http://47.95.214.123:8080/media/test/safe-item-7.jpg/',
+                'http://47.95.214.123:8080/media/test/safe-item-8.jpg/'
             ],
             tableData: [
                 {

@@ -2,66 +2,207 @@
 <template>
     <div v-if="nodeData" class="random-box">
         <ul class="prop-tab ">
-            <li v-for="(item, index) in nodeData" v-bind:key="index" @click="currentPage=index" :class="{active:currentPage===index}"><span>{{item.label}}</span></li>
+            <li
+                v-for="(item, index) in nodeData"
+                v-bind:key="index"
+                @click="currentPage = index"
+                :class="{ active: currentPage === index }"
+            >
+                <span>{{ item.label }}</span>
+            </li>
         </ul>
         <div class="prop-body">
-            <h3>{{nodeTile}}</h3>
-            <div  v-for="(item, index) in nodeData" :key="index">
-                <el-form :model="formData"  ref="formData">
-                    <el-form-item :label="itemInp.label"  v-for="(itemInp, index2) in item.data" :key="index2" v-show="currentPage === index&&itemInp.label!=='置信范围2'">
-                        <el-select v-if="itemInp.type==='select'" size="small"  v-model="itemInp.value" style="width: 100%" :placeholder="itemInp.placeholder">
-                            <el-option label="区域一" value="shanghai"></el-option>
-                            <el-option label="区域二" value="beijing"></el-option>
+            <h3>{{ nodeTile }}</h3>
+            <div v-for="(item, index) in nodeData" :key="index">
+                <el-form :model="formData" ref="formData">
+                    <el-form-item
+                        :label="itemInp.label"
+                        v-for="(itemInp, index2) in item.data"
+                        :key="index2"
+                        v-show="
+                            currentPage === index &&
+                                itemInp.label !== '置信范围2'
+                        "
+                    >
+                        <el-select
+                            v-if="itemInp.type === 'select'"
+                            size="small"
+                            v-model="itemInp.value"
+                            style="width: 100%"
+                            :placeholder="itemInp.placeholder"
+                        >
+                            <el-option
+                                label="区域一"
+                                value="shanghai"
+                            ></el-option>
+                            <el-option
+                                label="区域二"
+                                value="beijing"
+                            ></el-option>
                         </el-select>
-                        <el-select v-if="itemInp.type==='select-2'" size="small"  v-model="itemInp.value" style="width: 100%" :placeholder="itemInp.placeholder">
+                        <el-select
+                            v-if="itemInp.type === 'select-2'"
+                            size="small"
+                            v-model="itemInp.value"
+                            style="width: 100%"
+                            :placeholder="itemInp.placeholder"
+                        >
                             <el-option label="rbf" value="rbf"></el-option>
-                            <el-option label="linear" value="linear"></el-option>
+                            <el-option
+                                label="linear"
+                                value="linear"
+                            ></el-option>
                             <el-option label="poly" value="poly"></el-option>
-                            <el-option label="sigmoid" value="sigmoid"></el-option>
+                            <el-option
+                                label="sigmoid"
+                                value="sigmoid"
+                            ></el-option>
                         </el-select>
                         <!--选择尺度变换函数 特殊处理 根据值得不同 显示不同参数-->
-                        <el-select v-if="itemInp.type==='select-8'" size="small" @change="transformFuc('change')"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
-                            <el-option label="Zscore平滑" value="zscore_soften"></el-option>
-                            <el-option label="百分位平滑" value="percentage_soften"></el-option>
-                            <el-option label="阈值平滑" value="threshold_soften"></el-option>
-                            <el-option label="箱线图平滑" value="boxplot_soften"></el-option>
+                        <el-select
+                            v-if="itemInp.type === 'select-8'"
+                            size="small"
+                            @change="transformFuc('change')"
+                            v-model="itemInp.value.node_params[itemInp.tag]"
+                            style="width: 100%"
+                            :placeholder="itemInp.placeholder"
+                        >
+                            <el-option
+                                label="Zscore平滑"
+                                value="zscore_soften"
+                            ></el-option>
+                            <el-option
+                                label="百分位平滑"
+                                value="percentage_soften"
+                            ></el-option>
+                            <el-option
+                                label="阈值平滑"
+                                value="threshold_soften"
+                            ></el-option>
+                            <el-option
+                                label="箱线图平滑"
+                                value="boxplot_soften"
+                            ></el-option>
                         </el-select>
                         <!--带参数的选择框组件-->
-                        <el-select v-if="itemInp.type==='select-options'" size="small"  v-model="itemInp.value.node_params[itemInp.tag]" style="width: 100%" :placeholder="itemInp.placeholder">
-                            <el-option :label="selectItem.label" :value="selectItem.value" :key="index" v-for="(selectItem,index) in itemInp.options"></el-option>
-                        </el-select>
-                        <el-input size="small" v-model="itemInp.value.node_params[itemInp.tag]" v-if="itemInp.type==='input-default2'" :placeholder="itemInp.desc"></el-input>
-                        <!-- 拆分输入框 -->
-                        <el-input size="small" v-model="splitValue" v-if="itemInp.type==='split-input'" :placeholder="itemInp.desc"></el-input>
-                        <el-input size="small" v-model="itemInp.value.node_params[itemInp.tag]" v-if="itemInp.type==='input-default'" :placeholder="itemInp.desc"></el-input>
-                        <p v-if="itemInp.label==='分层采样比例'" style="font-size:14px;line-height:28px;">
-                            数字时：范围(0,1) 表示每个stratum的采样比例；字符串时：格式为strata0:r0,strata1:r1,strata2:r2,…</p>
-                        <el-input size="small" v-model="itemInp.value" @change="searchSet(itemInp.value)" v-if="itemInp.type==='input'" :placeholder="itemInp.desc"></el-input>
                         <el-select
-                                v-if="itemInp.type==='autoSelect'"
-                                v-model="value"
-                                filterable
-                                remote
-                                reserve-keyword
-                                style="width: 100%"
-                                placeholder="请输入关键词"
-                                :remote-method="remoteMethod"
-                                :loading="loading">
+                            v-if="itemInp.type === 'select-options'"
+                            size="small"
+                            v-model="itemInp.value.node_params[itemInp.tag]"
+                            style="width: 100%"
+                            :placeholder="itemInp.placeholder"
+                        >
                             <el-option
-                                    @click.native="saveItem(item)"
-                                    v-for="item in options"
-                                    :key="item.id"
-                                    :label="item.data_name"
-                                    :value="item.id">
-                            </el-option>
+                                :label="selectItem.label"
+                                :value="selectItem.value"
+                                :key="index"
+                                v-for="(selectItem, index) in itemInp.options"
+                            ></el-option>
+                        </el-select>
+                        <el-input
+                            size="small"
+                            v-model="itemInp.value.node_params[itemInp.tag]"
+                            v-if="itemInp.type === 'input-default2'"
+                            :placeholder="itemInp.desc"
+                        ></el-input>
+                        <!-- 拆分输入框 -->
+                        <el-input
+                            size="small"
+                            v-model="splitValue"
+                            v-if="itemInp.type === 'split-input'"
+                            :placeholder="itemInp.desc"
+                        ></el-input>
+                        <el-input
+                            size="small"
+                            v-model="itemInp.value.node_params[itemInp.tag]"
+                            v-if="itemInp.type === 'input-default'"
+                            :placeholder="itemInp.desc"
+                        ></el-input>
+                        <!-- 多行为本框 -->
+                        <el-input
+                            type="textarea"
+                            :rows="6"
+                            maxlength="200"
+                            v-model="itemInp.value.node_params[itemInp.tag]"
+                            v-if="itemInp.type === 'textarea'"
+                            :placeholder="itemInp.desc"
+                        ></el-input>
+                        <p
+                            v-if="itemInp.label === '分层采样比例'"
+                            style="font-size:14px;line-height:28px;"
+                        >
+                            数字时：范围(0,1)
+                            表示每个stratum的采样比例；字符串时：格式为strata0:r0,strata1:r1,strata2:r2,…
+                        </p>
+                        <el-input
+                            size="small"
+                            v-model="itemInp.value"
+                            @change="searchSet(itemInp.value)"
+                            v-if="itemInp.type === 'input'"
+                            :placeholder="itemInp.desc"
+                        ></el-input>
+                        <el-select
+                            v-if="itemInp.type === 'autoSelect'"
+                            v-model="value"
+                            filterable
+                            remote
+                            reserve-keyword
+                            style="width: 100%"
+                            placeholder="请输入关键词"
+                            :remote-method="remoteMethod"
+                            :loading="loading"
+                        >
+                            <el-option
+                                @click.native="saveItem(item)"
+                                v-for="item in options"
+                                :key="item.id"
+                                :label="item.data_name"
+                                :value="item.id"
+                            ></el-option>
                         </el-select>
 
-                        <div v-if="itemInp.type==='btn'" class="select-btn select-hover">
-                            <el-button v-if="itemInp.value.node_params[itemInp.tag].length !== 0" @click="openSelectHeader(index2,itemInp.tag)">{{`已选择 ${itemInp.value.node_params[itemInp.tag].length} 个字段`}}</el-button>
-                            <ul class="select-ul" v-if="itemInp.value.node_params[itemInp.tag].length !== 0">
-                                <li v-for="(item,index) in itemInp.value.node_params[itemInp.tag]" :key="index">{{item}}</li>
+                        <div
+                            v-if="itemInp.type === 'btn'"
+                            class="select-btn select-hover"
+                        >
+                            <el-button
+                                v-if="
+                                    itemInp.value.node_params[itemInp.tag]
+                                        .length !== 0
+                                "
+                                @click="openSelectHeader(index2, itemInp.tag)"
+                            >
+                                {{
+                                    `已选择 ${
+                                        itemInp.value.node_params[itemInp.tag]
+                                            .length
+                                    } 个字段`
+                                }}
+                            </el-button>
+                            <ul
+                                class="select-ul"
+                                v-if="
+                                    itemInp.value.node_params[itemInp.tag]
+                                        .length !== 0
+                                "
+                            >
+                                <li
+                                    v-for="(item, index) in itemInp.value
+                                        .node_params[itemInp.tag]"
+                                    :key="index"
+                                >
+                                    {{ item }}
+                                </li>
                             </ul>
-                            <el-button v-if="itemInp.value.node_params[itemInp.tag].length === 0" @click="openSelectHeader(index2,itemInp.tag)">{{itemInp.label}}</el-button>
+                            <el-button
+                                v-if="
+                                    itemInp.value.node_params[itemInp.tag]
+                                        .length === 0
+                                "
+                                @click="openSelectHeader(index2, itemInp.tag)"
+                            >
+                                {{ itemInp.label }}
+                            </el-button>
                         </div>
                         <!-- <div v-if="itemInp.type==='btn-2'" class="select-btn select-hover">
                             <el-button v-if="itemInp.value.node_params.select_target_columes.length !== 0" @click="openSelectHeader(1)">{{`已选择 ${itemInp.value.node_params.select_target_columes.length} 个字段`}}</el-button>
@@ -70,18 +211,31 @@
                             </ul>
                             <el-button v-if="itemInp.value.node_params.select_target_columes.length === 0" @click="openSelectHeader(1)">选择标签列</el-button>
                         </div> -->
-                        <div v-if="itemInp.type==='btn-3'" class="select-btn">
-                            <el-button @click="openSelectDialog">预测结果列名</el-button>
+                        <div v-if="itemInp.type === 'btn-3'" class="select-btn">
+                            <el-button @click="openSelectDialog">
+                                预测结果列名
+                            </el-button>
                         </div>
-                        <div v-if="itemInp.type==='btn-4'" class="select-btn">
-                            <el-button @click="openSelectDialog">原始标签列名</el-button>
+                        <div v-if="itemInp.type === 'btn-4'" class="select-btn">
+                            <el-button @click="openSelectDialog">
+                                原始标签列名
+                            </el-button>
                         </div>
                     </el-form-item>
                 </el-form>
             </div>
-            <div class="prop-btn-line" v-if="nodeData.length!==0">
-                <el-button type="primary" style="float:left; width: 80px;" size="small" @click="saveNodeParam">保存</el-button>
-                <el-button type="primary" style="float:right;" size="small">恢复默认设置</el-button>
+            <div class="prop-btn-line" v-if="nodeData.length !== 0">
+                <el-button
+                    type="primary"
+                    style="float:left; width: 80px;"
+                    size="small"
+                    @click="saveNodeParam"
+                >
+                    保存
+                </el-button>
+                <el-button type="primary" style="float:right;" size="small">
+                    恢复默认设置
+                </el-button>
             </div>
         </div>
     </div>
@@ -229,6 +383,7 @@ export default {
                     this.$emit('updateNodeParam', this.load_data, 1, 0);
                     break;
             }
+            this.$message.success('保存成功');
         },
         openSelectDialog() {
             this.$parent.showSelectDialog = true;

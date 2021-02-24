@@ -1972,12 +1972,40 @@ export const nodeList5 = [
     }
 ];
 export const nodeLabel6 = [ {
-    name: 'test_data_1',
+    name: 'MNIST',
     node_type: 'item-4',
     iconClassName: 'el-icon-loading',
-    form: []
+    form: [
+        {
+            "label": "信息",
+            "data": [
+                {
+                    // 类型判断 下拉框|输入框
+                    "type": 'input-default', // 输入框
+                    "label": "名称",
+                    "value": {
+                        "node_params": {
+                            "n_clusters": 'MNIST'
+                        }
+                    },
+                    "tag": "n_clusters"
+                },
+                {
+                    // 类型判断 下拉框|输入框
+                    "type": 'textarea', // 输入框
+                    "label": "描述",
+                    "value": {
+                        "node_params": {
+                            "n_clusters": '数据集是机器学习领域中非常经典的一个数据集，由60000个训练样本和10000个测试样本组成，每个样本都是一张28 * 28像素的灰度手写数字图片'
+                        }
+                    },
+                    "tag": "n_clusters"
+                }
+            ]
+        }
+    ]
 }, {
-    name: 'test_data_2',
+    name: 'Fashion-MNIST',
     node_type: 'item-4',
     iconClassName: 'el-icon-loading',
     form: []

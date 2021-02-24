@@ -3,7 +3,11 @@
         <div class="online-box">
             <p>
                 <span @click="backList">
-                    <span class="el-icon-arrow-left" style="margin-right: 4px;"></span>数据表
+                    <span
+                        class="el-icon-arrow-left"
+                        style="margin-right: 4px;"
+                    ></span>
+                    数据表
                 </span>
             </p>
             <el-tabs v-model="activeName">
@@ -12,83 +16,208 @@
                     <div class="progress-line">
                         <span class="progress-text">标注进度</span>
                         <span class="progress-item">
-                            <el-progress :text-inside="true" :stroke-width="24" :percentage="progress_bar"></el-progress>
+                            <el-progress
+                                :text-inside="true"
+                                :stroke-width="24"
+                                :percentage="progress_bar"
+                            ></el-progress>
                         </span>
-                        <span class="progress-text">{{Len_set_lable}}/{{Len_set_line}}</span>
+                        <span class="progress-text">
+                            {{ Len_set_lable }}/{{ Len_set_line }}
+                        </span>
                     </div>
                     <div class="item-1">
                         <!-- 待标注序列 -->
                         <div class="item-1-left">
                             <div class="item-img">
-                                <div id="myChart3" :style="{width: '100%',height: '350px'}"></div>
+                                <div
+                                    id="myChart3"
+                                    :style="{ width: '100%', height: '350px' }"
+                                ></div>
                             </div>
                         </div>
                         <div class="item-1-right">
                             <p class="currnet-status">
                                 当前标注状态：
-                                <el-tag v-if="lable_type==='1.0'" type="success">正例</el-tag>
-                                <el-tag v-if="lable_type==='0.0'" type="danger">反例</el-tag>
-                                <el-tag v-if="lable_type==='nan'" type="warning">未标注</el-tag>
+                                <el-tag
+                                    v-if="lable_type === '1.0'"
+                                    type="success"
+                                >
+                                    正例
+                                </el-tag>
+                                <el-tag
+                                    v-if="lable_type === '0.0'"
+                                    type="danger"
+                                >
+                                    反例
+                                </el-tag>
+                                <el-tag
+                                    v-if="lable_type === 'nan'"
+                                    type="warning"
+                                >
+                                    未标注
+                                </el-tag>
                             </p>
-                            <table class="check-table" cellspacing="0" cellpadding="0" border="0">
+                            <table
+                                class="check-table"
+                                cellspacing="0"
+                                cellpadding="0"
+                                border="0"
+                            >
                                 <tr>
-                                    <th v-for="(item, index) in set_header_list" :key="index">{{item}}</th>
+                                    <th
+                                        v-for="(item, index) in set_header_list"
+                                        :key="index"
+                                    >
+                                        {{ item }}
+                                    </th>
                                 </tr>
                                 <tr>
-                                    <td v-for="(item, index) in Set_Line_content" :key="index">{{item}}</td>
+                                    <td
+                                        v-for="(item,
+                                        index) in Set_Line_content"
+                                        :key="index"
+                                    >
+                                        {{ item }}
+                                    </td>
                                 </tr>
                             </table>
+
                             <p>标注正反例：</p>
                             <div class="inp-line">
-                                <el-button style="width: 25%;" size="small" type="success" plain @click="postLableInfo(1)">正例</el-button>
-                                <el-button style="width: 25%;" size="small" type="danger" plain @click="postLableInfo(0)">反例</el-button>
-                                <el-button style="width: 25%;" size="small" type="primary" plain @click="openClassifyDialog()"><i class="el-icon-upload el-icon--right" style="margin-right: 4px;"></i>聚合分类</el-button>
+                                <el-button
+                                    style="width: 25%;"
+                                    size="small"
+                                    type="success"
+                                    plain
+                                    @click="postLableInfo(1)"
+                                >
+                                    正例
+                                </el-button>
+                                <el-button
+                                    style="width: 25%;"
+                                    size="small"
+                                    type="danger"
+                                    plain
+                                    @click="postLableInfo(0)"
+                                >
+                                    反例
+                                </el-button>
+                                <el-button
+                                    style="width: 25%;"
+                                    size="small"
+                                    type="primary"
+                                    plain
+                                    @click="openClassifyDialog()"
+                                >
+                                    <i
+                                        class="el-icon-upload el-icon--right"
+                                        style="margin-right: 4px;"
+                                    ></i>
+                                    聚合分类
+                                </el-button>
                             </div>
                             <p>查看标注记录：</p>
                             <div class="inp-line">
-                                <el-button style="width: 25%;" size="small" @click="prev" plain>上一个</el-button>
-                                <el-button style="width: 25%;" size="small" @click="next" plain>下一个</el-button>
+                                <el-button
+                                    style="width: 25%;"
+                                    size="small"
+                                    @click="prev"
+                                    plain
+                                >
+                                    上一个
+                                </el-button>
+                                <el-button
+                                    style="width: 25%;"
+                                    size="small"
+                                    @click="next"
+                                    plain
+                                >
+                                    下一个
+                                </el-button>
                             </div>
                         </div>
                     </div>
                     <div class="parentBox">
                         <div class="item-2">
                             <h3>序列特征</h3>
-                            <el-table border :data="characteristicList" class="rest-table">
-                                <el-table-column prop="label" label=""></el-table-column>
-                                <el-table-column   label="平均值">
+                            <el-table
+                                border
+                                :data="characteristicList"
+                                class="rest-table"
+                            >
+                                <el-table-column
+                                    prop="label"
+                                    label=""
+                                ></el-table-column>
+                                <el-table-column label="平均值">
                                     <template slot-scope="scope">
-                                      <span @click="getHistogramData(scope.row, 'value')">
-                                           {{scope.row.value}}
-                                      </span>
+                                        <span
+                                            @click="
+                                                getHistogramData(
+                                                    scope.row,
+                                                    'value'
+                                                )
+                                            "
+                                        >
+                                            {{ scope.row.value }}
+                                        </span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column prop="ptp" label="PTP">
                                     <template slot-scope="scope">
-                                      <span @click="getHistogramData(scope.row, 'ptp')">
-                                           {{scope.row.ptp}}
-                                      </span>
+                                        <span
+                                            @click="
+                                                getHistogramData(
+                                                    scope.row,
+                                                    'ptp'
+                                                )
+                                            "
+                                        >
+                                            {{ scope.row.ptp }}
+                                        </span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column prop="standard" label="标准差">
                                     <template slot-scope="scope">
-                                      <span @click="getHistogramData(scope.row, 'standard')">
-                                           {{scope.row.standard}}
-                                      </span>
+                                        <span
+                                            @click="
+                                                getHistogramData(
+                                                    scope.row,
+                                                    'standard'
+                                                )
+                                            "
+                                        >
+                                            {{ scope.row.standard }}
+                                        </span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column prop="median" label="中位数">
                                     <template slot-scope="scope">
-                                      <span @click="getHistogramData(scope.row, 'median')">
-                                           {{scope.row.median}}
-                                      </span>
+                                        <span
+                                            @click="
+                                                getHistogramData(
+                                                    scope.row,
+                                                    'median'
+                                                )
+                                            "
+                                        >
+                                            {{ scope.row.median }}
+                                        </span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column prop="long" label="长度">
                                     <template slot-scope="scope">
-                                      <span @click="getHistogramData(scope.row, 'long')">
-                                           {{scope.row.long}}
-                                      </span>
+                                        <span
+                                            @click="
+                                                getHistogramData(
+                                                    scope.row,
+                                                    'long'
+                                                )
+                                            "
+                                        >
+                                            {{ scope.row.long }}
+                                        </span>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -98,29 +227,45 @@
                             <ul class="forecast-ul">
                                 <li>
                                     <p>IF 预测结果:</p>
-                                    <p class="strong">{{grade_data_message[0].toFixed(3)}}</p>
+                                    <p class="strong">
+                                        {{ grade_data_message[0].toFixed(3) }}
+                                    </p>
                                 </li>
                                 <li>
                                     <p>HBOS 预测结果:</p>
-                                    <p class="strong">{{grade_data_message[1].toFixed(3)}}</p>
+                                    <p class="strong">
+                                        {{ grade_data_message[1].toFixed(3) }}
+                                    </p>
                                 </li>
                                 <li>
                                     <p>综合预测分数:</p>
-                                    <p class="strong">{{grade_data_message[2].toFixed(3)}}</p>
+                                    <p class="strong">
+                                        {{ grade_data_message[2].toFixed(3) }}
+                                    </p>
                                 </li>
                             </ul>
-<!--                            <p class="forecast-text">综合预测分数：<span class="forecast-num">34.444分</span></p>-->
-<!--                            <el-progress :show-text="false" :stroke-width="4" :percentage="50"></el-progress>-->
-                            <p class="forecast-text">注：分数越高故障可能性能高！</p>
+                            <!--                            <p class="forecast-text">综合预测分数：<span class="forecast-num">34.444分</span></p>-->
+                            <!--                            <el-progress :show-text="false" :stroke-width="4" :percentage="50"></el-progress>-->
+                            <p class="forecast-text">
+                                注：分数越高故障可能性能高！
+                            </p>
                         </div>
                     </div>
                     <div class="item-1 item-3">
                         <div class="item-1-content">
                             <h3>历史特征序列</h3>
-                            <el-tabs v-model="activeName2" >
-                                <el-tab-pane :label="item" :name="item" v-for="(item, index) in set_title" :key="index"></el-tab-pane>
+                            <el-tabs v-model="activeName2">
+                                <el-tab-pane
+                                    :label="item"
+                                    :name="item"
+                                    v-for="(item, index) in set_title"
+                                    :key="index"
+                                ></el-tab-pane>
                             </el-tabs>
-                            <div id='myChart_along' :style="{width: '100%',height: '400px'}"></div>
+                            <div
+                                id="myChart_along"
+                                :style="{ width: '100%', height: '400px' }"
+                            ></div>
                         </div>
                     </div>
                     <!--  代表著序列 -->
@@ -132,15 +277,38 @@
                     <p>序列检索</p>
                     <div>
                         <div class="search-left">
-                            <p :class="{'active-p':item.id == currentItemId}" @click="changeSearch(item.id)" v-for="(item, index) in all_classify" :key="index">{{item.classify_name}}</p>
+                            <p
+                                :class="{
+                                    'active-p': item.id == currentItemId
+                                }"
+                                @click="changeSearch(item.id)"
+                                v-for="(item, index) in all_classify"
+                                :key="index"
+                            >
+                                {{ item.classify_name }}
+                            </p>
                         </div>
                         <div class="list-right">
                             <el-table :data="searchList" class="rest-table">
-                                <el-table-column prop="set_id" label=集合ID></el-table-column>
-                                <el-table-column prop="data_id" label="数据ID"></el-table-column>
-                                <el-table-column  label="图示">
+                                <el-table-column
+                                    prop="set_id"
+                                    label="集合ID"
+                                ></el-table-column>
+                                <el-table-column
+                                    prop="data_id"
+                                    label="数据ID"
+                                ></el-table-column>
+                                <el-table-column label="图示">
                                     <template slot-scope="scope">
-                                        <el-button type="text" size="small" @click="viewChart(scope.row.data_id)">查看</el-button>
+                                        <el-button
+                                            type="text"
+                                            size="small"
+                                            @click="
+                                                viewChart(scope.row.data_id)
+                                            "
+                                        >
+                                            查看
+                                        </el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -149,65 +317,104 @@
                 </el-tab-pane>
             </el-tabs>
             <el-dialog
-                    title="直方图(质量分布图)"
-                    :visible.sync="dialogVisible"
-                    width="30%"
-                    >
-                <div id="myChart4" :style="{width: '100%',height: '300px'}"></div>
-                <p>{{zhifangText}}</p>
-            </el-dialog>
-            <el-dialog
-                    title=""
-                    :visible.sync="dialogVisible2"
-                    width="30%"
+                title="直方图(质量分布图)"
+                :visible.sync="dialogVisible"
+                width="30%"
             >
-                <div id="myChart5" :style="{width: '100%',height: '300px'}"></div>
+                <div
+                    id="myChart4"
+                    :style="{ width: '100%', height: '300px' }"
+                ></div>
+                <p>{{ zhifangText }}</p>
+            </el-dialog>
+            <el-dialog title="" :visible.sync="dialogVisible2" width="30%">
+                <div
+                    id="myChart5"
+                    :style="{ width: '100%', height: '300px' }"
+                ></div>
             </el-dialog>
             <el-dialog
-                    title="标注分类"
-                    :visible.sync="biaozhuDialog"
-                    width="30%"
+                title="标注分类"
+                :visible.sync="biaozhuDialog"
+                width="30%"
             >
                 <el-form v-if="!isCreateTab">
                     <el-form-item label="添加分类" label-width="140px">
-                        <el-select v-model="formData.id" placeholder="请选择分类" style="width: 250px;">
+                        <el-select
+                            v-model="formData.id"
+                            placeholder="请选择分类"
+                            style="width: 250px;"
+                        >
                             <el-option
-                                    v-for="item in all_classify"
-                                    @click.native="currStationChange(item)"
-                                    :key="item.id"
-                                    :label="item.classify_name"
-                                    :value="item.id">
-                            </el-option >
+                                v-for="item in all_classify"
+                                @click.native="currStationChange(item)"
+                                :key="item.id"
+                                :label="item.classify_name"
+                                :value="item.id"
+                            ></el-option>
                         </el-select>
-                        <el-button type="primary" size="small" icon="el-icon-plus" style="margin-left: 10px;" title="添加标注" @click="isCreateTab=true" circle></el-button>
+                        <el-button
+                            type="primary"
+                            size="small"
+                            icon="el-icon-plus"
+                            style="margin-left: 10px;"
+                            title="添加标注"
+                            @click="isCreateTab = true"
+                            circle
+                        ></el-button>
                     </el-form-item>
                     <el-form-item label="分类说明" label-width="140px">
-                        <el-input  style="width: 250px;" v-model="formData.classify_name" placeholder="分类说明"  :disabled="true" autocomplete="off"></el-input>
+                        <el-input
+                            style="width: 250px;"
+                            v-model="formData.classify_name"
+                            placeholder="分类说明"
+                            :disabled="true"
+                            autocomplete="off"
+                        ></el-input>
                     </el-form-item>
                 </el-form>
                 <el-form v-if="isCreateTab">
-                    <el-form-item label="新建分类名称"  label-width="140px">
-                        <el-input style="width: 250px;" v-model="addFormData.classify_name" placeholder="请输入分类名称"  autocomplete="off"></el-input>
+                    <el-form-item label="新建分类名称" label-width="140px">
+                        <el-input
+                            style="width: 250px;"
+                            v-model="addFormData.classify_name"
+                            placeholder="请输入分类名称"
+                            autocomplete="off"
+                        ></el-input>
                     </el-form-item>
                     <el-form-item label="新建分类说明" label-width="140px">
-                        <el-input  style="width: 250px;" v-model="addFormData.classify_content" placeholder="请输入分类说明"   autocomplete="off"></el-input>
+                        <el-input
+                            style="width: 250px;"
+                            v-model="addFormData.classify_content"
+                            placeholder="请输入分类说明"
+                            autocomplete="off"
+                        ></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer" v-if="!isCreateTab">
                     <el-button @click="biaozhuDialog = false">取 消</el-button>
-                    <el-button type="primary" @click="saveFormData">确 定</el-button>
+                    <el-button type="primary" @click="saveFormData">
+                        确 定
+                    </el-button>
                 </div>
                 <div slot="footer" class="dialog-footer" v-if="isCreateTab">
-                    <el-button type="primary" @click="saveAddFormData">保存</el-button>
+                    <el-button type="primary" @click="saveAddFormData">
+                        保存
+                    </el-button>
                 </div>
             </el-dialog>
             <el-dialog
-                    :visible.sync="progress_box"
-                    style="text-align:center;"
-                    width="400px"
+                :visible.sync="progress_box"
+                style="text-align:center;"
+                width="400px"
             >
-                <el-progress type="circle" :percentage="progress_num" width="200"  :status="progress_status"></el-progress>
-                <h3>{{progress_text}}</h3>
+                <el-progress
+                    type="circle"
+                    :percentage="progress_num"
+                    width="200"
+                    :status="progress_status"
+                ></el-progress>
+                <h3>{{ progress_text }}</h3>
             </el-dialog>
         </div>
     </div>
@@ -489,8 +696,11 @@ export default {
                             this.getTaskProgress();
                         }, 1000);
                     } else if (res.data.task.progress === 1) {
+                        this.progress_num = 100;
                         this.progress_status = 'success';
-                        this.progress_box = false;
+                        setTimeout(() => {
+                            this.progress_box = false;
+                        }, 1000);
                     }
                     // 判断一结束
                     console.log(res);

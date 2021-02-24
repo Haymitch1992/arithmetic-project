@@ -1,69 +1,153 @@
 <template>
     <div class="bg">
-        <div class="online-box dataManagement" >
-            <el-button size="small" @click="openUpload" style="width: 160px;" icon="el-icon-upload">注册数据集</el-button>
-            <el-tabs  class="border-card-box" v-model="activeName"  @tab-click="handleClick">
-                <el-tab-pane label="已注册数据集"  name="first">
+        <div class="online-box dataManagement">
+            <el-tabs
+                class="border-card-box"
+                v-model="activeName"
+                @tab-click="handleClick"
+            >
+                <el-tab-pane label="已注册数据集" name="first">
+                    <el-button
+                        size="small"
+                        @click="openUpload"
+                        style="width: 160px;"
+                        icon="el-icon-upload"
+                    >
+                        注册数据集
+                    </el-button>
                     <el-table
-                    :data="dataList"
-                    class="dataTable"
-                    style="width: 100%">
-                    <el-table-column
-                        prop="date"
-                        label="数据集ID/名称"
-                        width="200"
+                        :data="dataList"
+                        class="dataTable"
+                        style="width: 100%"
+                        :key="Math.random()"
+                    >
+                        <el-table-column
+                            prop="date"
+                            label="数据集ID/名称"
+                            width="200"
                         >
-                        <template slot-scope="scope">
-                            <span class="table-p">
-                                <el-button type="text" @click="editName(scope.row,scope.$index)" v-if="!scope.row.isShow">{{scope.row.data_name}} </el-button>
-                                <el-input style="width:100px;" v-if="scope.row.isShow" v-model="resetObj.name" size="small"></el-input>
-                                <i v-if="!scope.row.isShow" class="el-icon-edit hoverShow" @click="editName(scope.row,scope.$index)"  title="修改"></i>
-                                <el-button  v-if="scope.row.isShow" @click="resetName()" title="保存" size="small" type="primary">保存</el-button>
+                            <template slot-scope="scope">
+                                <span class="table-p">
+                                    <el-button
+                                        type="text"
+                                        @click="
+                                            editName(scope.row, scope.$index)
+                                        "
+                                        v-if="!scope.row.isShow"
+                                    >
+                                        {{ scope.row.data_name }}
+                                    </el-button>
+                                    <el-input
+                                        style="width:100px;"
+                                        v-if="scope.row.isShow"
+                                        v-model="resetObj.name"
+                                        size="small"
+                                    ></el-input>
+                                    <i
+                                        v-if="!scope.row.isShow"
+                                        class="el-icon-edit hoverShow"
+                                        @click="
+                                            editName(scope.row, scope.$index)
+                                        "
+                                        title="修改"
+                                    ></i>
+                                    <el-button
+                                        v-if="scope.row.isShow"
+                                        @click="resetName()"
+                                        title="保存"
+                                        size="small"
+                                        type="primary"
+                                    >
+                                        保存
+                                    </el-button>
                                 </span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                        prop="data_from"
-                        label="数据来源"
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            prop="data_from"
+                            label="数据来源"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="data_type"
+                            :formatter="dataTypeZn"
+                            label="存储类型"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="data_path"
+                            min-width="220"
+                            label="数据集路径/链接信息"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="create_time"
+                            sortable
+                            label="创建时间"
                         >
-                    </el-table-column>
-                    <el-table-column
-                        prop="data_type"
-                        :formatter="dataTypeZn"
-                        label="存储类型">
-                    </el-table-column>
-                    <el-table-column
-                        prop="data_path"
-                        min-width="220"
-                        label="数据集路径/链接信息">
-                    </el-table-column>
-                    <el-table-column
-                        prop="create_time"
-                        sortable
-                        label="创建时间">
-                        <template slot-scope="scope">
-                            <span>{{scope.row.create_time | create_time}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="data_plan" label="备注"></el-table-column>
-                    <el-table-column
-                        prop="address"
-                        min-width="140"
-                        label="操作">
-                        <template slot-scope="scope">
-                            <el-button type="text" @click="clickDelete(scope.row.id)">删除</el-button>
-                            <el-button type="text"  @click="downLoadFile(scope.row.data_path)" >导出数据集</el-button>
-                            <!-- <el-button type="text"  @click="getDataNumber(scope.row)"  v-if="scope.row.data_type===3">导出数据集</el-button> -->
-                            <!-- 2 不可标注 -->
-                            <el-button v-if="scope.row.data_lable===0" type="text" size="small" @click="createdTip(scope.row.id)"  style="margin-left: 0;">创建标注任务</el-button>
-                            <el-button v-if="scope.row.data_lable===1||scope.row.data_lable===3" type="text"  @click="goDetail(scope.row.id)" style="margin-left: 0;">标注</el-button>
-                            <el-button v-if="scope.row.data_lable===1||scope.row.data_lable===3" type="text"  @click="changedTip(scope.row.id)" style="margin-left: 0;">修改</el-button>
-
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div class="pagination-line">
-                    <el-pagination
+                            <template slot-scope="scope">
+                                <span>
+                                    {{ scope.row.create_time | create_time }}
+                                </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                            prop="data_plan"
+                            label="备注"
+                        ></el-table-column>
+                        <el-table-column
+                            prop="address"
+                            min-width="140"
+                            label="操作"
+                        >
+                            <template slot-scope="scope">
+                                <el-button
+                                    type="text"
+                                    @click="clickDelete(scope.row.id)"
+                                >
+                                    删除
+                                </el-button>
+                                <el-button
+                                    type="text"
+                                    @click="downLoadFile(scope.row.data_path)"
+                                >
+                                    导出数据集
+                                </el-button>
+                                <!-- <el-button type="text"  @click="getDataNumber(scope.row)"  v-if="scope.row.data_type===3">导出数据集</el-button> -->
+                                <!-- 2 不可标注 -->
+                                <el-button
+                                    v-if="scope.row.data_lable === 0"
+                                    type="text"
+                                    size="small"
+                                    @click="createdTip(scope.row.id)"
+                                    style="margin-left: 0;"
+                                >
+                                    创建标注任务
+                                </el-button>
+                                <el-button
+                                    v-if="
+                                        scope.row.data_lable === 1 ||
+                                            scope.row.data_lable === 3
+                                    "
+                                    type="text"
+                                    @click="goDetail(scope.row.id)"
+                                    style="margin-left: 0;"
+                                >
+                                    标注
+                                </el-button>
+                                <el-button
+                                    v-if="
+                                        scope.row.data_lable === 1 ||
+                                            scope.row.data_lable === 3
+                                    "
+                                    type="text"
+                                    @click="changedTip(scope.row.id)"
+                                    style="margin-left: 0;"
+                                >
+                                    修改
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div class="pagination-line">
+                        <el-pagination
                             @size-change="handleSizeChange"
                             background
                             @current-change="handleCurrentChange"
@@ -71,51 +155,60 @@
                             :page-sizes="[10, 20, 30, 40]"
                             :page-size="pageSize"
                             layout="total, sizes, prev, pager, next, jumper"
-                            :total="page_count">
-                    </el-pagination>
-                </div>
+                            :total="page_count"
+                        ></el-pagination>
+                    </div>
                 </el-tab-pane>
                 <el-tab-pane label="数据中台可用数据集" name="second">
-                    <el-input v-model="searchValue" style="width:200px;"></el-input>
+                    <el-input
+                        v-model="searchValue"
+                        style="width:200px;"
+                    ></el-input>
                     <el-button @click="getSearchDataName">搜索</el-button>
-                    <el-table
-                    :data="showThemeList"
-                    style="width: 100%">
-                     <el-table-column
+                    <el-table :data="showThemeList" style="width: 100%">
+                        <el-table-column
                             prop="data_id"
                             label="数据id"
-                            >
-                        </el-table-column>
+                        ></el-table-column>
                         <el-table-column
                             prop="topicName"
                             label="数据名称"
-                            >
-                        </el-table-column>
-                        <el-table-column
-                            prop="data_theme_id"
-                            label="数据结构"
-                            >
-                               <template slot-scope="scope">
-                            <el-button type="text" size="small" @click="openDataInfo(scope.row)">详情</el-button>
-                        </template>
-                        </el-table-column>
-                        <el-table-column
-                            prop="address"
-                            label="查看数据">
+                        ></el-table-column>
+                        <el-table-column prop="data_theme_id" label="数据结构">
                             <template slot-scope="scope">
-                            <el-button type="text" size="small" @click="OpenataStructure(scope.row)">查看</el-button>
-                        </template>
+                                <el-button
+                                    type="text"
+                                    size="small"
+                                    @click="openDataInfo(scope.row)"
+                                >
+                                    详情
+                                </el-button>
+                            </template>
                         </el-table-column>
-                        <el-table-column
-                            prop="address"
-                            label="操作">
+                        <el-table-column prop="address" label="查看数据">
                             <template slot-scope="scope">
-                            <el-button type="text"  @click="oepnUserData(scope.row)">使用数据</el-button>
-                        </template>
+                                <el-button
+                                    type="text"
+                                    size="small"
+                                    @click="OpenataStructure(scope.row)"
+                                >
+                                    查看
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="address" label="操作">
+                            <template slot-scope="scope">
+                                <el-button
+                                    type="text"
+                                    @click="oepnUserData(scope.row)"
+                                >
+                                    使用数据
+                                </el-button>
+                            </template>
                         </el-table-column>
                     </el-table>
                     <div class="pagination-line">
-                    <el-pagination
+                        <el-pagination
                             @size-change="handleSizeChange1"
                             background
                             @current-change="handleCurrentChange1"
@@ -123,70 +216,133 @@
                             :page-sizes="[10, 20, 30, 40]"
                             :page-size="pageSize2"
                             layout="total, sizes, prev, pager, next, jumper"
-                            :total="listLength">
-                    </el-pagination>
-                </div>
+                            :total="listLength"
+                        ></el-pagination>
+                    </div>
                 </el-tab-pane>
             </el-tabs>
-            <el-dialog title="注册数据集" v-if="dialogTableVisible" :visible.sync="dialogTableVisible">
-                <el-form label-width="120px" :model="formData" :rules="rules" ref="formData">
+            <el-dialog
+                title="注册数据集"
+                v-if="dialogTableVisible"
+                :visible.sync="dialogTableVisible"
+            >
+                <el-form
+                    label-width="120px"
+                    :model="formData"
+                    :rules="rules"
+                    ref="formData"
+                >
                     <el-form-item label="数据集名称" prop="name">
-                        <el-input size="small" v-model="formData.name" style="width: 400px"></el-input>
+                        <el-input
+                            size="small"
+                            v-model="formData.name"
+                            style="width: 400px"
+                        ></el-input>
                     </el-form-item>
-                    <el-form-item  label="上传方式" prop="type" style="display:none;">
-                        <el-radio-group  v-model="formData.type">
+                    <el-form-item
+                        label="上传方式"
+                        prop="type"
+                        style="display:none;"
+                    >
+                        <el-radio-group v-model="formData.type">
                             <el-radio size="small" label="导入文件"></el-radio>
                         </el-radio-group>
                         <el-popover
-                                placement="right"
-                                width="550"
-                                trigger="hover">
+                            placement="right"
+                            width="550"
+                            trigger="hover"
+                        >
                             <div class="tips-img">
-                                <img src="../../assets/img/tips.png" alt="">
+                                <img src="../../assets/img/tips.png" alt="" />
                             </div>
                             <el-button slot="reference" type="text">
-                                <span style="margin-left: 10px;" class=" el-icon-question"></span>
+                                <span
+                                    style="margin-left: 10px;"
+                                    class=" el-icon-question"
+                                ></span>
                             </el-button>
                         </el-popover>
                     </el-form-item>
-                    <el-form-item label="存储路径" prop="path" v-if="formData.type==='导入文件'" v-show="false">
-                        <el-input size="small" disabled v-model="formData.path" style="width: 400px" placeholder="请选择"></el-input>
+                    <el-form-item
+                        label="存储路径"
+                        prop="path"
+                        v-if="formData.type === '导入文件'"
+                        v-show="false"
+                    >
+                        <el-input
+                            size="small"
+                            disabled
+                            v-model="formData.path"
+                            style="width: 400px"
+                            placeholder="请选择"
+                        ></el-input>
                     </el-form-item>
                 </el-form>
                 <el-upload
                     class="upload-demo"
-                    v-if="formData.type==='导入文件'"
+                    v-if="formData.type === '导入文件'"
                     ref="upload"
                     :before-upload="beforeAvatarUpload"
-                    :headers = "usertoken"
+                    :headers="usertoken"
                     drag
                     :data="{
-                        data_user_id:data_user_id,
-                        data_name:formData.name,
+                        data_user_id: data_user_id,
+                        data_name: formData.name
                     }"
                     name="datafile"
                     :action="UPLOAD_FILE"
                     :on-success="handleAvatarSuccess"
                     :auto-upload="false"
-                    multiple>
+                >
                     <i class="el-icon-upload"></i>
-                    <div class="el-upload__text">拖拽文件到虚线框内上传，或<em>点击上传</em>
-                    <p style="padding: 0;font-size: 12px;color: #999;">支持txt、csv等类型的文件，且大小不能超过20M</p></div>
+                    <div class="el-upload__text">
+                        拖拽文件到虚线框内上传，或
+                        <em>点击上传</em>
+                        <p style="padding: 0;font-size: 12px;color: #999;">
+                            支持txt、csv等类型的文件，且大小不能超过20M
+                        </p>
+                    </div>
                 </el-upload>
                 <div class="btn-line">
-                    <el-button type="primary" @click="onSubmit('formData')" size="small">提交</el-button>
+                    <el-button
+                        type="primary"
+                        @click="onSubmit('formData')"
+                        size="small"
+                    >
+                        提交
+                    </el-button>
                     <el-button size="small" @click="resetForm">取消</el-button>
                 </div>
             </el-dialog>
-            <el-dialog title="参数配置" v-if="dialogTableVisible2" :visible.sync="dialogTableVisible2">
-                <el-form label-width="120px" :model="formData"  ref="formData">
-                    <el-form-item label="选择可视化列"  >
-                        <el-select size="small" multiple v-model="formData2.set_header_input" style="width: 400px" placeholder="选择要输入的表头进行可视化">
-                            <el-option :label="item" :value="item" v-for="(item, index) in headerList" :key="index"></el-option>
+            <el-dialog
+                title="参数配置"
+                v-if="dialogTableVisible2"
+                :visible.sync="dialogTableVisible2"
+            >
+                <el-form label-width="120px" :model="formData" ref="formData">
+                    <el-form-item label="选择可视化列">
+                        <el-select
+                            size="small"
+                            multiple
+                            v-model="formData2.set_header_input"
+                            style="width: 400px"
+                            placeholder="选择要输入的表头进行可视化"
+                        >
+                            <el-option
+                                :label="item"
+                                :value="item"
+                                v-for="(item, index) in headerList"
+                                :key="index"
+                            ></el-option>
                         </el-select>
-                        <el-tooltip class="item" effect="dark"  placement="top-start">
+                        <el-tooltip
+                            class="item"
+                            effect="dark"
+                            placement="top-start"
+                        >
                             <div slot="content">
-                                请选择表头中，用以机器学习智能分析、 <br/>
+                                请选择表头中，用以机器学习智能分析、
+                                <br />
                                 标注得有效参数，和用以可视化图表展示得有效参数。
                             </div>
                             <el-button type="text">
@@ -194,16 +350,29 @@
                             </el-button>
                         </el-tooltip>
                     </el-form-item>
-                    <el-form-item label="默认标签列"  >
-                        <el-select  size="small" disabled v-model="formData2.set_header_type" style="width: 400px" placeholder="选择要修改表头">
-                            <el-option  label="默认值" value="null"></el-option>
+                    <el-form-item label="默认标签列">
+                        <el-select
+                            size="small"
+                            disabled
+                            v-model="formData2.set_header_type"
+                            style="width: 400px"
+                            placeholder="选择要修改表头"
+                        >
+                            <el-option label="默认值" value="null"></el-option>
                             <!-- <el-option :label="item" :value="item" v-for="(item, index) in headerList" :key="index"></el-option> -->
                         </el-select>
-                        <el-tooltip class="item" effect="dark"  placement="top-start">
+                        <el-tooltip
+                            class="item"
+                            effect="dark"
+                            placement="top-start"
+                        >
                             <div slot="content">
-                                请选择表头中用以修改标签得有效参数。<br/>
-                                该选项可为空，为空后会自动为数据集添加标签列。<br/>
-                                注： 自动添加表头参数为set_header_type, <br/>
+                                请选择表头中用以修改标签得有效参数。
+                                <br />
+                                该选项可为空，为空后会自动为数据集添加标签列。
+                                <br />
+                                注： 自动添加表头参数为set_header_type,
+                                <br />
                                 未标注 -NaN，正常 -1，异常 -0
                             </div>
                             <el-button type="text">
@@ -212,10 +381,25 @@
                         </el-tooltip>
                     </el-form-item>
                     <el-form-item label="选择ID列">
-                        <el-select  size="small" v-model="formData2.set_header_id" style="width: 400px" placeholder="选择数据集中的唯一标识">
-                            <el-option :label="item" :value="item" v-for="(item, index) in headerList" :key="index"></el-option>
+                        <el-select
+                            size="small"
+                            v-model="formData2.set_header_id"
+                            style="width: 400px"
+                            placeholder="选择数据集中的唯一标识"
+                        >
+                            <el-option
+                                :label="item"
+                                :value="item"
+                                v-for="(item, index) in headerList"
+                                :key="index"
+                            ></el-option>
                         </el-select>
-                        <el-tooltip class="item" effect="dark" content="请选择数据集中的唯一标识id。" placement="top-start">
+                        <el-tooltip
+                            class="item"
+                            effect="dark"
+                            content="请选择数据集中的唯一标识id。"
+                            placement="top-start"
+                        >
                             <el-button type="text">
                                 <span class="el-icon-question"></span>
                             </el-button>
@@ -223,60 +407,94 @@
                     </el-form-item>
                 </el-form>
                 <div class="btn-line">
-                    <el-button type="primary" @click="submitFrom" size="small">提交</el-button>
-                    <el-button size="small" @click="dialogTableVisible2=false">取消</el-button>
+                    <el-button type="primary" @click="submitFrom" size="small">
+                        提交
+                    </el-button>
+                    <el-button
+                        size="small"
+                        @click="dialogTableVisible2 = false"
+                    >
+                        取消
+                    </el-button>
                 </div>
             </el-dialog>
             <!--数据结构详情-->
-            <el-dialog title="数据结构详情" v-if="dataInfo" :visible.sync="dataInfo">
-                <el-table
-                    :data="dataInfoList"
-                    border
-                    style="width: 100%">
-                        <el-table-column
-                            prop="key"
-                            label="数据key"
-                            width="180">
-                        </el-table-column>
-                        <el-table-column
-                            prop="val"
-                            label="数据value"
-                            width="180">
-                        </el-table-column>
-                        <el-table-column
-                            prop="des"
-                            label="描述">
-                        </el-table-column>
-                    </el-table>
+            <el-dialog
+                title="数据结构详情"
+                v-if="dataInfo"
+                :visible.sync="dataInfo"
+            >
+                <el-table :data="dataInfoList" border style="width: 100%">
+                    <el-table-column
+                        prop="key"
+                        label="数据key"
+                        width="180"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="val"
+                        label="数据value"
+                        width="180"
+                    ></el-table-column>
+                    <el-table-column prop="des" label="描述"></el-table-column>
+                </el-table>
             </el-dialog>
             <!--查看数据-->
-            <el-dialog title="查看数据" v-if="dataStructure" :visible.sync="dataStructure">
-                <el-slider v-model="dataStructureLength" :max="themeLength"></el-slider>
-                <p>当前展示数据条数 {{dataStructureLength}}/{{themeLength}} <el-button @click="getDataStructure()">查询</el-button></p>
+            <el-dialog
+                title="查看数据"
+                v-if="dataStructure"
+                :visible.sync="dataStructure"
+                width="800px"
+            >
+                <!-- <el-slider
+                    v-model="dataStructureLength"
+                    :max="themeLength"
+                ></el-slider> -->
+                <!-- <p>
+                    当前展示数据条数 {{ dataStructureLength }}/{{ themeLength }}
+                    <el-button @click="getDataStructure()">查询</el-button>
+                </p> -->
                 <div>
-                    <el-table
-                    height="350"
-                    :data="dataStructureList"
-                    border
-                    >
+                    <el-table height="350" :data="dataStructureList" border>
                         <el-table-column
-                            v-for="(item,key) in dataStructureList[0]" :key="key"
+                            v-for="(item, key) in dataStructureList[0]"
+                            :key="key"
                             :prop="key"
                             :label="key"
-                            width="180">
-                        </el-table-column>
+                            width="180"
+                        ></el-table-column>
                     </el-table>
                 </div>
             </el-dialog>
-            <el-dialog title="使用数据" v-if="userDataDialog" :visible.sync="userDataDialog">
-                <el-form label-width="120px" :model="formData" :rules="rules" ref="formData">
+            <el-dialog
+                title="使用数据"
+                v-if="userDataDialog"
+                :visible.sync="userDataDialog"
+            >
+                <el-form
+                    label-width="120px"
+                    :model="formData"
+                    :rules="rules"
+                    ref="formData"
+                >
                     <el-form-item label="数据集名称" prop="name">
-                        <el-input size="small" v-model="formData.name" style="width: 400px"></el-input>
+                        <el-input
+                            size="small"
+                            v-model="formData.name"
+                            style="width: 400px"
+                        ></el-input>
                     </el-form-item>
                 </el-form>
-                 <div class="btn-line">
-                    <el-button type="primary" @click="userDataSubmit" size="small">提交</el-button>
-                    <el-button size="small" @click="userDataDialog=false">取消</el-button>
+                <div class="btn-line">
+                    <el-button
+                        type="primary"
+                        @click="userDataSubmit"
+                        size="small"
+                    >
+                        提交
+                    </el-button>
+                    <el-button size="small" @click="userDataDialog = false">
+                        取消
+                    </el-button>
                 </div>
             </el-dialog>
         </div>
@@ -328,6 +546,7 @@ export default {
 
     data() {
         return {
+            canChangeShow: false,
             searchValue: '',
             resetObj: {
                 name: '',
@@ -338,7 +557,7 @@ export default {
             userDataDialog: false,
             dataStructure: false,
             dataInfo: false,
-            dataStructureLength: 10, // 获取数据的长度
+            dataStructureLength: 100, // 获取数据的长度
             pageSize2: 10, // 数据中台单页显示条数
             themeLength: 10, // 数据总长度
             currentPage2: 1, // 数据中台数显示那页
@@ -552,13 +771,19 @@ export default {
             this.resetObj.name = obj.data_name;
             this.resetObj.id = obj.id;
             // 找到当前的id 然后修改 isShow
+            if (this.canChangeShow) {
+                this.$message.error('请先保存数据集名称');
+                return;
+            }
+            // 判断是否存在更改项
             this.dataList.forEach((item, index) => {
                 if (item.id === obj.id) {
+                    this.canChangeShow = true;
                     this.$set(this.dataList[index], 'isShow', true);
                 }
             });
             let arr = this.dataList;
-            this.dataList = [];
+            this.dataList = null;
             this.dataList = arr;
             console.log(this.dataList, obj);
         },
@@ -573,6 +798,7 @@ export default {
                     if (res.data.code === 200) {
                         this.getAllData();
                         this.$message.success('修改成功');
+                        this.canChangeShow = false;
                     } else {
                         this.$message.error(res.data.mes);
                     }
@@ -607,20 +833,28 @@ export default {
         },
         // 获取长度
         getLength(obj) {
-            this.$api
-                .get(GET_COUNT_THEME, {
-                    data_theme_id: obj.data_id
-                })
-                .then(res => {
-                    if (res.data.code === 200) {
-                        this.themeLength = res.data.data[0]['COUNT(1)'];
-                        this.dataStructure = true;
-                    } else {
-                        this.themeLength = 0;
-                    }
-                });
+            return new Promise((resolve, reject) => {
+                /* 你的逻辑代码 */
+                this.$api
+                    .get(GET_COUNT_THEME, {
+                        data_theme_id: obj.data_id
+                    })
+                    .then(res => {
+                        if (
+                            res.data.code === 200 &&
+                            res.data.data[0]['COUNT(1)'] !== 0
+                        ) {
+                            this.themeLength = res.data.data[0]['COUNT(1)'];
+                        } else {
+                            this.themeLength = 0;
+                            this.$message.error('当前主题下没有数据');
+                        }
+                        resolve(res);
+                    });
+            });
         },
         getDataStructure() {
+            this.dataStructureList = [];
             this.$api
                 .get(GET_LIMIT_THEME, {
                     data_theme_id: this.saveObj.data_id,
@@ -630,21 +864,32 @@ export default {
                     if (res.data.code === 200) {
                         this.dataStructureList = res.data.data;
                     } else {
-                        this.$message.error('当前主题下没有数据');
                         this.dataStructureList = [{}];
                     }
                 });
         },
         oepnUserData(obj) {
-            this.formData.data_theme_id = obj.data_id;
-            this.formData.data_theme_name = obj.topicName;
-            this.userDataDialog = true;
+            this.saveObj = obj;
+            // 判断是否存数据
+            Promise.all([this.getLength(obj)]).then(res => {
+                /* 你的逻辑代码 */
+                if (res[0].data.data[0]['COUNT(1)']) {
+                    this.formData.data_theme_id = obj.data_id;
+                    this.formData.data_theme_name = obj.topicName;
+                    this.userDataDialog = true;
+                }
+            });
         },
         OpenataStructure(obj) {
             this.saveObj = obj;
-
-            this.getLength(obj);
-            this.getDataStructure();
+            Promise.all([this.getLength(obj)]).then(res => {
+                /* 你的逻辑代码 */
+                if (!res[0].data.data[0]['COUNT(1)']) {
+                    return;
+                }
+                this.dataStructure = true;
+                this.getDataStructure();
+            });
         },
         // 查看数据结构详情
         openDataInfo(obj) {
