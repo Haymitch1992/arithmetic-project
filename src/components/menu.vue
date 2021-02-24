@@ -1,15 +1,19 @@
 <template>
     <div class="menu-box">
         <h2 class="menu-title">
-            <img src="../assets/img/system-logo.png" class="system-logo" alt="">
-            算法中台</h2>
+            <img
+                src="../assets/img/system-logo.png"
+                class="system-logo"
+                alt=""
+            />
+            算法中台
+        </h2>
         <div class="menu-container">
             <el-menu
-                    default-active="2"
-                    class="el-menu-vertical-demo"
-                    @select="handleSelect"
+                default-active="2"
+                class="el-menu-vertical-demo"
+                @select="handleSelect"
             >
-
                 <el-menu-item index="2">
                     <span slot="title">数据集管理</span>
                 </el-menu-item>
@@ -21,6 +25,9 @@
                 </el-menu-item>
                 <el-menu-item index="5">
                     <span slot="title">模板部署</span>
+                </el-menu-item>
+                <el-menu-item index="6">
+                    <span slot="title">成果展示入口</span>
                 </el-menu-item>
             </el-menu>
             <div class="help-box">
@@ -63,6 +70,9 @@ export default {
                     break;
                 case '5':
                     this.$router.push('/online');
+                    break;
+                case '6':
+                    this.$router.push('/deviceManagement');
                     break;
             }
         },

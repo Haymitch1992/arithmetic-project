@@ -21,7 +21,8 @@
               <span class="textLimit" style="margin-right:20px"> {{item.create_time|converTime('YYYY-MM-DD HH:mm:ss')}}</span>
               <el-tag style="vertical-align: top;" size="small" v-if="item.task_plan===1" type="success">已完成</el-tag>
               <span v-if="item.task_plan===0" class="progress-span">
-                  <el-progress :text-inside="true" :stroke-width="18" :percentage="item.plan.progress*100"></el-progress>
+                  <el-progress :text-inside="true" :stroke-width="18" :percentage="parseInt(item.plan.progress*100)"></el-progress>
+                  <span style="font-size:12px;">{{item.plan.title}}</span>
               </span>
               <el-tag style="vertical-align: top;"  size="small" v-if="item.task_plan===2" type="danger">失败</el-tag>
           </li>

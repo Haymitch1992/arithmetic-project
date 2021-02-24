@@ -207,6 +207,7 @@
                     width="400px"
             >
                 <el-progress type="circle" :percentage="progress_num" width="200"  :status="progress_status"></el-progress>
+                <h3>{{progress_text}}</h3>
             </el-dialog>
         </div>
     </div>
@@ -259,6 +260,7 @@ export default {
         return {
             progress_box: false,
             progress_status: '',
+            progress_text: '',
             progress_num: 0,
             currentItemId: '', // 检索激活项
             set_title: [],
@@ -459,15 +461,14 @@ export default {
     mounted() {
         if (this.$route.params.lableId) {
             this.data_set_id = this.$route.params.lableId;
+            // 获取数据标注进度
+            this.getTaskProgress();
         } else {
             this.backList();
         }
         this.getJsonData();
         this.getLable();
         this.getClassify();
-
-        // 获取数据标注进度
-        this.getTaskProgress();
     },
     methods: {
         // 获取标注进度
@@ -478,13 +479,16 @@ export default {
                 })
                 .then(res => {
                     // 判断还在或过程中 再次调用
-                    if (res.data.task && res.data.task.progress <= 1) {
-                        this.progress_box = true;
+                    this.progress_box = true;
+                    if (res.data.task === null || res.data.task.progress < 1) {
                         setTimeout(() => {
-                            this.progress_num = res.data.task.progress * 100;
+                            this.progress_num = parseInt(
+                                res.data.task.progress * 100
+                            );
+                            this.progress_text = res.data.task.title;
                             this.getTaskProgress();
                         }, 1000);
-                    } else {
+                    } else if (res.data.task.progress === 1) {
                         this.progress_status = 'success';
                         this.progress_box = false;
                     }

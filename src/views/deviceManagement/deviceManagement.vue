@@ -2,10 +2,21 @@
     <div class="bg">
         <div class="online-box">
             <div class="device-container">
-                <div class="item device-video">视频播放</div>
+                <div class="item device-video">
+                    <h3>视频源 202102221001.mp4</h3>
+                    <iframe
+                        style="width: 100%;height: 420px"
+                        frameborder="no"
+                        allowfullscreen
+                        mozallowfullscreen
+                        webkitallowfullscreen
+                        src="http://go.plvideo.cn/front/video/preview?vid=63d455972f3fc30564a91cdeef097dde_6"
+                    ></iframe>
+                </div>
                 <div class="item device-box">
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                         <el-tab-pane label="概览" name="first">
+                            <h3>基本信息</h3>
                             <table class="device-table">
                                 <tr>
                                     <td class="device-table-th">设备名称</td>
@@ -27,9 +38,12 @@
                                 </tr>
                                 <tr>
                                     <td class="device-table-th">视频流地址</td>
-                                    <td colspan="3">http://www.sunsealot.com</td>
+                                    <td colspan="3">
+                                        http://www.sunsealot.com
+                                    </td>
                                 </tr>
                             </table>
+
                             <table class="device-table">
                                 <tr>
                                     <td class="device-table-th">关联点位</td>
@@ -44,6 +58,7 @@
                                     <td>朝南</td>
                                 </tr>
                             </table>
+
                             <table class="device-table">
                                 <tr>
                                     <td class="device-table-th">添加时间</td>
@@ -62,72 +77,142 @@
                             </table>
                         </el-tab-pane>
                         <el-tab-pane label="媒体资源" name="second">
+                            <h3>媒体资源</h3>
                             <el-table
+                                border
                                 :data="tableData"
-                                style="width: 100%">
-                            <el-table-column
-                                prop="name"
-                                label="名称"
-                                >
-                            </el-table-column>
-                            <el-table-column
-                                prop="type"
-                                label="类型"
-                                >
-                            </el-table-column>
-                            <el-table-column
-                                prop="size"
-                                label="大小">
-                            </el-table-column>
-                            <el-table-column
-                                prop="createTime"
-                                label="生成时间">
-                            </el-table-column>
-                            <el-table-column
-                                label="操作">
-                                <template  slot-scope="scope">
-                                    <el-button @click="useData(scope.row.id)" size="mini">使用</el-button>
-                                    <el-button size="mini" type="danger">删除</el-button>
-                                </template>
-                            </el-table-column>
+                                style="width: 100%"
+                            >
+                                <el-table-column
+                                    prop="name"
+                                    label="名称"
+                                ></el-table-column>
+                                <el-table-column
+                                    prop="type"
+                                    label="类型"
+                                ></el-table-column>
+                                <el-table-column
+                                    prop="size"
+                                    label="大小"
+                                ></el-table-column>
+                                <el-table-column
+                                    prop="createTime"
+                                    label="生成时间"
+                                ></el-table-column>
+                                <el-table-column label="操作" width="160px">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                            @click="useData(scope.row.id)"
+                                            size="mini"
+                                        >
+                                            使用
+                                        </el-button>
+                                        <el-button size="mini" type="danger">
+                                            删除
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
                             </el-table>
                         </el-tab-pane>
                         <el-tab-pane label="分析" name="third">
-                            <!-- 分析任务 -->
+                            <h3>分析结果</h3>
                             <!-- 分析结果 -->
-                            <div class="device-result-container">
+                            <div
+                                class="device-result-container"
+                                style="margin-bottom:20px;"
+                            >
                                 <div class="device-result-item">
-                                    <div>
-                                        <span>未正确戴安全帽</span>
-                                        <span>1600</span>
-                                    </div>
+                                    <p>未正确戴安全帽</p>
+                                    <p class="num">76</p>
                                 </div>
                                 <div class="device-result-item">
-                                    <div>
-                                        <span>正确佩戴安全帽</span>
-                                        <span>1600</span>
-                                    </div>
+                                    <p>正确佩戴安全帽</p>
+                                    <p class="num">1230</p>
+                                </div>
+                                <div class="device-result-item">
+                                    <p>人脸</p>
+                                    <p class="num">540</p>
                                 </div>
                             </div>
+                            <h3>分析任务</h3>
+                            <!-- 分析任务 -->
+                            <el-table
+                                :data="tableData"
+                                border
+                                style="width: 100%;"
+                            >
+                                <el-table-column
+                                    prop="algorithmName"
+                                    label="实例算法"
+                                ></el-table-column>
+                                <el-table-column label="开始/停止">
+                                    <template slot-scope="scope">
+                                        <el-switch
+                                            v-model="scope.row.switch"
+                                            active-color="#13ce66"
+                                            inactive-color="#ff4949"
+                                        ></el-switch>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                    prop="algorithmInfo"
+                                    label="识别对象"
+                                ></el-table-column>
+                                <el-table-column label="操作">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                            @click="useData(scope.row.id)"
+                                            size="mini"
+                                        >
+                                            删除
+                                        </el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
                         </el-tab-pane>
                     </el-tabs>
                 </div>
                 <div class="item device-img">
+                    <h3>分析结果-识别目标</h3>
                     <div class="device-img-item">
-                        <el-image :src="'/assets/img/safe-item-1.jpg'" style="width: 100%; height: 140px"></el-image>
-                        <p class="device-result-text">2020-02-22</p>
+                        <el-image
+                            :preview-src-list="srcList"
+                            :src="
+                                'http://47.95.214.123:8080/media/test/safe-item-1.jpg/'
+                            "
+                            style="width: 100%; height: 130px"
+                        ></el-image>
+                        <p class="device-result-text">2020-02-22 15:32:22</p>
                     </div>
                     <div class="device-img-item">
-                        <el-image src="../../assets/img/safe-item-1.jpg" style="width: 100%; height: 140px"></el-image>
-                        <p class="device-result-text">2020-02-22</p>
+                        <el-image
+                            :preview-src-list="srcList"
+                            :src="
+                                'http://47.95.214.123:8080/media/test/safe-item-2.jpg/'
+                            "
+                            style="width: 100%; height: 130px"
+                        ></el-image>
+                        <p class="device-result-text">2020-02-22 15:32:22</p>
                     </div>
                     <div class="device-img-item">
-                        <el-image src="../../assets/img/safe-item-1.jpg" style="width: 100%; height: 140px"></el-image>
-                        <p class="device-result-text">2020-02-22</p>
+                        <el-image
+                            :preview-src-list="srcList"
+                            :src="
+                                'http://47.95.214.123:8080/media/test/safe-item-3.jpg/'
+                            "
+                            style="width: 100%; height: 130px"
+                        ></el-image>
+                        <p class="device-result-text">2020-02-22 15:32:22</p>
                     </div>
                     <div class="device-img-item">
-                        <el-image src="../../assets/img/safe-item-1.jpg" style="width: 100%; height: 140px"></el-image>
-                        <p class="device-result-text">2020-02-22</p>
+                        <el-image
+                            :preview-src-list="srcList"
+                            :src="
+                                'http://47.95.214.123:8080/media/test/safe-item-4.jpg/'
+                            "
+                            style="width: 100%; height: 130px"
+                        ></el-image>
+                        <p class="device-result-text">2020-02-22 15:32:22</p>
                     </div>
                 </div>
             </div>
@@ -141,32 +226,50 @@ export default {
     data() {
         return {
             activeName: 'first',
+            srcList: [
+                'http://47.95.214.123:8080/media/test/safe-item-1.jpg/',
+                'http://47.95.214.123:8080/media/test/safe-item-2.jpg/',
+                'http://47.95.214.123:8080/media/test/safe-item-3.jpg/',
+                'http://47.95.214.123:8080/media/test/safe-item-4.jpg/'
+            ],
             tableData: [
                 {
                     name: '202102221001.mp4',
                     type: '视频',
                     size: '1.3kb',
+                    switch: false,
+                    algorithmName: '百度算法',
+                    algorithmInfo: '识别人脸',
                     createTime: '2021-02-22 16:40:00',
                     id: 1
                 },
                 {
                     name: '202102221002.mp4',
                     type: '视频',
-                    size: '1.3kb',
+                    size: '2.3mb',
+                    switch: true,
+                    algorithmName: '阿里算法',
+                    algorithmInfo: '识别安全帽',
                     createTime: '2021-02-22 16:40:00',
                     id: 2
                 },
                 {
                     name: '202102221003.mp4',
                     type: '视频',
-                    size: '1.3kb',
+                    size: '3.3kb',
+                    switch: false,
+                    algorithmName: '二分类算法',
+                    algorithmInfo: '识别人脸',
                     createTime: '2021-02-22 16:40:00',
                     id: 3
                 },
                 {
                     name: '202102221004.mp4',
                     type: '视频',
-                    size: '1.3kb',
+                    size: '4.3kb',
+                    switch: true,
+                    algorithmName: '百度算法',
+                    algorithmInfo: '识别人脸',
                     createTime: '2021-02-22 16:40:00',
                     id: 4
                 },
@@ -174,6 +277,9 @@ export default {
                     name: '202102221005.mp4',
                     type: '视频',
                     size: '1.3kb',
+                    switch: false,
+                    algorithmName: '百度算法',
+                    algorithmInfo: '识别人脸',
                     createTime: '2021-02-22 16:40:00',
                     id: 5
                 }
@@ -197,6 +303,15 @@ export default {
     padding: 20px;
 }
 .device-container {
+    h3 {
+        margin: 0;
+        padding: 0;
+        font-weight: normal;
+        line-height: 24px;
+        font-size: 16px;
+        margin-bottom: 14px;
+        color: #333;
+    }
     display: grid;
     grid-template-columns: 800px 1fr;
     grid-template-rows: auto 180px;
@@ -204,33 +319,95 @@ export default {
     grid-template-areas:
         'device-video device-box'
         'device-img device-box';
-    border: 1px solid #ddd;
     .device-table {
         td {
             border: 1px solid #ddd;
         }
     }
     .item {
-        border: 1px solid #ddd;
+        padding: 10px;
         .device-img-item {
             width: 25%;
             display: block;
+            box-sizing: border-box;
+            padding-right: 2px;
             float: left;
+            position: relative;
             .device-result-text {
-                background: #666666;
+                background: rgba(0, 0, 0, 0.3);
                 color: #fff;
                 padding: 0 0 0 14px;
                 margin: 0;
                 line-height: 36px;
                 font-size: 14px;
+                position: absolute;
+                width: calc(100% - 16px);
+                bottom: 0;
             }
         }
     }
     .device-video {
         grid-area: device-video;
     }
+    .device-result-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        .device-result-item {
+            height: 90px;
+            border: 1px solid #eee;
+            text-align: center;
+            padding-top: 24px;
+            cursor: pointer;
+            p {
+                padding: 0;
+                margin: 0;
+                font-size: 14px;
+                color: #666;
+            }
+            .num {
+                font-size: 40px;
+                position: relative;
+                line-height: 54px;
+                color: #333;
+                font-weight: bold;
+            }
+            .num::after {
+                content: '';
+                width: 50px;
+                height: 4px;
+                display: block;
+                position: absolute;
+                background: #1677ff;
+                left: calc(50% - 25px);
+                top: 54px;
+                opacity: 0;
+            }
+        }
+        .device-result-item:hover {
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgb(156, 154, 154);
+            .num {
+                color: #1677ff;
+            }
+            .num::after {
+                opacity: 1;
+            }
+        }
+        .device-result-item:nth-child(1) {
+            border-bottom: 4px solid #3670e4;
+        }
+        .device-result-item:nth-child(2) {
+            border-bottom: 4px solid #52cca3;
+        }
+        .device-result-item:nth-child(3) {
+            border-bottom: 4px solid #32c5ff;
+        }
+    }
     .device-box {
         grid-area: device-box;
+        /deep/ .el-tabs__content {
+            overflow: visible;
+        }
         .device-table {
             width: 100%;
             border-collapse: collapse;
