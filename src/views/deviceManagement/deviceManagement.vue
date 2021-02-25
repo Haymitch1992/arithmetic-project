@@ -5,10 +5,10 @@
                 <div class="item device-video">
                     <h3>视频源 202102221001.mp4</h3>
                     <div
-                        style="width: 100%;height: 420px;background:rgb(81 83 107);"
+                        style="width: 100%;height: 400px;background:rgb(81 83 107);"
                     >
                         <iframe
-                            style="width: 100%;height: 420px"
+                            style="width: 100%;height: 400px"
                             frameborder="no"
                             allowfullscreen
                             mozallowfullscreen
@@ -178,7 +178,7 @@
                 </div>
                 <div class="item device-img">
                     <h3>分析结果-识别目标(未正确佩戴安全帽)</h3>
-                    <el-carousel height="150px">
+                    <el-carousel height="124px">
                         <el-carousel-item>
                             <div class="device-img-item">
                                 <el-image
@@ -186,7 +186,7 @@
                                     :src="
                                         'http://47.95.214.123:8080/media/test/safe-item-1.jpg/'
                                     "
-                                    style="width: 100%; height: 130px"
+                                    style="width: 100%; height: 124px"
                                 ></el-image>
                                 <p class="device-result-text">
                                     2020-02-22 15:32:22
@@ -198,7 +198,7 @@
                                     :src="
                                         'http://47.95.214.123:8080/media/test/safe-item-2.jpg/'
                                     "
-                                    style="width: 100%; height: 130px"
+                                    style="width: 100%; height: 124px"
                                 ></el-image>
                                 <p class="device-result-text">
                                     2020-02-22 15:32:22
@@ -210,7 +210,7 @@
                                     :src="
                                         'http://47.95.214.123:8080/media/test/safe-item-3.jpg/'
                                     "
-                                    style="width: 100%; height: 130px"
+                                    style="width: 100%; height: 124px"
                                 ></el-image>
                                 <p class="device-result-text">
                                     2020-02-22 15:32:22
@@ -222,7 +222,7 @@
                                     :src="
                                         'http://47.95.214.123:8080/media/test/safe-item-4.jpg/'
                                     "
-                                    style="width: 100%; height: 130px"
+                                    style="width: 100%; height: 124px"
                                 ></el-image>
                                 <p class="device-result-text">
                                     2020-02-22 15:32:22
@@ -236,7 +236,7 @@
                                     :src="
                                         'http://47.95.214.123:8080/media/test/safe-item-5.jpg/'
                                     "
-                                    style="width: 100%; height: 130px"
+                                    style="width: 100%; height: 124px"
                                 ></el-image>
                                 <p class="device-result-text">
                                     2020-02-22 15:32:22
@@ -248,7 +248,7 @@
                                     :src="
                                         'http://47.95.214.123:8080/media/test/safe-item-6.jpg/'
                                     "
-                                    style="width: 100%; height: 130px"
+                                    style="width: 100%; height: 124px"
                                 ></el-image>
                                 <p class="device-result-text">
                                     2020-02-22 15:32:22
@@ -260,7 +260,7 @@
                                     :src="
                                         'http://47.95.214.123:8080/media/test/safe-item-7.jpg/'
                                     "
-                                    style="width: 100%; height: 130px"
+                                    style="width: 100%; height: 124px"
                                 ></el-image>
                                 <p class="device-result-text">
                                     2020-02-22 15:32:22
@@ -272,7 +272,7 @@
                                     :src="
                                         'http://47.95.214.123:8080/media/test/safe-item-8.jpg/'
                                     "
-                                    style="width: 100%; height: 130px"
+                                    style="width: 100%; height: 124px"
                                 ></el-image>
                                 <p class="device-result-text">
                                     2020-02-22 15:32:22
@@ -383,9 +383,9 @@ export default {
         color: #333;
     }
     display: grid;
-    grid-template-columns: 800px 1fr;
-    grid-template-rows: auto 180px;
-    height: 600px;
+    grid-template-columns: 650px 1fr;
+    grid-template-rows: auto 160px;
+    height: 500px;
     grid-template-areas:
         'device-video device-box'
         'device-img device-box';

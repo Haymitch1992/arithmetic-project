@@ -812,7 +812,7 @@ export default {
                     } else {
                         this.$message({
                             type: 'error',
-                            message: res.data.mesage
+                            message: res.data.message
                         });
                     }
                 });
