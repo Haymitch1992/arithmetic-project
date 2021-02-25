@@ -33,8 +33,8 @@ let store = new Vuex.Store({
     run_uuid: '',
     taskList: {
       completed_task: [],
-      unfinished_task: [],
-      fail_task: []
+      fail_task: [],
+      unfinished_task: []
     }// 任务列表
   },
   mutations: {

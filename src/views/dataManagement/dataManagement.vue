@@ -474,7 +474,7 @@
                     label-width="120px"
                     :model="formData"
                     :rules="rules"
-                    ref="formData"
+                    ref="useDataForm"
                 >
                     <el-form-item label="数据集名称" prop="name">
                         <el-input
@@ -686,7 +686,15 @@ export default {
                     data_user_id: this.data_user_id
                 })
                 .then(res => {
-                    this.$store.commit('saveTaskList', res.data);
+                    if (res.data.code === 200) {
+                        this.$store.commit('saveTaskList', res.data);
+                    } else {
+                        this.$store.commit('saveTaskList', {
+                            completed_task: [],
+                            fail_task: [],
+                            unfinished_task: []
+                        });
+                    }
                     // unfinished_task 是否为空
                     if (res.data.unfinished_task.length !== 0) {
                         // 停掉之前的定时任务
@@ -812,24 +820,32 @@ export default {
         },
         // 使用数据提交
         userDataSubmit() {
-            this.$api
-                .post(POST_SAVE_SFZTORM, {
-                    data_name: this.formData.name,
-                    data_theme_id: this.formData.data_theme_id,
-                    data_theme_name: this.formData.data_theme_name,
-                    data_user_id: this.data_user_id
-                })
-                .then(res => {
-                    if (res.data.code === 200) {
-                        this.userDataDialog = false;
-                        this.getAllData();
-                        this.activeName = 'first';
-                        this.formData.name = '';
-                        this.findTask();
-                    } else {
-                        this.$message.error(res.data.mes);
-                    }
-                });
+            // 判断表单的校验规则
+            this.$refs['useDataForm'].validate(valid => {
+                if (valid) {
+                    this.$api
+                        .post(POST_SAVE_SFZTORM, {
+                            data_name: this.formData.name,
+                            data_theme_id: this.formData.data_theme_id,
+                            data_theme_name: this.formData.data_theme_name,
+                            data_user_id: this.data_user_id
+                        })
+                        .then(res => {
+                            if (res.data.code === 200) {
+                                this.userDataDialog = false;
+                                this.getAllData();
+                                this.activeName = 'first';
+                                this.formData.name = '';
+                                this.findTask();
+                            } else {
+                                this.$message.error(res.data.mes);
+                            }
+                        });
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
         },
         // 获取长度
         getLength(obj) {

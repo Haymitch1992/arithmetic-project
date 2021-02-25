@@ -1,28 +1,31 @@
 <template>
     <div>
         <el-dialog
-                title="选择字段"
-                :visible.sync = "showDialog"
-                width="570px"
-                :before-close="handleClose">
+            title="选择字段"
+            :visible.sync="showDialog"
+            width="660px"
+            :before-close="handleClose"
+        >
             <div class="transfer-box">
-                <el-transfer v-model="selectTransferData"
-                 :titles="['可选','已选']"
-                 :data="transferData"></el-transfer>
+                <el-transfer
+                    v-model="selectTransferData"
+                    :titles="['可选', '已选']"
+                    :data="transferData"
+                ></el-transfer>
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="handleClose">取 消</el-button>
                 <el-button type="primary" @click="handleClose">确 定</el-button>
-              </span>
+            </span>
         </el-dialog>
     </div>
 </template>
 
 <script>
-import { SET_HEADER } from "../assets/url";
+import { SET_HEADER } from '../assets/url';
 
 export default {
-    name: "selectHeader",
+    name: 'selectHeader',
     props: {
         dialogVisible: Boolean,
         selectValue: Array
@@ -41,14 +44,14 @@ export default {
     },
     mounted() {
         this.setHeader();
-        console.log("selectValue", this.selectValue);
+        console.log('selectValue', this.selectValue);
     },
     methods: {
         setHeader() {
             // SET_HEADER
             this.$api
                 .post(SET_HEADER, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     set_id: this.$store.state.set_id
                 })
                 .then(res => {
@@ -62,8 +65,8 @@ export default {
                 });
         },
         handleClose() {
-            this.$store.commit("changeSelectDate", this.selectTransferData);
-            this.$emit("saveSelect");
+            this.$store.commit('changeSelectDate', this.selectTransferData);
+            this.$emit('saveSelect');
         }
     }
 };

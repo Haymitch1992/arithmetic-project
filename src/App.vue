@@ -2,21 +2,33 @@
     <div id="app">
         <el-container>
             <!-- 机器学习-->
-            <div v-if="currentModel===1" class="machine-box">
+            <div v-if="currentModel === 1" class="machine-box">
                 <el-container>
-                    <el-header class="header-box-2" >
-                        <img src="./assets/img/system-logo-2.png" class="system-logo" alt="">
+                    <el-header class="header-box-2">
+                        <img
+                            src="./assets/img/system-logo-2.png"
+                            class="system-logo"
+                            alt=""
+                        />
                         <span class="machine">机器学习</span>
-                        <span class="machine-test-title">{{project_name}}</span>
+                        <span class="machine-test-title">
+                            {{ project_name }}
+                        </span>
                         <span class="login-info">
-                            <img src="../src/assets/img/person.jpg" alt="" class="info-img-small">
-                            <span >{{$store.state.userName}}</span>
-                           <loginInfo></loginInfo>
+                            <img
+                                src="../src/assets/img/person.jpg"
+                                alt=""
+                                class="info-img-small"
+                            />
+                            <span>{{ $store.state.userName }}</span>
+                            <loginInfo></loginInfo>
                         </span>
                     </el-header>
-                    <el-main class="home-menu-2" >
+                    <el-main class="home-menu-2">
                         <el-container class="content-container2">
-                            <experimentMenu style="width: 66px;margin-right: 10px;"></experimentMenu>
+                            <experimentMenu
+                                style="width: 66px;margin-right: 10px;"
+                            ></experimentMenu>
                             <el-main style="padding: 0;">
                                 <router-view />
                             </el-main>
@@ -25,24 +37,37 @@
                 </el-container>
             </div>
             <!-- 注册登录-->
-            <div v-if="currentModel===2" style="width: 100%;">
+            <div v-if="currentModel === 2" style="width: 100%;">
                 <router-view />
             </div>
             <!-- 普通-->
-            <div v-if="currentModel===3" class="public-box">
-                <el-aside class="home-menu" >
-                    <MENU ></MENU>
+            <div v-if="currentModel === 3" class="public-box">
+                <el-aside class="home-menu">
+                    <MENU></MENU>
                 </el-aside>
                 <el-container class="content-container">
-                    <el-header class="header-box" >
+                    <el-header class="header-box">
                         <span class="login-info">
-                            <img src="../src/assets/img/person.jpg" alt="" class="info-img-small">
-                            <span @click="goPersonalPage()">{{$store.state.userName}}</span>
+                            <img
+                                src="../src/assets/img/person.jpg"
+                                alt=""
+                                class="info-img-small"
+                            />
+                            <span @click="goPersonalPage()">
+                                {{ $store.state.userName }}
+                            </span>
                             <loginInfo></loginInfo>
                         </span>
-                            <el-badge :value="this.$store.state.taskList.unfinished_task.length" class="badgeItem" @click.native="openProgressTaskDialog">
-                                <el-button size="small">任务列表</el-button>
-                            </el-badge>
+                        <el-badge
+                            :value="
+                                this.$store.state.taskList.unfinished_task
+                                    .length
+                            "
+                            class="badgeItem"
+                            @click.native="openProgressTaskDialog"
+                        >
+                            <el-button size="small">任务列表</el-button>
+                        </el-badge>
                     </el-header>
                     <el-main style="padding: 0;">
                         <router-view />
