@@ -690,7 +690,7 @@ export const nodeList2 = [
             name: '奇异值分解(SVD)',
                 node_type: 'item-1',
                 is_generate_model: "false",
-                component_id: 'dataset_path',
+                component_id: 'svd_feature',
             in_ports: [0],
                 in_ports_text: ['输入'],
                 in_ports_name: ['dataset_path'],
