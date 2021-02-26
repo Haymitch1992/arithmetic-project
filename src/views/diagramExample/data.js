@@ -695,7 +695,7 @@ export const nodeList2 = [
                 in_ports_text: ['输入'],
                 in_ports_name: ['dataset_path'],
             out_ports: [0, 1, 2],
-                out_ports_text: ['输出', '输出', '输出'],
+                out_ports_text: ['左奇异矩阵', '奇异值矩阵', '右奇异矩阵'],
                 out_ports_name: ['input_data_svdutable', 'input_data_svdstable', 'input_data_svdvtable'],
             iconClassName: 'el-icon-loading',
             form: [

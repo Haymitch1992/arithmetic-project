@@ -59,10 +59,7 @@
                             <loginInfo></loginInfo>
                         </span>
                         <el-badge
-                            :value="
-                                this.$store.state.taskList.unfinished_task
-                                    .length
-                            "
+                            :value="progerssNum"
                             class="badgeItem"
                             @click.native="openProgressTaskDialog"
                         >
@@ -93,6 +90,15 @@ export default {
         experimentMenu: experimentMenu,
         loginInfo: LoginInfo,
         progressTask: progressTask
+    },
+    computed: {
+        progerssNum() {
+            let num = 0;
+            if (this.$store.state.taskList.unfinished_task) {
+                num = this.$store.state.taskList.unfinished_task.length;
+            }
+            return num;
+        }
     },
     watch: {
         $route: {
