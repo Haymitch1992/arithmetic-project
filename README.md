@@ -67,3 +67,12 @@ let node = {
             ]
         },
 ```
+
+### 前端技术栈
+
+- `vue.js` -- MVVM 框架
+- `echarts` -- 图表显示库
+- `element-ui` -- 样式组件库
+- `vuex` -- 状态管理库
+- `vue-router` -- 前端路由管理库
+- `dag-diagram` -- 可视化拖拽组件库（在开源插件上面进行二次开发的）
