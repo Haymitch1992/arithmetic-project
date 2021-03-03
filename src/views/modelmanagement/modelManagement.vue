@@ -17,35 +17,64 @@
                 <el-input size="small" placeholder="请输入搜索内容" style="width: 300px"></el-input>
                 <el-button size="small">新增</el-button>
                 <el-button size="small">导入</el-button> -->
-<!--                <span class="float-btn">-->
-<!--                    <el-button size="small" type="primary">批量删除</el-button>-->
-<!--                    <el-button size="small">批量导出</el-button>-->
-<!--                    <el-button size="small">批量部署</el-button>-->
-<!--                </span>-->
+                <!--                <span class="float-btn">-->
+                <!--                    <el-button size="small" type="primary">批量删除</el-button>-->
+                <!--                    <el-button size="small">批量导出</el-button>-->
+                <!--                    <el-button size="small">批量部署</el-button>-->
+                <!--                </span>-->
             </div>
-            <el-table :data="datalist" class="dataTable">
-<!--                <el-table-column-->
-<!--                    type="selection"-->
-<!--                    width="55">-->
-<!--                </el-table-column>-->
+            <el-table v-loading="loading" :data="datalist" class="dataTable">
+                <!--                <el-table-column-->
+                <!--                    type="selection"-->
+                <!--                    width="55">-->
+                <!--                </el-table-column>-->
                 <el-table-column label="模型名称">
                     <template slot-scope="scope">
-                        <el-button type="text" size="small">{{scope.row.model_name}}</el-button>
+                        <el-button type="text" size="small">
+                            {{ scope.row.model_name }}
+                        </el-button>
                     </template>
                 </el-table-column>
-                <el-table-column prop="frame_name" label="框架名称"></el-table-column>
-                <el-table-column prop="model_type" label="模型格式"></el-table-column>
-                <el-table-column prop="model_describe" label="模型描述"></el-table-column>
+                <el-table-column
+                    prop="frame_name"
+                    label="框架名称"
+                ></el-table-column>
+                <el-table-column
+                    prop="model_type"
+                    label="模型格式"
+                ></el-table-column>
+                <el-table-column
+                    prop="model_describe"
+                    label="模型描述"
+                ></el-table-column>
                 <el-table-column prop="update_time" label="更新时间">
                     <template slot-scope="scope">
-                        <span>{{scope.row.update_time | create_time}}</span>
+                        <span>{{ scope.row.update_time | create_time }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <el-button type="text"  @click="editModel(scope.row.id,scope.row.model_name,scope.row.model_describe)">修改</el-button>
-                        <el-button type="text"  @click="deleteModel(scope.row.id)">删除</el-button>
-                        <el-button type="text"  @click="deploy(scope.row)">部署</el-button>
+                        <el-button
+                            type="text"
+                            @click="
+                                editModel(
+                                    scope.row.id,
+                                    scope.row.model_name,
+                                    scope.row.model_describe
+                                )
+                            "
+                        >
+                            修改
+                        </el-button>
+                        <el-button
+                            type="text"
+                            @click="deleteModel(scope.row.id)"
+                        >
+                            删除
+                        </el-button>
+                        <el-button type="text" @click="deploy(scope.row)">
+                            部署
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -58,25 +87,39 @@
                     :page-sizes="[10, 20, 30, 40]"
                     :page-size="size"
                     layout="total, sizes, prev, pager, next, jumper"
-                    :total="page_count">
-                </el-pagination>
+                    :total="page_count"
+                ></el-pagination>
             </div>
             <!-- 修改模型 -->
             <el-dialog title="修改此模型信息" :visible.sync="dialogFormVisible">
                 <el-form :model="form" label-width="120px">
-                    <el-form-item label="当前模型名称" >
-                        <span style="color:#1777FF;">{{form.modelId}}</span>
+                    <el-form-item label="当前模型名称">
+                        <span style="color:#1777FF;">{{ form.modelId }}</span>
                     </el-form-item>
-                    <el-form-item label="模型名称" >
-                        <el-input class="w300" size="small" v-model="form.newModelId" autocomplete="off"></el-input>
+                    <el-form-item label="模型名称">
+                        <el-input
+                            class="w300"
+                            size="small"
+                            v-model="form.newModelId"
+                            autocomplete="off"
+                        ></el-input>
                     </el-form-item>
-                    <el-form-item label="模型描述" >
-                        <el-input class="w300" size="small" v-model="form.modelDescribe" autocomplete="off"></el-input>
+                    <el-form-item label="模型描述">
+                        <el-input
+                            class="w300"
+                            size="small"
+                            v-model="form.modelDescribe"
+                            autocomplete="off"
+                        ></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="changeModel">确 定</el-button>
+                    <el-button @click="dialogFormVisible = false">
+                        取 消
+                    </el-button>
+                    <el-button type="primary" @click="changeModel">
+                        确 定
+                    </el-button>
                 </div>
             </el-dialog>
         </div>
@@ -116,6 +159,7 @@ export default {
     },
     data() {
         return {
+            loading: true,
             dialogFormVisible: false, // 修改模型信息弹框
             dialogFormVisible2: false, // 导出模型
             currentPage4: 1,
@@ -203,6 +247,7 @@ export default {
                 });
         },
         getModelData() {
+            this.loading = true;
             // 获取模型列表
             this.$api
                 .post(POST_MODEL_DATA, {
@@ -211,6 +256,7 @@ export default {
                     size: this.size
                 })
                 .then(res => {
+                    this.loading = false;
                     this.datalist = res.data.model_data;
                     this.page_count = res.data.count;
                     console.log(res.data.model_data);

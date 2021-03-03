@@ -17,6 +17,7 @@
                     </el-button>
                     <el-table
                         :data="dataList"
+                        v-loading="loading"
                         class="dataTable"
                         style="width: 100%"
                         :key="Math.random()"
@@ -74,12 +75,13 @@
                         ></el-table-column>
                         <el-table-column
                             prop="data_path"
-                            min-width="220"
+                            width="180"
                             label="数据集路径/链接信息"
                         ></el-table-column>
                         <el-table-column
                             prop="create_time"
                             sortable
+                            min-width="130"
                             label="创建时间"
                         >
                             <template slot-scope="scope">
@@ -94,7 +96,7 @@
                         ></el-table-column>
                         <el-table-column
                             prop="address"
-                            min-width="140"
+                            width="220"
                             label="操作"
                         >
                             <template slot-scope="scope">
@@ -165,7 +167,11 @@
                         style="width:200px;"
                     ></el-input>
                     <el-button @click="getSearchDataName">搜索</el-button>
-                    <el-table :data="showThemeList" style="width: 100%">
+                    <el-table
+                        :data="showThemeList"
+                        v-loading="loading"
+                        style="width: 100%"
+                    >
                         <el-table-column
                             prop="data_id"
                             label="数据id"
@@ -200,7 +206,7 @@
                             <template slot-scope="scope">
                                 <el-button
                                     type="text"
-                                    @click="oepnUserData(scope.row)"
+                                    @click="oepnUserData(scope.row, $event)"
                                 >
                                     使用数据
                                 </el-button>
@@ -497,6 +503,9 @@
                     </el-button>
                 </div>
             </el-dialog>
+            <div class="fly-ball" ref="flyBall">
+                <span class="el-icon-s-promotion"></span>
+            </div>
         </div>
     </div>
 </template>
@@ -547,6 +556,9 @@ export default {
     data() {
         return {
             canChangeShow: false,
+            loading: true,
+            currentX: '',
+            currentY: '',
             searchValue: '',
             resetObj: {
                 name: '',
@@ -679,6 +691,32 @@ export default {
         this.findTask();
     },
     methods: {
+        flyDom(x, y) {
+            // 获取屏幕宽度
+            let screenWidth = document.body.clientWidth;
+            // 创建一个DOM元素 获取初始的位置信息
+            let targetRight = 160;
+            let targetTop = 50;
+            let currentRight = screenWidth - x - 60;
+            let currenttop = y;
+            let topNum = parseInt((currenttop - targetTop) / 20);
+            let rightNum = parseInt((currentRight - targetRight) / 20);
+            let ball = this.$refs.flyBall;
+            ball.style.display = 'block';
+            ball.style.right = currentRight + 'px';
+            ball.style.top = currenttop + 'px';
+            let timer = setInterval(() => {
+                if (currenttop < targetTop && currentRight < targetRight) {
+                    clearInterval(timer);
+                    ball.style.display = 'none';
+                } else {
+                    currenttop -= topNum;
+                    currentRight -= rightNum;
+                    ball.style.right = currentRight + 'px';
+                    ball.style.top = currenttop + 'px';
+                }
+            }, 20);
+        },
         // 查询任务列表
         findTask() {
             this.$api
@@ -711,6 +749,7 @@ export default {
         getSearchDataName() {
             // 监听是否非空
             if (this.searchValue) {
+                this.loading = true;
                 this.$api
                     .get(GET_SEARCH_DATA_NAME, {
                         matchStr: this.searchValue
@@ -718,6 +757,7 @@ export default {
                     .then(res => {
                         if (res.data.code === 200) {
                             this.showThemeList = res.data.data;
+                            this.loading = false;
                             this.listLength = res.data.data.length;
                         }
                     });
@@ -833,8 +873,9 @@ export default {
                         .then(res => {
                             if (res.data.code === 200) {
                                 this.userDataDialog = false;
+                                this.flyDom(this.currentX, this.currentY);
                                 this.getAllData();
-                                this.activeName = 'first';
+                                // this.activeName = 'first';
                                 this.formData.name = '';
                                 this.findTask();
                             } else {
@@ -884,7 +925,9 @@ export default {
                     }
                 });
         },
-        oepnUserData(obj) {
+        oepnUserData(obj, event) {
+            this.currentX = event.clientX;
+            this.currentY = event.clientY;
             this.saveObj = obj;
             // 判断是否存数据
             Promise.all([this.getLength(obj)]).then(res => {
@@ -925,12 +968,14 @@ export default {
         },
         // 获取数据中台列表
         getThemeList() {
+            this.loading = true;
             this.$api
                 .get(GET_DATA_THEME, {
                     page: this.currentPage2,
                     count: this.pageSize2
                 })
                 .then(res => {
+                    this.loading = false;
                     this.showThemeList = res.data.data;
                     this.listLength = res.data.page_count;
                 });
@@ -1093,6 +1138,7 @@ export default {
                 });
         },
         getAllData() {
+            this.loading = true;
             this.$api
                 .post(ALL_DATA_LIST, {
                     data_user_id: this.data_user_id,
@@ -1105,6 +1151,7 @@ export default {
                     this.dataList.forEach((item, index) => {
                         item.isShow = false;
                     });
+                    this.loading = false;
                 });
         },
         resetForm() {
@@ -1153,6 +1200,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.fly-ball {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    display: none;
+    span {
+        font-size: 40px;
+        color: #1677ff;
+    }
+}
 .border-card-box {
     margin-top: 20px;
 }

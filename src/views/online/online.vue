@@ -2,81 +2,91 @@
     <div class="bg">
         <div class="online-box">
             <el-table
-                    class="dataTable"
-                    ref="multipleTable"
-                    :data="tableData"
-                    tooltip-effect="dark"
-                    style="width: 100%"
-                    >
-                <el-table-column
-                        label="服务ID/名称"
-                        align="center"
-                        width="120">
+                class="dataTable"
+                v-loading="loading"
+                ref="multipleTable"
+                :data="tableData"
+                tooltip-effect="dark"
+                style="width: 100%"
+            >
+                <el-table-column label="服务ID/名称" align="center" width="120">
                     <template slot-scope="scope">
-                        <el-button  type="text" @click="goDetail(scope.row.id,scope.row.model_run_uuid)">
+                        <el-button
+                            type="text"
+                            @click="
+                                goDetail(scope.row.id, scope.row.model_run_uuid)
+                            "
+                        >
                             {{ scope.row.model_name }}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="farme_name"
-                        label="框架名称"
-                        width="150">
-                </el-table-column>
+                    prop="farme_name"
+                    label="框架名称"
+                    width="150"
+                ></el-table-column>
                 <el-table-column
-                        prop="model_type"
-                        label="模型格式"
-                       >
-                </el-table-column>
-                <el-table-column
-                        prop="model_status"
-                        label="模型状态"
-                       >
+                    prop="model_type"
+                    label="模型格式"
+                ></el-table-column>
+                <el-table-column prop="model_status" label="模型状态">
                     <template slot-scope="scope">
-                        <span class="model-status" :class="'model-status-'+scope.row.model_status"></span>{{scope.row.model_status|modelStatusZn}}
+                        <span
+                            class="model-status"
+                            :class="'model-status-' + scope.row.model_status"
+                        ></span>
+                        {{ scope.row.model_status | modelStatusZn }}
                     </template>
                 </el-table-column>
                 <el-table-column
-                        label="更新时间"
-                        align="center"
-                         width="160"
-                        sortable
-                        >
-                    <template slot-scope="scope">
-                        <span>{{scope.row.update_time | create_time}}</span>
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        prop="model_describe"
-                        label="模型描述"
-                        >
-                </el-table-column>
-                <el-table-column
-                        label="操作"
-                        width="260"
+                    label="更新时间"
+                    align="center"
+                    width="160"
+                    sortable
                 >
                     <template slot-scope="scope">
-                        <el-button type="text" >启动</el-button>
-                        <el-button type="text" @click="deleteModel(scope.row.id)">删除</el-button>
-                        <el-button type="text" @click="debug(scope.row.id)">在线调试</el-button>
-                        <el-button type="text" @click="exportModel(scope.row.id)">导出</el-button>
+                        <span>{{ scope.row.update_time | create_time }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                    prop="model_describe"
+                    label="模型描述"
+                ></el-table-column>
+                <el-table-column label="操作" width="260">
+                    <template slot-scope="scope">
+                        <el-button type="text">启动</el-button>
+                        <el-button
+                            type="text"
+                            @click="deleteModel(scope.row.id)"
+                        >
+                            删除
+                        </el-button>
+                        <el-button type="text" @click="debug(scope.row.id)">
+                            在线调试
+                        </el-button>
+                        <el-button
+                            type="text"
+                            @click="exportModel(scope.row.id)"
+                        >
+                            导出
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <div class="pagination-line">
                 <el-pagination
-                        @size-change="handleSizeChange"
-                        background
-                        @current-change="handleCurrentChange"
-                        :current-page="currentPage4"
-                        :page-sizes="[10, 20, 30, 40]"
-                        :page-size="pageSize"
-                        layout="total, sizes, prev, pager, next, jumper"
-                        :total="page_count">
-                </el-pagination>
+                    @size-change="handleSizeChange"
+                    background
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage4"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="page_count"
+                ></el-pagination>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -114,6 +124,7 @@ export default {
         return {
             currentPage4: 1,
             pageSize: 10,
+            loading: true,
             page_count: 0,
             tableData: [] // 已部署模板列表
         };
@@ -162,6 +173,7 @@ export default {
                 });
         },
         getList() {
+            this.loading = true;
             this.$api
                 .post(POST_ALL_DEPLOY_MODEL, {
                     data_user_id: localStorage.getItem('data_user_id'),
@@ -170,6 +182,7 @@ export default {
                     page: this.currentPage4
                 })
                 .then(res => {
+                    this.loading = false;
                     this.page_count = res.data.count;
                     this.tableData = res.data.model_data;
                     console.log(res.data.model_data);

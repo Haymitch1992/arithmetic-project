@@ -1,71 +1,110 @@
 <template>
     <div class="bg">
-        <div class="online-box dataManagement" >
-            <el-button size="small" @click="openUpload" style="width: 160px;" icon="el-icon-upload">创建项目</el-button>
-            <el-dialog title="创建项目" v-if="dialogTableVisible" :visible.sync="dialogTableVisible">
-                <el-form label-width="100px" :model="formData" :rules="rules" ref="formData">
+        <div class="online-box dataManagement">
+            <el-button
+                size="small"
+                @click="openUpload"
+                style="width: 160px;"
+                icon="el-icon-upload"
+            >
+                创建项目
+            </el-button>
+            <el-dialog
+                title="创建项目"
+                v-if="dialogTableVisible"
+                :visible.sync="dialogTableVisible"
+            >
+                <el-form
+                    label-width="100px"
+                    :model="formData"
+                    :rules="rules"
+                    ref="formData"
+                >
                     <el-form-item label="项目名称" prop="project_name">
-                        <el-input size="small" v-model="formData.project_name" style="width: 400px"></el-input>
+                        <el-input
+                            size="small"
+                            v-model="formData.project_name"
+                            style="width: 400px"
+                        ></el-input>
                     </el-form-item>
                     <el-form-item label="项目说明" prop="project_description">
-                        <el-input size="small" v-model="formData.project_description" style="width: 400px"></el-input>
+                        <el-input
+                            size="small"
+                            v-model="formData.project_description"
+                            style="width: 400px"
+                        ></el-input>
                     </el-form-item>
                 </el-form>
                 <div class="btn-line">
-                    <el-button type="primary" @click="onSubmit('formData')" size="small">提交</el-button>
+                    <el-button
+                        type="primary"
+                        @click="onSubmit('formData')"
+                        size="small"
+                    >
+                        提交
+                    </el-button>
                     <el-button size="small" @click="resetForm">取消</el-button>
                 </div>
             </el-dialog>
             <el-table
                 :data="dataList"
+                v-loading="loading"
                 class="dataTable"
-                style="width: 100%">
+                style="width: 100%"
+            >
                 <el-table-column
                     prop="project_name"
                     label="项目名称"
-                    width="180">
-                </el-table-column>
+                    width="180"
+                ></el-table-column>
                 <el-table-column
                     prop="project_description"
                     width="400"
-                    label="项目说明">
-                </el-table-column>
-                <el-table-column
-                    prop="create_time"
-                    sortable
-                    label="创建时间">
+                    label="项目说明"
+                ></el-table-column>
+                <el-table-column prop="create_time" sortable label="创建时间">
                     <template slot-scope="scope">
-                        <span>{{scope.row.create_time | create_time}}</span>
+                        <span>{{ scope.row.create_time | create_time }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column
-                        prop="update_time"
-                        sortable
-                        label="修改时间">
+                <el-table-column prop="update_time" sortable label="修改时间">
                     <template slot-scope="scope">
-                        <span>{{scope.row.create_time | create_time}}</span>
+                        <span>{{ scope.row.create_time | create_time }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column
-                    prop="address"
-                    label="操作">
+                <el-table-column prop="address" label="操作">
                     <template slot-scope="scope">
-                        <el-button type="text"  @click="goExperiment(scope.row.id, scope.row.project_name)">进入机器学习</el-button>
-                        <el-button type="text" @click="deletePrject(scope.row.id)">删除</el-button>
+                        <el-button
+                            type="text"
+                            @click="
+                                goExperiment(
+                                    scope.row.id,
+                                    scope.row.project_name
+                                )
+                            "
+                        >
+                            进入机器学习
+                        </el-button>
+                        <el-button
+                            type="text"
+                            @click="deletePrject(scope.row.id)"
+                        >
+                            删除
+                        </el-button>
                     </template>
                 </el-table-column>
             </el-table>
             <div class="pagination-line">
                 <el-pagination
-                        @size-change="handleSizeChange"
-                        background
-                        @current-change="handleCurrentChange"
-                        :current-page="currentPage"
-                        :page-sizes="[10, 20, 30, 40]"
-                        :page-size="pageSize"
-                        layout="total, sizes, prev, pager, next, jumper"
-                        :total="page_count">
-                </el-pagination>
+                    @size-change="handleSizeChange"
+                    background
+                    @current-change="handleCurrentChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="page_count"
+                ></el-pagination>
             </div>
         </div>
     </div>
@@ -110,6 +149,7 @@ export default {
     data() {
         return {
             isCreate: false,
+            loading: true,
             UPLOAD_FILE: UPLOAD_FILE,
             pageSize: 10,
             currentPage: 1,
@@ -352,6 +392,7 @@ export default {
                 });
         },
         getAllData() {
+            this.loading = true;
             this.$api
                 .post(GET_ALL_PROJECT, {
                     data_user_id: localStorage.getItem('data_user_id'),
@@ -359,6 +400,7 @@ export default {
                     page: this.currentPage
                 })
                 .then(res => {
+                    this.loading = false;
                     this.page_count = res.data.count;
                     this.dataList = res.data.all_project;
                 });

@@ -2,33 +2,15 @@
     <el-dialog
         title="任务列表"
         :visible.sync="this.$store.state.progressDialog"
-        width="740px"
+        width="800px"
         class="progress-task-dialog"
         :before-close="handleClose"
     >
-        <div class="status-button-line">
-            <el-button
-                :type="currnetStatus === 0 ? 'primary' : ''"
-                size="small"
-                @click="currnetStatus = 0"
-            >
-                未完成
-            </el-button>
-            <el-button
-                :type="currnetStatus === 1 ? 'primary' : ''"
-                size="small"
-                @click="currnetStatus = 1"
-            >
-                已完成
-            </el-button>
-            <el-button
-                :type="currnetStatus === 2 ? 'primary' : ''"
-                size="small"
-                @click="currnetStatus = 2"
-            >
-                失败
-            </el-button>
-        </div>
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tab-pane label="未完成" name="aa"></el-tab-pane>
+            <el-tab-pane label="已完成" name="bb"></el-tab-pane>
+            <el-tab-pane label="失败" name="cc"></el-tab-pane>
+        </el-tabs>
         <ul class="task-ul" v-if="showList.length !== 0">
             <li class="task-header">
                 <span class="textLimit" style="width:220px;">数据集名称</span>
@@ -70,13 +52,12 @@
                     style="line-height:22px;"
                 >
                     <el-progress
-                        :text-inside="true"
-                        :stroke-width="18"
+                        :stroke-width="14"
                         :percentage="parseInt(item.plan.progress * 100)"
                     ></el-progress>
-                    <i style="font-size:12px;">
+                    <span style="font-size:12px;">
                         {{ item.plan.title }}
-                    </i>
+                    </span>
                 </span>
             </li>
         </ul>
@@ -91,6 +72,7 @@ export default {
         return {
             dialogVisible: true,
             currnetStatus: 0,
+            activeName: 'aa',
             showList: []
         };
     },
@@ -131,6 +113,20 @@ export default {
         }
     },
     methods: {
+        handleClick(tab, event) {
+            console.log(tab, event);
+            switch (tab.name) {
+                case 'aa':
+                    this.currnetStatus = 0;
+                    break;
+                case 'bb':
+                    this.currnetStatus = 1;
+                    break;
+                case 'cc':
+                    this.currnetStatus = 2;
+                    break;
+            }
+        },
         handleClose() {
             this.$store.commit('changeProgressDialog', false);
         }
@@ -151,7 +147,7 @@ export default {
     margin: 0;
     padding: 0;
     padding: 0px 10px 10px;
-    height: 580px;
+    max-height: 570px;
     overflow-y: auto;
 }
 .task-ul li {
@@ -183,9 +179,12 @@ export default {
 }
 .progress-span {
     display: inline-block;
-    width: 140px;
+    width: 210px;
     vertical-align: top;
-    padding-top: 6px;
+    padding-top: 10px;
+    /deep/ .el-progress__text {
+        font-size: 14px !important;
+    }
 }
 .textLimit {
     display: inline-block;
