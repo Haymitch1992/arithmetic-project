@@ -699,7 +699,7 @@ export default {
                         this.progress_num = 100;
                         this.progress_status = 'success';
                         setTimeout(() => {
-                            this.progress_box = false;
+                            this.progress_box = true;
                         }, 1000);
                     }
                     // 判断一结束

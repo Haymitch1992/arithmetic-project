@@ -23,7 +23,7 @@
                 <!--                    <el-button size="small">批量部署</el-button>-->
                 <!--                </span>-->
             </div>
-            <el-table v-loading="loading" :data="datalist" class="dataTable">
+            <el-table v-loading="loading" :data="datalist">
                 <!--                <el-table-column-->
                 <!--                    type="selection"-->
                 <!--                    width="55">-->
