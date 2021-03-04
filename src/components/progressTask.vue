@@ -7,13 +7,15 @@
         :before-close="handleClose"
     >
         <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="未完成" name="aa"></el-tab-pane>
+            <el-tab-pane label="进行中" name="aa"></el-tab-pane>
             <el-tab-pane label="已完成" name="bb"></el-tab-pane>
             <el-tab-pane label="失败" name="cc"></el-tab-pane>
         </el-tabs>
         <ul class="task-ul" v-if="showList.length !== 0">
             <li class="task-header">
-                <span class="textLimit" style="width:220px;">数据集名称</span>
+                <span class="textLimit" style="width:220px;">
+                    数据集名称（最近10条）
+                </span>
                 <span class="textLimit" style="margin-right:20px">
                     创建时间
                 </span>
@@ -147,7 +149,7 @@ export default {
     margin: 0;
     padding: 0;
     padding: 0px 10px 10px;
-    max-height: 570px;
+    max-height: 580px;
     overflow-y: auto;
 }
 .task-ul li {

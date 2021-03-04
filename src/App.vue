@@ -58,8 +58,18 @@
                             </span>
                             <loginInfo></loginInfo>
                         </span>
+                        <span
+                            class="badgeItem"
+                            v-if="progerssNum === 0"
+                            @click="openProgressTaskDialog"
+                        >
+                            <el-button size="small">
+                                任务列表
+                            </el-button>
+                        </span>
                         <el-badge
                             :value="progerssNum"
+                            v-if="progerssNum !== 0"
                             class="badgeItem"
                             @click.native="openProgressTaskDialog"
                         >

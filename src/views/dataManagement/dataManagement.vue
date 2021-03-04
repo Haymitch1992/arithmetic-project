@@ -448,6 +448,7 @@
             <el-dialog
                 title="查看数据"
                 v-if="dataStructure"
+                v-loading="dialogLoading"
                 :visible.sync="dataStructure"
                 width="800px"
             >
@@ -555,6 +556,7 @@ export default {
 
     data() {
         return {
+            dialogLoading: false,
             canChangeShow: false,
             loading: true,
             currentX: '',
@@ -911,6 +913,7 @@ export default {
             });
         },
         getDataStructure() {
+            this.dialogLoading = true;
             this.dataStructureList = [];
             this.$api
                 .get(GET_LIMIT_THEME, {
@@ -918,6 +921,7 @@ export default {
                     limit_value: this.dataStructureLength
                 })
                 .then(res => {
+                    this.dialogLoading = false;
                     if (res.data.code === 200) {
                         this.dataStructureList = res.data.data;
                     } else {
@@ -1122,6 +1126,7 @@ export default {
                 })
                 .then(res => {
                     console.log(res);
+                    this.$message.success('删除成功！');
                     this.getAllData();
                 });
         },
