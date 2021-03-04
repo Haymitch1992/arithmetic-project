@@ -404,6 +404,8 @@
                 </div>
             </el-dialog>
             <el-dialog
+                :show-close="showClose"
+                :close-on-click-modal="showClose"
                 :visible.sync="progress_box"
                 style="text-align:center;"
                 width="400px"
@@ -465,6 +467,7 @@ export default {
     },
     data() {
         return {
+            showClose: false,
             progress_box: false,
             progress_status: '',
             progress_text: '',
@@ -685,6 +688,12 @@ export default {
                     task_id: this.data_set_id
                 })
                 .then(res => {
+                    // 如果返回值 不是200 提示报错
+                    if (res.data.code !== 200) {
+                        this.$message.error('获取进度异常');
+                        this.progress_box = false;
+                        return;
+                    }
                     // 判断还在或过程中 再次调用
                     this.progress_box = true;
                     if (res.data.task === null || res.data.task.progress < 1) {
@@ -699,7 +708,7 @@ export default {
                         this.progress_num = 100;
                         this.progress_status = 'success';
                         setTimeout(() => {
-                            this.progress_box = true;
+                            this.progress_box = false;
                         }, 1000);
                     }
                     // 判断一结束
@@ -949,6 +958,7 @@ export default {
         getLable() {
             this.$api
                 .post(SET_LABLE, {
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_set_id: this.data_set_id
                 })
                 .then(res => {
