@@ -2,21 +2,33 @@
     <div class="menu-box">
         <div class="menu-container">
             <ul class="menu-ul">
-                <li :class="{'active':this.$store.state.count===99}" @click="handleMenu(99)">
+                <li
+                    :class="{ active: this.$store.state.count === 99 }"
+                    @click="handleMenu(99)"
+                >
                     <i class="iconfont iconzujian"></i>
                     <span class="menu-label">模板</span>
                 </li>
-                <li :class="{'active':this.$store.state.count===0}" @click="handleMenu(0)">
+                <li
+                    :class="{ active: this.$store.state.count === 0 }"
+                    @click="handleMenu(0)"
+                >
                     <i class="iconfont iconmoxingguanli"></i>
                     <span class="menu-label">实验</span>
                 </li>
-                <li :class="{'active':this.$store.state.count===1}" @click="handleMenu(1)">
+                <li
+                    :class="{ active: this.$store.state.count === 1 }"
+                    @click="handleMenu(1)"
+                >
                     <i class="iconfont iconpintu"></i>
                     <span class="menu-label">组件</span>
                 </li>
-                <li :class="{'active':this.$store.state.count===2}" @click="handleMenu(2)">
+                <li
+                    :class="{ active: this.$store.state.count === 2 }"
+                    @click="handleMenu(2)"
+                >
                     <i class="iconfont iconshujuyuanmoxing"></i>
-                    <span class="menu-label">数据源</span>
+                    <span class="menu-label">公开数据集</span>
                 </li>
             </ul>
         </div>

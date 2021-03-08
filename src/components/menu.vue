@@ -24,7 +24,7 @@
                     <span slot="title">模型管理</span>
                 </el-menu-item>
                 <el-menu-item index="5">
-                    <span slot="title">模板部署</span>
+                    <span slot="title">模型部署</span>
                 </el-menu-item>
                 <el-menu-item index="6">
                     <span slot="title">成果展示入口</span>
