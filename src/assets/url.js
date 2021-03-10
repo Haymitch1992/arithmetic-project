@@ -156,3 +156,9 @@ export const GET_GAIN_NODE_PARAM = '/api/gainNodeParam/';
 export const GET_ALL_MODULE = '/api/allModule/';
 // 获取二级列表
 export const POST_ALL_MODULE = '/api/allModule/';
+
+// 文件分片上传
+export const POST_UPLOAD_FILE = '/api/upload/';
+
+// 文件分片上传合并指令
+export const POST_JOIN_FILE = '/api/joinFile/';

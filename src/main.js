@@ -11,16 +11,20 @@ import DAGBoard from '../plugin/index';
 import Moment from "moment";
 import api from './service/http';
 import SlideVerify from 'vue-monoplasty-slide-verify';
+import uploader from 'vue-simple-uploader';
+
 // import DAGBoard from 'dag-board'
 
 Vue.use(DAGBoard);
 Vue.use(SlideVerify);
 Vue.use(ElementUI);
 Vue.use(api);
+Vue.use(uploader);
+
 Vue.config.productionTip = false;
 Moment.locale('zh-cn');
 Vue.prototype.$api = api;
-Vue.prototype.globalUlr = "http://192.168.62.170:5001/";
+Vue.prototype.globalUlr = "http://192.168.35.5:5001/";
 // 不同环境的接口地址
 
 /* eslint-disable no-new */
