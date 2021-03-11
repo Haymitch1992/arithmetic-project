@@ -93,7 +93,7 @@
                             >
                                 <el-table-column
                                     prop="video_name"
-                                    width="160px"
+                                    width="200px"
                                     label="名称"
                                 ></el-table-column>
                                 <el-table-column
@@ -454,6 +454,9 @@ export default {
     padding: 20px 30px;
     box-sizing: border-box;
     color: #fff;
+    /deep/ .el-loading-mask {
+        background: rgba(0, 0, 0, 0.5);
+    }
     /deep/ .el-tabs--card > .el-tabs__header .el-tabs__nav {
         border: 1px solid rgb(72, 72, 79);
     }

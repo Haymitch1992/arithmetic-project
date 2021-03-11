@@ -12,13 +12,16 @@
             style="width: 100%"
         >
             <uploader-unsupport></uploader-unsupport>
-            <uploader-drop>
+            <uploader-drop @click.native="panelShow = true">
                 <sapn class="upload-info">
                     可以将本地的视频资源上传至服务器
                 </sapn>
                 <uploader-btn class="upload-btn">上传</uploader-btn>
             </uploader-drop>
-            <uploader-list></uploader-list>
+            <uploader-list
+                v-if="panelShow"
+                @click.native="panelShow = false"
+            ></uploader-list>
         </uploader>
     </div>
 </template>
@@ -241,6 +244,14 @@ export default {
     }
     /deep/ .uploader-file-icon {
         margin-right: 14px;
+    }
+    .uploader-list {
+        position: absolute;
+        top: 65px;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+        background: #eee;
     }
     .uploader-drop {
         line-height: 30px;
