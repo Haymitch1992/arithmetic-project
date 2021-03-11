@@ -154,6 +154,7 @@ export default {
             currentMenu: 2,
             experimentArr: [
                 '/plan',
+                '/deviceManagement',
                 '/diagramExample',
                 '/engineering',
                 '/selectAlgorithm',

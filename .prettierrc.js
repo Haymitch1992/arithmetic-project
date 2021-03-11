@@ -10,4 +10,6 @@ module.exports = {
   "tabWidth": 4,
   // 使用tab缩进，默认false
   "useTabs": false,
+  // 尽可能使用尾随逗号（包括函数参数）
+  "trailingComma": "none", 
 }

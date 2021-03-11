@@ -1,6 +1,6 @@
 <template>
     <div class="bg">
-        <div class="online-box">
+        <div class="devicebox">
             <div class="device-container">
                 <div class="item device-video">
                     <h3>视频源 202102221001.mp4</h3>
@@ -82,27 +82,51 @@
                         </el-tab-pane>
                         <el-tab-pane label="媒体资源" name="second">
                             <h3>媒体资源</h3>
+                            <Fileupload
+                                @updateFileList="getVideoList"
+                            ></Fileupload>
                             <el-table
                                 border
-                                :data="tableData"
+                                v-loading="vloading"
+                                :data="video_data_list"
                                 style="width: 100%"
                             >
                                 <el-table-column
-                                    prop="name"
+                                    prop="video_name"
+                                    width="160px"
                                     label="名称"
                                 ></el-table-column>
                                 <el-table-column
-                                    prop="type"
-                                    label="类型"
-                                ></el-table-column>
+                                    prop="video_path"
+                                    label="视频状态"
+                                >
+                                    <template slot-scope="scope">
+                                        <span v-if="scope.row.video_type === 0">
+                                            未分析
+                                        </span>
+                                        <span v-if="scope.row.video_type === 1">
+                                            分析完成
+                                        </span>
+                                        <span v-if="scope.row.video_type === 2">
+                                            正在分析
+                                        </span>
+                                    </template>
+                                </el-table-column>
                                 <el-table-column
-                                    prop="size"
+                                    prop="video_size"
                                     label="大小"
                                 ></el-table-column>
                                 <el-table-column
-                                    prop="createTime"
+                                    prop="update_time"
+                                    width="160px"
                                     label="生成时间"
-                                ></el-table-column>
+                                >
+                                    <template slot-scope="scope">
+                                        {{
+                                            scope.row.update_time | create_time
+                                        }}
+                                    </template>
+                                </el-table-column>
                                 <el-table-column label="操作" width="160px">
                                     <template slot-scope="scope">
                                         <el-button
@@ -117,6 +141,16 @@
                                     </template>
                                 </el-table-column>
                             </el-table>
+                            <el-pagination
+                                style="margin-top:10px;"
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="currentPage"
+                                :page-sizes="[10, 20, 30, 40]"
+                                :page-size="currentSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="count"
+                            ></el-pagination>
                         </el-tab-pane>
                         <el-tab-pane label="分析" name="third">
                             <h3>分析结果</h3>
@@ -287,10 +321,26 @@
 </template>
 
 <script>
+import Fileupload from '../../components/fileUpload.vue';
+import { GET_FILE_LIST } from '../../assets/url.js';
+import moment from 'moment';
 export default {
     name: 'home',
+    components: {
+        Fileupload
+    },
+    filters: {
+        create_time(val) {
+            if (!val) return '';
+            return moment(val).format('YYYY-MM-DD HH:mm:ss');
+        }
+    },
     data() {
         return {
+            currentPage: 1,
+            vloading: false,
+            currentSize: 10,
+            count: 0,
             activeName: 'first',
             srcList: [
                 'http://47.95.214.123:8080/media/test/safe-item-1.jpg/',
@@ -302,6 +352,7 @@ export default {
                 'http://47.95.214.123:8080/media/test/safe-item-7.jpg/',
                 'http://47.95.214.123:8080/media/test/safe-item-8.jpg/'
             ],
+            video_data_list: [],
             tableData: [
                 {
                     name: '202102221001.mp4',
@@ -356,21 +407,104 @@ export default {
             ]
         };
     },
-    mounted() {},
+    mounted() {
+        this.getVideoList();
+    },
     methods: {
+        handleSizeChange(val) {
+            console.log(`每页 ${val} 条`);
+            this.currentSize = val;
+            this.getVideoList();
+        },
+        handleCurrentChange(val) {
+            this.currentPage = val;
+            console.log(`当前页: ${val}`);
+            this.getVideoList();
+        },
         handleClick(tab, event) {
             console.log(tab, event);
         },
         useData(id) {
             console.log('使用的ID:' + id);
+        },
+        getVideoList() {
+            // GET_FILE_LIST
+            this.vloading = true;
+            this.$api
+                .get(GET_FILE_LIST, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    page: this.currentPage,
+                    size: this.currentSize
+                })
+                .then(res => {
+                    this.video_data_list = res.data.video_data_list;
+                    this.count = res.data.count;
+                    this.vloading = false;
+                    console.log(123);
+                });
         }
     }
 };
 </script>
 
 <style scoped lang="scss">
-.bg {
-    padding: 20px;
+.devicebox {
+    height: calc(100vh - 80px);
+    background-color: #292c36;
+    padding: 20px 30px;
+    box-sizing: border-box;
+    color: #fff;
+    /deep/ .el-tabs--card > .el-tabs__header .el-tabs__nav {
+        border: 1px solid rgb(72, 72, 79);
+    }
+    /deep/ .el-tabs__item {
+        color: #fff;
+    }
+    /deep/ .el-tabs__item.is-active {
+        color: #409eff;
+    }
+    /deep/ .el-table td,
+    /deep/ .el-table--enable-row-hover .el-table__body tr:hover > td {
+        background: rgb(42, 45, 54);
+        color: #fff;
+    }
+    /deep/ .el-table--border {
+        border: 1px solid #3a404c;
+    }
+    /deep/ .el-table--border::after,
+    /deep/ .el-table--group::after,
+    /deep/ .el-table::before {
+        background-color: #3a404c;
+    }
+    /deep/ .el-table th,
+    /deep/ .el-table tr {
+        background-color: #2a2d36 !important;
+        cursor: pointer;
+    }
+    /deep/ .el-table__row:hover td {
+        background-color: #4a4d57 !important;
+    }
+    /deep/ .el-table--striped .el-table__body tr.el-table__row--striped td {
+        background-color: #2a2d36 !important;
+    }
+    /deep/ .el-table--border td,
+    /deep/ .el-table--border th,
+    /deep/
+        .el-table__body-wrapper
+        .el-table--border.is-scrolling-left
+        ~ .el-table__fixed {
+        border-right: 1px solid #3a404c;
+    }
+    /deep/ .el-table td,
+    /deep/ .el-table th.is-leaf {
+        border-bottom: 1px solid #3a404c;
+    }
+    /deep/ ::-webkit-scrollbar {
+        background-color: #3a404c;
+    }
+    /deep/ ::-webkit-scrollbar-thumb {
+        background-color: #ccc;
+    }
 }
 .device-container {
     h3 {
@@ -380,11 +514,11 @@ export default {
         line-height: 24px;
         font-size: 16px;
         margin-bottom: 14px;
-        color: #333;
+        color: #fff;
     }
     display: grid;
     grid-template-columns: 650px 1fr;
-    grid-template-rows: auto 160px;
+    grid-template-rows: 450px auto;
     height: 500px;
     grid-template-areas:
         'device-video device-box'
@@ -424,21 +558,22 @@ export default {
         grid-template-columns: repeat(3, 1fr);
         .device-result-item {
             height: 90px;
-            border: 1px solid #eee;
+            border: 1px solid rgb(72, 72, 79);
             text-align: center;
             padding-top: 24px;
+            background: rgb(56, 61, 74);
             cursor: pointer;
             p {
                 padding: 0;
                 margin: 0;
                 font-size: 14px;
-                color: #666;
+                color: #fff;
             }
             .num {
                 font-size: 40px;
                 position: relative;
                 line-height: 54px;
-                color: #333;
+                color: #fff;
                 font-weight: bold;
             }
             .num::after {
@@ -488,11 +623,13 @@ export default {
             padding: 2px 10px;
             line-height: 28px;
             font-size: 14px;
-            color: #333;
+            color: #fff;
+            background: rgb(42, 45, 54);
+            border: 1px solid rgb(72, 72, 79);
         }
         .device-table-th {
-            background: rgb(245, 245, 245);
-            color: #333;
+            background: rgb(56, 61, 74);
+            color: #fff;
             font-weight: bold;
             width: 15%;
         }

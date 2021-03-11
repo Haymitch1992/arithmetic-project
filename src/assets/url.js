@@ -162,3 +162,6 @@ export const POST_UPLOAD_FILE = '/api/upload/';
 
 // 文件分片上传合并指令
 export const POST_JOIN_FILE = '/api/joinFile/';
+
+// 演示文件列表
+export const GET_FILE_LIST = '/api/AllVideoData/';
