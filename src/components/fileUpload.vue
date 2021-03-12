@@ -12,16 +12,13 @@
             style="width: 100%"
         >
             <uploader-unsupport></uploader-unsupport>
-            <uploader-drop @click.native="panelShow = true">
+            <uploader-drop @click.native="changeUpload">
                 <sapn class="upload-info">
                     可以将本地的视频资源上传至服务器
                 </sapn>
                 <uploader-btn class="upload-btn">上传</uploader-btn>
             </uploader-drop>
-            <uploader-list
-                v-if="panelShow"
-                @click.native="panelShow = false"
-            ></uploader-list>
+            <uploader-list v-if="panelShow"></uploader-list>
         </uploader>
     </div>
 </template>
@@ -61,7 +58,7 @@ export default {
                 maxChunkRetries: 3, // 最大自动失败重试上传次数
                 testChunks: true, // 是否开启服务器分片校验
                 // 服务器分片校验函数，秒传及断点续传基础
-                checkChunkUploadedByResponse: function (chunk, message) {
+                checkChunkUploadedByResponse: function(chunk, message) {
                     console.log('服务器校验分片', chunk);
                     chunk.merge = true;
                     let objMessage = JSON.parse(message);
@@ -84,6 +81,9 @@ export default {
     },
     mounted() {},
     methods: {
+        changeUpload() {
+            this.panelShow = !this.panelShow;
+        },
         statusSet(id, status) {
             let statusMap = {
                 md5: {
@@ -130,7 +130,7 @@ export default {
 
             loadNext();
 
-            fileReader.onload = (e) => {
+            fileReader.onload = e => {
                 spark.append(e.target.result);
                 if (currentChunk < chunks) {
                     currentChunk++;
@@ -155,7 +155,7 @@ export default {
                     );
                 }
             };
-            fileReader.onerror = function () {
+            fileReader.onerror = function() {
                 this.error(`文件${file.name}读取出错，请检查该文件`);
                 file.cancel();
             };
@@ -207,7 +207,7 @@ export default {
                     localStorage.getItem('data_user_id')
                 );
                 form.append('file_size', rootFile.size);
-                this.$api.post(POST_JOIN_FILE, form).then((res) => {
+                this.$api.post(POST_JOIN_FILE, form).then(res => {
                     console.log(123);
                     this.$emit('updateFileList');
                 });
@@ -217,9 +217,9 @@ export default {
         },
         onFileProgress(rootFile, file, chunk) {
             console.log(
-                `上传中 ${file.name}，chunk：${
-                    chunk.startByte / 1024 / 1024
-                } ~ ${chunk.endByte / 1024 / 1024}`
+                `上传中 ${file.name}，chunk：${chunk.startByte /
+                    1024 /
+                    1024} ~ ${chunk.endByte / 1024 / 1024}`
             );
         },
         onFileError(rootFile, file, response, chunk) {

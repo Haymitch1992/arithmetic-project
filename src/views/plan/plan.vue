@@ -2,34 +2,97 @@
     <div class="bg">
         <div class="plan-box">
             <div class="search-line">
-                <el-input size="small" placeholder="搜索模板" v-model="modelKeyWord" class="search-inp"></el-input>
-                <el-button size="small" type="primary" @click.native="searchModel">搜索</el-button>
+                <el-input
+                    size="small"
+                    placeholder="搜索模板"
+                    v-model="modelKeyWord"
+                    class="search-inp"
+                ></el-input>
+                <el-button
+                    size="small"
+                    type="primary"
+                    @click.native="searchModel"
+                >
+                    搜索
+                </el-button>
             </div>
             <el-dialog title="创建实验" :visible.sync="dialogFormVisible">
                 <el-form>
-                    <el-form-item label="实验名称" >
-                        <el-input v-model="form.test_name" autocomplete="off"></el-input>
+                    <el-form-item label="实验名称">
+                        <el-input
+                            v-model="form.test_name"
+                            autocomplete="off"
+                        ></el-input>
                     </el-form-item>
-                    <el-form-item label="实验描述" >
-                        <el-input v-model="form.test_content" autocomplete="off"></el-input>
-
+                    <el-form-item label="实验描述">
+                        <el-input
+                            v-model="form.test_content"
+                            autocomplete="off"
+                        ></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="createTest">确 定</el-button>
+                    <el-button @click="dialogFormVisible = false">
+                        取 消
+                    </el-button>
+                    <el-button type="primary" @click="createTest">
+                        确 定
+                    </el-button>
                 </div>
             </el-dialog>
             <div>
                 <div class="plan-ul ">
-                    <div class="plan-li" v-for="(item, index) in all_project" v-bind:key="index">
-                        <h3>{{item.template_name}}</h3>
+                    <div
+                        class="plan-li"
+                        v-for="(item, index) in all_project"
+                        v-bind:key="index"
+                    >
+                        <h3>{{ item.template_name }}</h3>
                         <div class="img-content">
-                            <img :src="imgList[index]" alt="">
+                            <img :src="imgList[index]" alt="" />
                         </div>
                         <div class="btn-box">
-                            <el-button type="primary" size="small" style="width: 44%" @click="createModel(item)">从模板创建</el-button>
-                            <el-button size="small" style="width: 44%" @click="viewTemplate(item)">查看文档</el-button>
+                            <el-button
+                                type="primary"
+                                size="small"
+                                style="width: 44%"
+                                @click="createModel(item)"
+                            >
+                                从模板创建
+                            </el-button>
+                            <el-button
+                                size="small"
+                                style="width: 44%"
+                                @click="viewTemplate(item)"
+                            >
+                                查看文档
+                            </el-button>
+                        </div>
+                    </div>
+                    <div class="plan-li">
+                        <h3>安全帽识别</h3>
+                        <div class="img-content">
+                            <img
+                                src="../../../src/assets/img/item-1.jpg"
+                                alt=""
+                            />
+                        </div>
+                        <div class="btn-box">
+                            <el-button
+                                type="primary"
+                                size="small"
+                                style="width: 44%"
+                                @click="goDevice()"
+                            >
+                                查看示例
+                            </el-button>
+                            <el-button
+                                size="small"
+                                style="width: 44%"
+                                @click="viewTemplate()"
+                            >
+                                查看文档
+                            </el-button>
                         </div>
                     </div>
                 </div>
@@ -39,13 +102,16 @@
                 :visible.sync="dialogVisible"
                 class="dialog-box"
                 width="30%"
-                :before-close="handleClose">
+                :before-close="handleClose"
+            >
                 <p v-html="htmlText"></p>
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="dialogVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                    <el-button type="primary" @click="dialogVisible = false">
+                        确 定
+                    </el-button>
                 </span>
-                </el-dialog>
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -56,27 +122,30 @@ import {
     GET_ALL_MODEL_TEMPLATE,
     POST_SEARCH_MODEL,
     POST_CREATE_MODEL
-} from "../../assets/url";
-import axios from "axios";
+} from '../../assets/url';
+import axios from 'axios';
 export default {
-    name: "home",
+    name: 'home',
     data() {
         return {
-            data_project_id: localStorage.getItem("data_project_id"),
-            randomNum: "",
-            modelKeyWord: "",
+            data_project_id: localStorage.getItem('data_project_id'),
+            randomNum: '',
+            modelKeyWord: '',
             dialogFormVisible: false,
             dialogVisible: false,
             imgList: [],
             all_project: [],
             htmlText: {},
             form: {
-                test_name: "",
-                test_content: ""
+                test_name: '',
+                test_content: ''
             }
         };
     },
     methods: {
+        goDevice() {
+            this.$router.push('/deviceManagement');
+        },
         searchModel() {
             this.$api
                 .get(POST_SEARCH_MODEL, {
@@ -90,7 +159,7 @@ export default {
         createModel(obj) {
             this.$api
                 .post(POST_CREATE_MODEL, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_project_id: this.data_project_id,
                     data_template_id: obj.id
                 })
@@ -114,7 +183,7 @@ export default {
         createTest() {
             this.$api
                 .post(CREATE_TEST, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     test_project_id: this.data_project_id,
                     test_name: this.form.test_name,
                     test_content: this.form.test_content
@@ -132,9 +201,9 @@ export default {
         },
         createArr() {
             for (var i = 0; i < 10; i++) {
-                var img = require("../../../src/assets/img/item-" +
+                var img = require('../../../src/assets/img/item-' +
                     this.randomNum +
-                    ".jpg");
+                    '.jpg');
                 this.imgList.push(img);
                 if (this.randomNum < 20) {
                     this.randomNum++;
@@ -203,7 +272,7 @@ export default {
     }
 }
 </style>
-<style  >
+<style>
 .el-dialog {
     width: 600px;
 }

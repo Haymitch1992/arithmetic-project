@@ -26,9 +26,6 @@
                 <el-menu-item index="5">
                     <span slot="title">模型部署</span>
                 </el-menu-item>
-                <el-menu-item index="6">
-                    <span slot="title">成果展示入口</span>
-                </el-menu-item>
             </el-menu>
             <div class="help-box">
                 <el-button type="text" @click="goHelpPage">帮助文档</el-button>
@@ -70,9 +67,6 @@ export default {
                     break;
                 case '5':
                     this.$router.push('/online');
-                    break;
-                case '6':
-                    this.$router.push('/deviceManagement');
                     break;
             }
         },
