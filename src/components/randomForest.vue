@@ -159,6 +159,13 @@
                                 :label="item.data_name"
                                 :value="item.id"
                             ></el-option>
+                            <el-option
+                                @click.native="saveItemHistory(item.content)"
+                                v-for="item in options2"
+                                :key="item.id"
+                                :label="item.content"
+                                :value="item.id"
+                            ></el-option>
                         </el-select>
 
                         <div
@@ -242,7 +249,7 @@
 </template>
 
 <script>
-import { POST_SEARCH_SET } from '../assets/url';
+import { POST_SEARCH_SET, DATA_HISTORY } from '../assets/url';
 
 export default {
     name: 'randomForest',
@@ -251,6 +258,8 @@ export default {
         return {
             currentPage: 0,
             formData: {},
+            historyList: [], // 历史记录
+            options2: [], // 历史记录展示
             options: [],
             value: [],
             list: [],
@@ -345,7 +354,33 @@ export default {
                 this.nodeData[1].data[2].value.node_params.para2 = '';
             }
         },
+        // 数据集历史存储
+        dataHistorySave(str) {
+            this.$api
+                .post(DATA_HISTORY, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    history_name: 'data_set',
+                    content: str
+                })
+                .then(res => {
+                    console.log('打印数据集', res);
+                });
+        },
+        // 数据集历史获取
+        dataHistoryGet() {
+            this.$api
+                .get(DATA_HISTORY, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    history_name: 'data_set'
+                })
+                .then(res => {
+                    // 取前五条历史记录
+                    this.historyList = res.data.history_list.slice(0, 4);
+                    this.options2 = this.historyList;
+                });
+        },
         saveItem(item) {
+            console.log('我要看看这是什么', item);
             // 数据集模糊匹配存储
             let arr = item.data_path.split('/');
             this.load_data.node_params.csv_name = arr[arr.length - 1];
@@ -363,6 +398,17 @@ export default {
             this.load_data.node_params.set_id = item.id;
             this.load_data.value = item;
             this.$store.commit('changeSetId', item.id);
+            this.dataHistorySave(item.data_name);
+        },
+        saveItemHistory(content) {
+            this.$api
+                .post(POST_SEARCH_SET, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    data_set_name: content
+                })
+                .then(res => {
+                    this.saveItem(res.data.search_set[0]);
+                });
         },
         saveNodeParam() {
             // 将参数 存入节点
@@ -384,6 +430,8 @@ export default {
                     break;
             }
             this.$message.success('保存成功');
+            // 节点保存一下
+            this.$emit('saveNode');
         },
         openSelectDialog() {
             this.$parent.showSelectDialog = true;
@@ -399,6 +447,8 @@ export default {
         },
         remoteMethod(query) {
             if (query !== '') {
+                // 历史记录清空
+                this.options2 = [];
                 this.loading = true;
                 this.searchSet(query);
                 setTimeout(() => {
@@ -409,6 +459,8 @@ export default {
                     // });
                 }, 200);
             } else {
+                // 显示历史记录
+                this.options2 = this.historyList;
                 this.options = [];
             }
         },
@@ -428,7 +480,7 @@ export default {
     },
     mounted() {
         this.initData();
-        console.log('节点名', this.nodeTile);
+        this.dataHistoryGet();
     }
 };
 </script>

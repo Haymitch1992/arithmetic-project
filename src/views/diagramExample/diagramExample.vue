@@ -40,7 +40,7 @@
             <!-- 右侧表单  -->
             <div class="right-form">
                 <!-- 随机森林 -->
-                <randomForest v-if="isShowNode" @clearLink="clearLink"  @updateNodeParam="updateNodeParam" :nodeData="nodeForm" :componentId="componentId" :nodeId="ndoeId" :nodeTile="nodeTitle"></randomForest>
+                <randomForest v-if="isShowNode" @clearLink="clearLink" @saveNode="saveNode"  @updateNodeParam="updateNodeParam" :nodeData="nodeForm" :componentId="componentId" :nodeId="ndoeId" :nodeTile="nodeTitle"></randomForest>
                 <!-- 实验属性 -->
                 <experimentalDetail v-if="!isShowNode" :currentTest="currentTest" @saveChange="editeTest" @delelteNode="deleteTest"></experimentalDetail>
             </div>

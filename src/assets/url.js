@@ -165,3 +165,13 @@ export const POST_JOIN_FILE = '/api/joinFile/';
 
 // 演示文件列表
 export const GET_FILE_LIST = '/api/AllVideoData/';
+
+// 数据集历史存储
+// 数据集历史获取
+export const DATA_HISTORY = '/api/historyLog/';
+
+// 删除媒体资源
+export const DELETE_VIDEO_DATA = '/api/delVideoData/';
+
+// 使用媒体资源
+export const USE_VIDEO_DATA = '/model/display';

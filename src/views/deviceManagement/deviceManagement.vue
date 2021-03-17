@@ -4,16 +4,13 @@
             <div class="device-container">
                 <div class="item device-video">
                     <h3>视频源 202102221001.mp4</h3>
-                    <!-- <video
-                        src="http://47.95.214.123:8888/group1/M00/00/00/rBFwcWBLNamAR5LXAR6cUuDZfDY737.mp4"
+                    <video
+                        :src="videoPath"
                         autoplay
-                        type="video/mp4"
-                    ></video> -->
-                    <iframe
+                        controls="controls"
                         style="width: 100%;height: 400px;background:rgb(81 83 107);"
-                        src="http://47.95.214.123:8888/group1/M00/00/00/rBFwcWBLNamAR5LXAR6cUuDZfDY737.mp4"
-                        frameborder="0"
-                    ></iframe>
+                        type="video/mp4"
+                    ></video>
                     <div>
                         <!-- <iframe
                             style="width: 100%;height: 400px"
@@ -138,12 +135,21 @@
                                 <el-table-column label="操作" width="160px">
                                     <template slot-scope="scope">
                                         <el-button
-                                            @click="useData(scope.row.id)"
+                                            @click="
+                                                useData(
+                                                    scope.row.id,
+                                                    scope.row.video_path
+                                                )
+                                            "
                                             size="mini"
                                         >
                                             使用
                                         </el-button>
-                                        <el-button size="mini" type="danger">
+                                        <el-button
+                                            size="mini"
+                                            @click="del(scope.row.id)"
+                                            type="danger"
+                                        >
                                             删除
                                         </el-button>
                                     </template>
@@ -293,7 +299,11 @@
 
 <script>
 import Fileupload from '../../components/fileUpload.vue';
-import { GET_FILE_LIST } from '../../assets/url.js';
+import {
+    GET_FILE_LIST,
+    DELETE_VIDEO_DATA,
+    USE_VIDEO_DATA
+} from '../../assets/url.js';
 import moment from 'moment';
 export default {
     name: 'home',
@@ -308,6 +318,8 @@ export default {
     },
     data() {
         return {
+            videoPath:
+                '47.95.214.123:8888/group1/M00/00/00/rBFwcWBQR4SAFx5GAS0gv5X5mQc464.m4v',
             currentPage: 1,
             vloading: false,
             currentSize: 10,
@@ -382,6 +394,55 @@ export default {
         this.getVideoList();
     },
     methods: {
+        del(videoId) {
+            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+                .then(() => {
+                    this.delVideo(videoId);
+                })
+                .catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+        },
+        // 删除视频文件
+        delVideo(videoId) {
+            // DELETE_VIDEO_DATA
+            this.$api
+                .get(DELETE_VIDEO_DATA, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    video_id: videoId
+                })
+                .then(res => {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    this.getVideoList();
+                });
+        },
+        useVideo(url) {
+            this.$api
+                .post(USE_VIDEO_DATA, {
+                    user_id: localStorage.getItem('data_user_id'),
+                    user_name: 'user1',
+                    experiment_name: 'achievement_display_experiment',
+                    achievement_id: 'safety_helmet_detection',
+                    achievement_name: '安全帽识别',
+                    achievement_params: {
+                        source: 'media/videos/C0161.m4v'
+                    }
+                })
+                .then(res => {
+                    this.getVideoList();
+                });
+            //
+        },
         handleSizeChange(val) {
             console.log(`每页 ${val} 条`);
             this.currentSize = val;
@@ -395,8 +456,10 @@ export default {
         handleClick(tab, event) {
             console.log(tab, event);
         },
-        useData(id) {
-            console.log('使用的ID:' + id);
+        useData(id, url) {
+            this.videoPath = 'http://' + url;
+            console.log('使用的ID:' + this.videoPath);
+            this.useVideo(url);
         },
         getVideoList() {
             // GET_FILE_LIST
