@@ -138,7 +138,8 @@
                                             @click="
                                                 useData(
                                                     scope.row.id,
-                                                    scope.row.video_path
+                                                    scope.row.video_path,
+                                                    scope.row.server_video_path
                                                 )
                                             "
                                             size="mini"
@@ -435,7 +436,7 @@ export default {
                     achievement_id: 'safety_helmet_detection',
                     achievement_name: '安全帽识别',
                     achievement_params: {
-                        source: 'media/videos/C0161.m4v'
+                        source: url // media/videos/C0161.m4v'
                     }
                 })
                 .then(res => {
@@ -456,10 +457,10 @@ export default {
         handleClick(tab, event) {
             console.log(tab, event);
         },
-        useData(id, url) {
+        useData(id, url, serverUrl) {
             this.videoPath = 'http://' + url;
             console.log('使用的ID:' + this.videoPath);
-            this.useVideo(url);
+            this.useVideo(serverUrl);
         },
         getVideoList() {
             // GET_FILE_LIST

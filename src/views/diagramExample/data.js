@@ -795,103 +795,95 @@ export const nodeList2 = [
     {
         label: '特征重要性评估',
         nodeSwitch: true,
-        nodeItem: [ {
-            name: '线性模型特征重要性',
-            node_type: 'item-1',
-            in_ports: [0],
-            in_ports_text: ['输入'],
-            out_ports: [0],
-            out_ports_text: ['输出'],
-            iconClassName: 'el-icon-loading',
-            form: [
-                {
-                    "label": "字段设置",
-                    "data": [
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'select', // 输入框
-                            "label": "选择特征列",
-                            "placeholder": "选择要标注修改的表头",
-                            "value": "1",
-                            "tag": "select_characteristic"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "选择标签列",
-                            "value": "2",
-                            "tag": "select_tag"
-                        }
-                    ]
-                }, {
-                    "label": "参数设置",
-                    "data": [
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "树的个数",
-                            "value": "3",
-                            "tag": "near_number"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input', // 输入框
-                            "label": "单棵树的最大深度",
-                            "value": "1",
-                            "tag": "near_number"
-                        }
-                    ]
-                }
-            ]
-        }, {
-            name: '随机森林特征重要性',
-            node_type: 'item-1',
-            in_ports: [0],
-            in_ports_text: ['输入'],
-            out_ports: [0],
-            out_ports_text: ['输出'],
-            iconClassName: 'el-icon-loading',
-            form: [
-                {
-                    "label": "字段设置",
-                    "data": [
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'select', // 输入框
-                            "label": "选择特征列",
-                            "placeholder": "选择要标注修改的表头",
-                            "value": "1",
-                            "tag": "select_characteristic"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "选择标签列",
-                            "value": "2",
-                            "tag": "select_tag"
-                        }
-                    ]
-                }, {
-                    "label": "参数设置",
-                    "data": [
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "树的个数",
-                            "value": "3",
-                            "tag": "near_number"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "单棵树的最大深度",
-                            "value": "1",
-                            "tag": "near_number"
-                        }
-                    ]
-                }
-            ]
-        }]
+        nodeItem: [
+            {
+                name: '线性模型特征重要性',
+                component_id: 'linear_evaluation',
+                is_generate_model: "false",
+                node_type: 'item-1',
+                in_ports: [0],
+                in_ports_text: ['输入'],
+                in_ports_name: ['model_path'],
+                out_ports: [0],
+                out_ports_text: ['输出'],
+                iconClassName: 'el-icon-loading',
+                out_ports_name: ['input_data_linear_features_eval'],
+                form: [
+                    {
+                        "label": "字段设置",
+                        "data": [
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'btn', // 输入框
+                                "label": "选择特征列",
+                                "placeholder": "选择特征列",
+                                "value": {
+                                    "node_params": {
+                                        "select_feature_columns": []
+                                    }
+                                },
+                                "tag": "select_feature_columns"
+                            },
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'btn', // 输入框
+                                "label": "选择标签列",
+                                "placeholder": "选择标签列",
+                                "value": {
+                                    "node_params": {
+                                        "select_target_columns": []
+                                    }
+                                },
+                                "tag": "select_target_columns"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: '随机森林特征重要性',
+                component_id: 'randomforest_evaluation',
+                is_generate_model: "false",
+                node_type: 'item-1',
+                in_ports: [0],
+                in_ports_text: ['输入'],
+                in_ports_name: ['model_path'],
+                out_ports: [0],
+                out_ports_text: ['输出'],
+                iconClassName: 'el-icon-loading',
+                out_ports_name: ['input_data_rf_features_eval'],
+                form: [
+                    {
+                        "label": "字段设置",
+                        "data": [
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'btn', // 输入框
+                                "label": "选择特征列",
+                                "placeholder": "选择特征列",
+                                "value": {
+                                    "node_params": {
+                                        "select_feature_columns": []
+                                    }
+                                },
+                                "tag": "select_feature_columns"
+                            },
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'btn', // 输入框
+                                "label": "选择标签列",
+                                "placeholder": "选择标签列",
+                                "value": {
+                                    "node_params": {
+                                        "select_target_columns": []
+                                    }
+                                },
+                                "tag": "select_target_columns"
+                            }
+                        ]
+                    }
+                ]
+            }]
     },
     {
         label: '特征选择',
