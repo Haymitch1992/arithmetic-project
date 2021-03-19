@@ -1,24 +1,97 @@
 <template>
-     <g v-if="isEditAreaShow.value">
-        <foreignObject width="100%" height="100%" style="position: relative" @click="click_menu_cover($event)">
-        <body xmlns="http://www.w3.org/1999/xhtml" :style="get_menu_style()">
-            <div class="menu_contain">
-                <span @click="delEdges"><i class="el-icon-delete" style="margin-right:8px;"></i>删除节点</span>
-                <span v-if="isEditAreaShow.nodeName==='数据集'" @click="openData()"><i class="el-icon-receiving" style="margin-right:8px;"></i>查看数据</span>
-                <span v-if="isEditAreaShow.nodeName!=='数据集'"><i class="el-icon-receiving" style="margin-right:8px;"></i>查看数据</span>
-                <span class="line"></span>
-                <span @click="startNodeRun(isEditAreaShow)"><i class="el-icon-caret-right" style="margin-right:8px;"></i>从此处开始执行</span>
-                <span @click="endNodeRun(isEditAreaShow)"><i class="el-icon-finished" style="margin-right:8px;"></i>执行到此处</span>
-                <span @click="runCurrentNode(isEditAreaShow)"><i class="el-icon-refresh" style="margin-right:8px;"></i>执行此节点</span>
-                <span class="line"></span>
-                <span @click="openLog()"><i class="el-icon-receiving" style="margin-right:8px;"></i>查看日志</span>
-                <span v-if="isEditAreaShow.nodeType==='item-3'&&isEditAreaShow.nodeName!=='模型测试'" @click="openAnalysis()"><i class="el-icon-receiving" style="margin-right:8px;"></i>查看分析报告</span>
-                <!-- <span @click="changePort('in_ports')">添加输入</span> -->
-<!--                <span @click="changePort('out_ports')">添加输出</span>-->
-                <span v-if="isEditAreaShow.detail" @click="editNode">编辑</span>
-                <span v-for="item in isEditAreaShow.rightClickEvent" @click="handlePersonalThs(item.eventName)" :key="item.label">{{ item.label }}</span>
-            </div>
-        </body>
+    <g v-if="isEditAreaShow.value">
+        <foreignObject
+            width="100%"
+            height="100%"
+            style="position: relative"
+            @click="click_menu_cover($event)"
+        >
+            <body
+                xmlns="http://www.w3.org/1999/xhtml"
+                :style="get_menu_style()"
+            >
+                <div class="menu_contain">
+                    <span @click="delEdges">
+                        <i class="el-icon-delete" style="margin-right:8px;"></i>
+                        删除节点
+                    </span>
+                    <span
+                        v-if="isEditAreaShow.nodeName === '数据集'"
+                        @click="openData()"
+                    >
+                        <i
+                            class="el-icon-receiving"
+                            style="margin-right:8px;"
+                        ></i>
+                        查看数据
+                    </span>
+                    <span
+                        v-if="isEditAreaShow.nodeName !== '数据集'"
+                        @click="openViewData()"
+                    >
+                        <i
+                            class="el-icon-receiving"
+                            style="margin-right:8px;"
+                        ></i>
+                        查看数据
+                    </span>
+                    <span class="line"></span>
+                    <span @click="startNodeRun(isEditAreaShow)">
+                        <i
+                            class="el-icon-caret-right"
+                            style="margin-right:8px;"
+                        ></i>
+                        从此处开始执行
+                    </span>
+                    <span @click="endNodeRun(isEditAreaShow)">
+                        <i
+                            class="el-icon-finished"
+                            style="margin-right:8px;"
+                        ></i>
+                        执行到此处
+                    </span>
+                    <span @click="runCurrentNode(isEditAreaShow)">
+                        <i
+                            class="el-icon-refresh"
+                            style="margin-right:8px;"
+                        ></i>
+                        执行此节点
+                    </span>
+                    <span class="line"></span>
+                    <span @click="openLog()">
+                        <i
+                            class="el-icon-receiving"
+                            style="margin-right:8px;"
+                        ></i>
+                        查看日志
+                    </span>
+                    <span
+                        v-if="
+                            isEditAreaShow.nodeType === 'item-3' &&
+                                isEditAreaShow.nodeName !== '模型测试'
+                        "
+                        @click="openAnalysis()"
+                    >
+                        <i
+                            class="el-icon-receiving"
+                            style="margin-right:8px;"
+                        ></i>
+                        查看分析报告
+                    </span>
+                    <!-- <span @click="changePort('in_ports')">添加输入</span> -->
+                    <!--                <span @click="changePort('out_ports')">添加输出</span>-->
+                    <span v-if="isEditAreaShow.detail" @click="editNode">
+                        编辑
+                    </span>
+                    <span
+                        v-for="item in isEditAreaShow.rightClickEvent"
+                        @click="handlePersonalThs(item.eventName)"
+                        :key="item.label"
+                    >
+                        {{ item.label }}
+                    </span>
+                </div>
+            </body>
         </foreignObject>
     </g>
 </template>
@@ -57,7 +130,26 @@ export default {
             // 当前节点ID obj.id
             this.$parent.$parent.autoPrepostion(obj.id, obj.id);
         },
+        openViewData() {
+            if (this.isEditAreaShow.run_uuid) {
+                this.$store.commit('handleNode', {
+                    nodeTpye: 'viewDataDialog',
+                    status: true,
+                    run_uuid: this.isEditAreaShow.run_uuid,
+                    nodeName: this.isEditAreaShow.nodeName,
+                    nodeIndex: this.isEditAreaShow.nodeIndex
+                });
+            } else {
+                this.$message.error('请先运行试验');
+            }
+        },
         openAnalysis() {
+            // this.$store.commit('handleNode', {
+            //     nodeTpye: 'analysisDialog',
+            //     status: true,
+            //     run_uuid: 'ffd41ca53cea4a2aae34a6c1114d4bb0',
+            //     nodeName: '123'
+            // });
             // 判断是否存在run_uuid 不存在提示
             if (this.isEditAreaShow.run_uuid) {
                 this.$store.commit('handleNode', {

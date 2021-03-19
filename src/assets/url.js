@@ -175,3 +175,6 @@ export const DELETE_VIDEO_DATA = '/api/delVideoData/';
 
 // 使用媒体资源
 export const USE_VIDEO_DATA = '/model/display';
+
+// 查看视频分析结果
+export const GET_VIDEO_RESULT = '/api/AnalysisResult/';

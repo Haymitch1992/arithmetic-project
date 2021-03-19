@@ -8,19 +8,9 @@
                         :src="videoPath"
                         autoplay
                         controls="controls"
-                        style="width: 100%;height: 400px;background:rgb(81 83 107);"
+                        style="width: 100%;height: 430px;background:#383d4a;"
                         type="video/mp4"
                     ></video>
-                    <div>
-                        <!-- <iframe
-                            style="width: 100%;height: 400px"
-                            frameborder="no"
-                            allowfullscreen
-                            mozallowfullscreen
-                            webkitallowfullscreen
-                            src="http://go.plvideo.cn/front/video/preview?vid=63d455972f3fc30564a91cdeef097dde_6"
-                        ></iframe> -->
-                    </div>
                 </div>
                 <div class="item device-box">
                     <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -98,7 +88,7 @@
                             >
                                 <el-table-column
                                     prop="video_name"
-                                    width="200px"
+                                    width="300px"
                                     label="名称"
                                 ></el-table-column>
                                 <el-table-column
@@ -132,8 +122,16 @@
                                         }}
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="操作" width="160px">
+                                <el-table-column label="操作" width="260px">
                                     <template slot-scope="scope">
+                                        <el-button
+                                            @click="
+                                                seeData(scope.row.video_path)
+                                            "
+                                            size="mini"
+                                        >
+                                            查看
+                                        </el-button>
                                         <el-button
                                             @click="
                                                 useData(
@@ -142,9 +140,23 @@
                                                     scope.row.server_video_path
                                                 )
                                             "
+                                            v-if="scope.row.video_type === 0"
                                             size="mini"
                                         >
-                                            使用
+                                            分析
+                                        </el-button>
+                                        <el-button
+                                            v-if="scope.row.video_type === 1"
+                                            @click="
+                                                seeResult(
+                                                    scope.row.id,
+                                                    scope.row.video_path
+                                                )
+                                            "
+                                            size="mini"
+                                            type="primary"
+                                        >
+                                            结果
                                         </el-button>
                                         <el-button
                                             size="mini"
@@ -176,116 +188,47 @@
                             >
                                 <div class="device-result-item">
                                     <p>未正确戴安全帽</p>
-                                    <p class="num">76</p>
+                                    <p class="num">{{ nums_of_no_helmet }}</p>
                                 </div>
                                 <div class="device-result-item">
                                     <p>正确佩戴安全帽</p>
-                                    <p class="num">1230</p>
-                                </div>
-                                <div class="device-result-item">
-                                    <p>人脸</p>
-                                    <p class="num">540</p>
+                                    <p class="num">{{ nums_of_helmet }}</p>
                                 </div>
                             </div>
                             <h3>分析结果-识别目标(未正确佩戴安全帽)</h3>
-                            <el-carousel height="124px">
-                                <el-carousel-item>
-                                    <div class="device-img-item">
+                            <el-carousel
+                                height="200px"
+                                style="background:#383d4a;"
+                            >
+                                <el-carousel-item
+                                    :key="item"
+                                    v-for="item in Math.ceil(
+                                        srcList.length / 4
+                                    )"
+                                >
+                                    <div
+                                        class="device-img-item"
+                                        v-for="index in 4"
+                                        :key="
+                                            srcList[(item - 1) * 4 + index - 1]
+                                        "
+                                    >
                                         <el-image
+                                            v-if="
+                                                srcList[
+                                                    (item - 1) * 4 + index - 1
+                                                ]
+                                            "
                                             :preview-src-list="srcList"
                                             :src="
-                                                'http://47.95.214.123:8080/media/test/safe-item-1.jpg/'
+                                                srcList[
+                                                    (item - 1) * 4 + index - 1
+                                                ]
                                             "
-                                            style="width: 100%; height: 124px"
+                                            style="width: 100%; height: 200px"
                                         ></el-image>
                                         <p class="device-result-text">
-                                            2020-02-22 15:32:22
-                                        </p>
-                                    </div>
-                                    <div class="device-img-item">
-                                        <el-image
-                                            :preview-src-list="srcList"
-                                            :src="
-                                                'http://47.95.214.123:8080/media/test/safe-item-2.jpg/'
-                                            "
-                                            style="width: 100%; height: 124px"
-                                        ></el-image>
-                                        <p class="device-result-text">
-                                            2020-02-22 15:32:22
-                                        </p>
-                                    </div>
-                                    <div class="device-img-item">
-                                        <el-image
-                                            :preview-src-list="srcList"
-                                            :src="
-                                                'http://47.95.214.123:8080/media/test/safe-item-3.jpg/'
-                                            "
-                                            style="width: 100%; height: 124px"
-                                        ></el-image>
-                                        <p class="device-result-text">
-                                            2020-02-22 15:32:22
-                                        </p>
-                                    </div>
-                                    <div class="device-img-item">
-                                        <el-image
-                                            :preview-src-list="srcList"
-                                            :src="
-                                                'http://47.95.214.123:8080/media/test/safe-item-4.jpg/'
-                                            "
-                                            style="width: 100%; height: 124px"
-                                        ></el-image>
-                                        <p class="device-result-text">
-                                            2020-02-22 15:32:22
-                                        </p>
-                                    </div>
-                                </el-carousel-item>
-                                <el-carousel-item>
-                                    <div class="device-img-item">
-                                        <el-image
-                                            :preview-src-list="srcList"
-                                            :src="
-                                                'http://47.95.214.123:8080/media/test/safe-item-5.jpg/'
-                                            "
-                                            style="width: 100%; height: 124px"
-                                        ></el-image>
-                                        <p class="device-result-text">
-                                            2020-02-22 15:32:22
-                                        </p>
-                                    </div>
-                                    <div class="device-img-item">
-                                        <el-image
-                                            :preview-src-list="srcList"
-                                            :src="
-                                                'http://47.95.214.123:8080/media/test/safe-item-6.jpg/'
-                                            "
-                                            style="width: 100%; height: 124px"
-                                        ></el-image>
-                                        <p class="device-result-text">
-                                            2020-02-22 15:32:22
-                                        </p>
-                                    </div>
-                                    <div class="device-img-item">
-                                        <el-image
-                                            :preview-src-list="srcList"
-                                            :src="
-                                                'http://47.95.214.123:8080/media/test/safe-item-7.jpg/'
-                                            "
-                                            style="width: 100%; height: 124px"
-                                        ></el-image>
-                                        <p class="device-result-text">
-                                            2020-02-22 15:32:22
-                                        </p>
-                                    </div>
-                                    <div class="device-img-item">
-                                        <el-image
-                                            :preview-src-list="srcList"
-                                            :src="
-                                                'http://47.95.214.123:8080/media/test/safe-item-8.jpg/'
-                                            "
-                                            style="width: 100%; height: 124px"
-                                        ></el-image>
-                                        <p class="device-result-text">
-                                            2020-02-22 15:32:22
+                                            {{ (item - 1) * 4 + index - 1 }}
                                         </p>
                                     </div>
                                 </el-carousel-item>
@@ -303,6 +246,7 @@ import Fileupload from '../../components/fileUpload.vue';
 import {
     GET_FILE_LIST,
     DELETE_VIDEO_DATA,
+    GET_VIDEO_RESULT,
     USE_VIDEO_DATA
 } from '../../assets/url.js';
 import moment from 'moment';
@@ -319,82 +263,45 @@ export default {
     },
     data() {
         return {
-            videoPath:
-                '47.95.214.123:8888/group1/M00/00/00/rBFwcWBQR4SAFx5GAS0gv5X5mQc464.m4v',
+            videoPath: '', // 当前视频路径
             currentPage: 1,
             vloading: false,
             currentSize: 10,
             count: 0,
             activeName: 'first',
-            srcList: [
-                'http://47.95.214.123:8080/media/test/safe-item-1.jpg/',
-                'http://47.95.214.123:8080/media/test/safe-item-2.jpg/',
-                'http://47.95.214.123:8080/media/test/safe-item-3.jpg/',
-                'http://47.95.214.123:8080/media/test/safe-item-4.jpg/',
-                'http://47.95.214.123:8080/media/test/safe-item-5.jpg/',
-                'http://47.95.214.123:8080/media/test/safe-item-6.jpg/',
-                'http://47.95.214.123:8080/media/test/safe-item-7.jpg/',
-                'http://47.95.214.123:8080/media/test/safe-item-8.jpg/'
-            ],
-            video_data_list: [],
-            tableData: [
-                {
-                    name: '202102221001.mp4',
-                    type: '视频',
-                    size: '1.3kb',
-                    switch: false,
-                    algorithmName: '百度算法',
-                    algorithmInfo: '识别人脸',
-                    createTime: '2021-02-22 16:40:00',
-                    id: 1
-                },
-                {
-                    name: '202102221002.mp4',
-                    type: '视频',
-                    size: '2.3mb',
-                    switch: true,
-                    algorithmName: '阿里算法',
-                    algorithmInfo: '识别安全帽',
-                    createTime: '2021-02-22 16:40:00',
-                    id: 2
-                },
-                {
-                    name: '202102221003.mp4',
-                    type: '视频',
-                    size: '3.3kb',
-                    switch: false,
-                    algorithmName: '二分类算法',
-                    algorithmInfo: '识别人脸',
-                    createTime: '2021-02-22 16:40:00',
-                    id: 3
-                },
-                {
-                    name: '202102221004.mp4',
-                    type: '视频',
-                    size: '4.3kb',
-                    switch: true,
-                    algorithmName: '百度算法',
-                    algorithmInfo: '识别人脸',
-                    createTime: '2021-02-22 16:40:00',
-                    id: 4
-                },
-                {
-                    name: '202102221005.mp4',
-                    type: '视频',
-                    size: '1.3kb',
-                    switch: false,
-                    algorithmName: '百度算法',
-                    algorithmInfo: '识别人脸',
-                    createTime: '2021-02-22 16:40:00',
-                    id: 5
-                }
-            ]
+            srcList: [], // 视频分析结果图片列表
+            video_data_list: [], // 已上传的视频列表
+            nums_of_helmet: 0, // 戴安全帽数量
+            nums_of_no_helmet: 2 // 未戴安全帽数量
         };
     },
     mounted() {
         this.getVideoList();
     },
     methods: {
+        seeResult(videoId, url) {
+            // GET_VIDEO_RESULT
+            this.$api
+                .get(GET_VIDEO_RESULT, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    video_id: videoId
+                })
+                .then(res => {
+                    //
+                    this.srcList = res.data.result_data;
+                    this.srcList.forEach((currentValue, index) => {
+                        this.srcList[index] =
+                            this.globalUlr + 'video' + currentValue;
+                    });
+                    this.activeName = 'third';
+                    this.videoPath = 'http://' + url;
+                    this.nums_of_no_helmet =
+                        res.data.analysis_data.nums_of_no_helmet[0];
+                    this.nums_of_helmet =
+                        res.data.analysis_data.nums_of_helmet[0];
+                    console.log(this.srcList);
+                });
+        },
         del(videoId) {
             this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -427,11 +334,12 @@ export default {
                     this.getVideoList();
                 });
         },
-        useVideo(url) {
+        useVideo(videoId, url) {
             this.$api
                 .post(USE_VIDEO_DATA, {
                     user_id: localStorage.getItem('data_user_id'),
                     user_name: 'user1',
+                    video_id: videoId,
                     experiment_name: 'achievement_display_experiment',
                     achievement_id: 'safety_helmet_detection',
                     achievement_name: '安全帽识别',
@@ -460,7 +368,11 @@ export default {
         useData(id, url, serverUrl) {
             this.videoPath = 'http://' + url;
             console.log('使用的ID:' + this.videoPath);
-            this.useVideo(serverUrl);
+            this.useVideo(id, serverUrl);
+        },
+        seeData(url) {
+            this.videoPath = 'http://' + url;
+            console.log('使用的ID:' + this.videoPath);
         },
         getVideoList() {
             // GET_FILE_LIST
@@ -556,7 +468,7 @@ export default {
     }
     display: grid;
     grid-template-columns: 650px 1fr;
-    grid-template-rows: 450px auto;
+    grid-template-rows: 480px auto;
     height: 500px;
     grid-template-areas:
         'device-video device-box'
@@ -593,7 +505,7 @@ export default {
     }
     .device-result-container {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         .device-result-item {
             height: 90px;
             border: 1px solid rgb(72, 72, 79);

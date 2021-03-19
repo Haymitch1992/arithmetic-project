@@ -28,6 +28,7 @@ let store = new Vuex.Store({
     dataDialog: false, // 数据集列表展示
     logDialog: false, // 运行结果展示
     analysisDialog: false, // 分析结果展示
+    viewDataDialog: false, // 查看数据
     currentDialog: {},
     current_set_id: '', // 当前数据集的id
     run_uuid: '',

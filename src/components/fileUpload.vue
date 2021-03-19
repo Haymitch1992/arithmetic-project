@@ -13,9 +13,9 @@
         >
             <uploader-unsupport></uploader-unsupport>
             <uploader-drop @click.native="changeUpload">
-                <sapn class="upload-info">
+                <span class="upload-info">
                     可以将本地的视频资源上传至服务器
-                </sapn>
+                </span>
                 <uploader-btn class="upload-btn">上传</uploader-btn>
             </uploader-drop>
             <uploader-list v-if="panelShow"></uploader-list>
@@ -208,11 +208,10 @@ export default {
                 );
                 form.append('file_size', rootFile.size);
                 this.$api.post(POST_JOIN_FILE, form).then(res => {
-                    console.log(123);
                     this.$emit('updateFileList');
                 });
             } else {
-                console.log('上传成功');
+                this.$emit('updateFileList');
             }
         },
         onFileProgress(rootFile, file, chunk) {

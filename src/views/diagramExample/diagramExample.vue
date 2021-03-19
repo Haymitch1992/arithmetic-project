@@ -3,153 +3,262 @@
     <!-- 最外层容器监mouse系列事件, 用来做节点拖拽 -->
     <div>
         <div class="diagramExample">
-            <div class="tag-line" v-if="choiceNodeList.length!==0">
+            <div class="tag-line" v-if="choiceNodeList.length !== 0">
                 <!-- 展开的试验列表 默认打开第一个-->
                 <div>
-                    <span :key="index" v-for="(item, index) in choiceNodeList"  :class="{active:item.id === currentTest.id}" @click.stop="selectCurrentNode(index)">
-                        <i @click.stop="clearCurrentNode(index)" class="el-icon-close"></i>
-                        {{item.test_name}}
+                    <span
+                        :key="index"
+                        v-for="(item, index) in choiceNodeList"
+                        :class="{ active: item.id === currentTest.id }"
+                        @click.stop="selectCurrentNode(index)"
+                    >
+                        <i
+                            @click.stop="clearCurrentNode(index)"
+                            class="el-icon-close"
+                        ></i>
+                        {{ item.test_name }}
                     </span>
                 </div>
                 <ul class="tag-ul">
-                    <li @click="autoPrepostion"><i class="iconfont iconbushu1"></i>运行</li>
-                    <li @click="deployTest"><i class="iconfont iconbushu1"></i>部署</li>
-                    <li @click="dialogTableVisible=true"><i class="iconfont iconzidonghua"></i>自动调参</li>
+                    <li @click="autoPrepostion">
+                        <i class="iconfont iconbushu1"></i>
+                        运行
+                    </li>
+                    <li @click="deployTest">
+                        <i class="iconfont iconbushu1"></i>
+                        部署
+                    </li>
+                    <li @click="dialogTableVisible = true">
+                        <i class="iconfont iconzidonghua"></i>
+                        自动调参
+                    </li>
                 </ul>
             </div>
-            <div class="page-left" v-show="$store.state.count===0">
+            <div class="page-left" v-show="$store.state.count === 0">
                 <div class="search-line">
-                    <el-input placeholder="请输入关键词" v-model="searchVal" suffix-icon="el-icon-search" @change="searchTest"></el-input>
+                    <el-input
+                        placeholder="请输入关键词"
+                        v-model="searchVal"
+                        suffix-icon="el-icon-search"
+                        @change="searchTest"
+                    ></el-input>
                 </div>
-                <h3 class="my-experiment-title" @click="showMyExperiment=!showMyExperiment">
-                    <span class="el-icon-caret-bottom" v-if="showMyExperiment" ></span>
-                    <span class="el-icon-caret-right" v-if="!showMyExperiment" ></span>
-                    <span class="iconfont iconwenjianjia" style="font-size: 14px;"></span>
+                <h3
+                    class="my-experiment-title"
+                    @click="showMyExperiment = !showMyExperiment"
+                >
+                    <span
+                        class="el-icon-caret-bottom"
+                        v-if="showMyExperiment"
+                    ></span>
+                    <span
+                        class="el-icon-caret-right"
+                        v-if="!showMyExperiment"
+                    ></span>
+                    <span
+                        class="iconfont iconwenjianjia"
+                        style="font-size: 14px;"
+                    ></span>
                     <span>我的实验</span>
                 </h3>
                 <ul class="my-experiment-item" v-if="showMyExperiment">
-                    <li v-for="(item, index) in all_project" :key="index" :class="{'active':item.id===currentTest.id}"  @click="changeExperiment(index,item.id)">
-                        {{item.test_name}}
+                    <li
+                        v-for="(item, index) in all_project"
+                        :key="index"
+                        :class="{ active: item.id === currentTest.id }"
+                        @click="changeExperiment(index, item.id)"
+                    >
+                        {{ item.test_name }}
                     </li>
                 </ul>
                 <div class="addTest-line">
-                    <el-button type="primary" style="width: 100%;" @click="dialogFormVisible=true;btnShow=false"><span class="el-icon-circle-plus-outline" style="margin-right: 6px;"></span>创建实验</el-button>
+                    <el-button
+                        type="primary"
+                        style="width: 100%;"
+                        @click="
+                            dialogFormVisible = true;
+                            btnShow = false;
+                        "
+                    >
+                        <span
+                            class="el-icon-circle-plus-outline"
+                            style="margin-right: 6px;"
+                        ></span>
+                        创建实验
+                    </el-button>
                 </div>
-
             </div>
             <!-- 右侧表单  -->
             <div class="right-form">
                 <!-- 随机森林 -->
-                <randomForest v-if="isShowNode" @clearLink="clearLink" @saveNode="saveNode"  @updateNodeParam="updateNodeParam" :nodeData="nodeForm" :componentId="componentId" :nodeId="ndoeId" :nodeTile="nodeTitle"></randomForest>
+                <randomForest
+                    v-if="isShowNode"
+                    @clearLink="clearLink"
+                    @saveNode="saveNode"
+                    @updateNodeParam="updateNodeParam"
+                    :nodeData="nodeForm"
+                    :componentId="componentId"
+                    :nodeId="ndoeId"
+                    :nodeTile="nodeTitle"
+                ></randomForest>
                 <!-- 实验属性 -->
-                <experimentalDetail v-if="!isShowNode" :currentTest="currentTest" @saveChange="editeTest" @delelteNode="deleteTest"></experimentalDetail>
+                <experimentalDetail
+                    v-if="!isShowNode"
+                    :currentTest="currentTest"
+                    @saveChange="editeTest"
+                    @delelteNode="deleteTest"
+                ></experimentalDetail>
             </div>
-            <div class="diagramBox"
-                 @mousedown="startNodesBus($event)"
-                 @mousemove="moveNodesBus($event)"
-                 @mouseup="endNodesBus($event)"
+            <div
+                class="diagramBox"
+                @mousedown="startNodesBus($event)"
+                @mousemove="moveNodesBus($event)"
+                @mouseup="endNodesBus($event)"
             >
                 <!--左侧拖拽主体-->
-                <div class="page-left"  v-show="$store.state.count===1">
+                <div class="page-left" v-show="$store.state.count === 1">
                     <div class="search-node-box">
-                        <el-input placeholder="搜索组件" v-model="searchNode" @input="findNodeList"></el-input>
+                        <el-input
+                            placeholder="搜索组件"
+                            v-model="searchNode"
+                            @input="findNodeList"
+                        ></el-input>
                     </div>
                     <!-- 搜索的返回值 -->
                     <div v-if="searchNode">
                         <search-box
                             :dataList="searchNodeList"
                             dataName="数据预处理"
-                           >
-                        </search-box>
+                        ></search-box>
                     </div>
                     <div v-if="!searchNode">
-                        <drawer :showItem="showItem5"
-                                :dataList="nodeLabel5"
-                                dataName="数据集"
-                                @openParentNode="openNode(5)">
-                        </drawer>
-                        <drawer :showItem="showItem1"
+                        <drawer
+                            :showItem="showItem5"
+                            :dataList="nodeLabel5"
+                            dataName="数据集"
+                            @openParentNode="openNode(5)"
+                        ></drawer>
+                        <drawer
+                            :showItem="showItem1"
                             :dataList="nodeLabel1"
                             dataName="数据预处理"
-                            @openParentNode="openNode(1)">
-                        </drawer>
-                        <drawer :showItem="showItem2"
-                                :dataList="nodeLabel2"
-                                dataName="特征工程"
-                                @openParentNode="openNode(2)">
-                        </drawer>
-                        <drawer :showItem="showItem3"
-                                :dataList="nodeLabel3"
-                                dataName="选择算法"
-                                @openParentNode="openNode(3)">
-                        </drawer>
-                        <drawer :showItem="showItem4"
-                                :dataList="nodeLabel4"
-                                dataName="算法评估"
-                                @openParentNode="openNode(4)">
-                        </drawer>
+                            @openParentNode="openNode(1)"
+                        ></drawer>
+                        <drawer
+                            :showItem="showItem2"
+                            :dataList="nodeLabel2"
+                            dataName="特征工程"
+                            @openParentNode="openNode(2)"
+                        ></drawer>
+                        <drawer
+                            :showItem="showItem3"
+                            :dataList="nodeLabel3"
+                            dataName="选择算法"
+                            @openParentNode="openNode(3)"
+                        ></drawer>
+                        <drawer
+                            :showItem="showItem4"
+                            :dataList="nodeLabel4"
+                            dataName="算法评估"
+                            @openParentNode="openNode(4)"
+                        ></drawer>
                     </div>
                 </div>
-                <div class="page-left"  v-show="$store.state.count===2">
-                    <div class="labeliing" @click="showItem6=!showItem6">
-                        <span class="el-icon-caret-bottom" v-if="!showItem6" ></span>
-                        <span class="el-icon-caret-right" v-if="showItem6" ></span>
-                        <span class="iconfont iconwenjianjia" style="font-size: 14px;"></span>
+                <div class="page-left" v-show="$store.state.count === 2">
+                    <div class="labeliing" @click="showItem6 = !showItem6">
+                        <span
+                            class="el-icon-caret-bottom"
+                            v-if="!showItem6"
+                        ></span>
+                        <span
+                            class="el-icon-caret-right"
+                            v-if="showItem6"
+                        ></span>
+                        <span
+                            class="iconfont iconwenjianjia"
+                            style="font-size: 14px;"
+                        ></span>
                         <span>公共表</span>
                     </div>
                     <div v-if="showItem6" class="node-item">
                         <div
-                                class="basic-node"
-                                v-for="(item, i) in nodeLabel6"
-                                :key="'nodes_basic' + i"
-                                @mousedown="dragIt(item)"
-                        >{{item.name}}</div>
+                            class="basic-node"
+                            v-for="(item, i) in nodeLabel6"
+                            :key="'nodes_basic' + i"
+                            @mousedown="dragIt(item)"
+                        >
+                            {{ item.name }}
+                        </div>
                     </div>
                 </div>
                 <!-- DAG-Diagram主体 -->
                 <DAGBoard
-                        ref="DAGBoard"
-                        :DataAll="yourJSONDataFillThere"
-                        :showTool="choiceNodeList.length!==0"
-                        @updateDAG="updateDAG"
-                        @editNodeDetails="editNodeDetails"
-                        @doSthPersonal="doSthPersonal"
+                    ref="DAGBoard"
+                    :DataAll="yourJSONDataFillThere"
+                    :showTool="choiceNodeList.length !== 0"
+                    @updateDAG="updateDAG"
+                    @editNodeDetails="editNodeDetails"
+                    @doSthPersonal="doSthPersonal"
                 ></DAGBoard>
                 <!-- 用来模拟拖拽添加的元素 -->
                 <node-bus
-                        v-if="dragBus"
-                        :value="busValue.value"
-                        :pos_x="busValue.pos_x"
-                        :pos_y="busValue.pos_y"
+                    v-if="dragBus"
+                    :value="busValue.value"
+                    :pos_x="busValue.pos_x"
+                    :pos_y="busValue.pos_y"
                 />
             </div>
             <!-- 自动调参弹窗 -->
-            <automaticOptions :dialogTableVisible="dialogTableVisible" @closeOptions="closeAutoMaticOptions"></automaticOptions>
+            <automaticOptions
+                :dialogTableVisible="dialogTableVisible"
+                @closeOptions="closeAutoMaticOptions"
+            ></automaticOptions>
         </div>
         <demonStation v-if="this.$store.state.demoStationStatus"></demonStation>
         <!--创建实验-->
-        <el-dialog title="创建实验" :visible.sync="dialogFormVisible" :close-on-click-modal="false"  class="create-test">
+        <el-dialog
+            title="创建实验"
+            :visible.sync="dialogFormVisible"
+            :close-on-click-modal="false"
+            class="create-test"
+        >
             <el-form>
-                <el-form-item label="实验名称" >
-                    <el-input v-model="form.test_name" autocomplete="off"></el-input>
+                <el-form-item label="实验名称">
+                    <el-input
+                        v-model="form.test_name"
+                        autocomplete="off"
+                    ></el-input>
                 </el-form-item>
-                <el-form-item label="实验描述" >
-                    <el-input v-model="form.test_content" autocomplete="off"></el-input>
+                <el-form-item label="实验描述">
+                    <el-input
+                        v-model="form.test_content"
+                        autocomplete="off"
+                    ></el-input>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="closeDialog">取 消</el-button>
-                <el-button type="primary" v-if="!btnShow" @click="createTest">确 定</el-button>
-                <el-button type="primary" v-if="btnShow" @click="editeTest">确 定</el-button>
+                <el-button type="primary" v-if="!btnShow" @click="createTest">
+                    确 定
+                </el-button>
+                <el-button type="primary" v-if="btnShow" @click="editeTest">
+                    确 定
+                </el-button>
             </div>
         </el-dialog>
         <!-- 数据集数据展示 -->
-        <dataDialog ></dataDialog>
+        <dataDialog></dataDialog>
         <logDialog v-if="this.$store.state.logDialog"></logDialog>
-        <analysisDialog ></analysisDialog>
-        <selectHeader v-if="showSelectDialog" :selectValue="nodeForm" @saveSelect="saveSelect"></selectHeader>
+        <!-- 分析报告 -->
+        <analysisDialog></analysisDialog>
+        <!-- 查看数据 -->
+        <viewDataDialog></viewDataDialog>
+        <selectHeader
+            v-if="showSelectDialog"
+            :selectValue="nodeForm"
+            @saveSelect="saveSelect"
+        ></selectHeader>
     </div>
-
 </template>
 
 <script>
@@ -192,6 +301,7 @@ import dataDialog from '../../components/dataDialog';
 import axios from 'axios';
 import logDialog from '../../components/logDialog';
 import analysisDialog from '../../components/analysisDialog';
+import viewDataDialog from '../../components/viewDataDialog';
 
 export default {
     components: {
@@ -206,6 +316,7 @@ export default {
         dataDialog,
         logDialog,
         analysisDialog,
+        viewDataDialog,
         searchBox
     },
     computed: {
