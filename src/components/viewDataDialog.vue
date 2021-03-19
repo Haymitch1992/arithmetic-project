@@ -8,7 +8,7 @@
             width="70%"
             :before-close="handleClose"
         >
-            <el-table
+            <!-- <el-table
                 class="data-table"
                 border
                 stripe
@@ -20,6 +20,22 @@
                     :key="index"
                     :label="key"
                     :prop="key"
+                ></el-table-column>
+            </el-table> -->
+            <el-table
+                :data="tableData"
+                border
+                height="400"
+                :default-sort="{ prop: 'record_id', order: 'ascending' }"
+                style="width: 100%"
+            >
+                <el-table-column
+                    :key="value.record_id"
+                    sortable
+                    v-for="(value, key) in tableData[0]"
+                    :prop="key"
+                    :label="key"
+                    width="180"
                 ></el-table-column>
             </el-table>
         </el-dialog>
@@ -95,23 +111,25 @@ export default {
         getReport() {
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: this.$store.state.currentDialog.run_uuid,
+                    run_uuid: 'ffd41ca53cea4a2aae34a6c1114d4bb0',
                     index: this.$store.state.currentDialog.nodeIndex // 列表
                 })
                 .then(res => {
-                    let str = this.$store.state.currentDialog.nodeIndex;
-                    if (res.data.code !== 200) {
-                        return;
-                    }
-                    this.tableData = [];
-                    for (let i = 0; i < res.data[str]['f1'].length; i++) {
-                        this.tableData.push({});
-                    }
-                    for (let key in res.data[str]) {
-                        for (let k = 0; k < res.data[str][key].length; k++) {
-                            this.tableData[k][key] = res.data[str][key][k];
-                        }
-                    }
+                    this.tableData =
+                        res.data[this.$store.state.currentDialog.nodeIndex];
+                    // let str = this.$store.state.currentDialog.nodeIndex;
+                    // if (res.data.code !== 200) {
+                    //     return;
+                    // }
+                    // this.tableData = [];
+                    // for (let i = 0; i < res.data[str]['f1'].length; i++) {
+                    //     this.tableData.push({});
+                    // }
+                    // for (let key in res.data[str]) {
+                    //     for (let k = 0; k < res.data[str][key].length; k++) {
+                    //         this.tableData[k][key] = res.data[str][key][k];
+                    //     }
+                    // }
                     console.log(this.tableData);
                 });
         }
