@@ -530,7 +530,7 @@ export default {
             const x = e.x - this.initPos.left;
             const y = e.y - this.initPos.top;
             const form = this.DataAll.nodes[i].form || null;
-            const nodeIndex = this.DataAll.nodes[i].in_ports_name[0] || null;
+            const nodeIndex = this.DataAll.nodes[i].out_ports_name || null;
             this.is_edit_area = {
                 value: true,
                 x,

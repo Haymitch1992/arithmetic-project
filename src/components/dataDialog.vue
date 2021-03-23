@@ -1,32 +1,34 @@
 <template>
-  <div class="data-view">
-   <!-- 数据集数据展示 -->
+    <div class="data-view">
+        <!-- 数据集数据展示 -->
         <el-dialog
             title="数据探查 - (仅显示前一百条)"
-             class="dataView"
+            class="dataView"
             :visible.sync="this.$store.state.dataDialog"
             width="700px"
-            :before-close="handleClose">
+            :before-close="handleClose"
+        >
             <el-table
                 :data="tableData"
                 border
                 height="400"
-                :default-sort = "{prop: 'record_id', order: 'ascending'}"
-                style="width: 100%">
+                :default-sort="{ prop: 'record_id', order: 'ascending' }"
+                style="width: 100%"
+            >
                 <el-table-column
-                    :key = "value.record_id"
+                    :key="value.record_id"
                     sortable
                     v-for="(value, key) in tableData[0]"
                     :prop="key"
                     :label="key"
-                    width="180">
-                </el-table-column>
+                    width="180"
+                ></el-table-column>
             </el-table>
         </el-dialog>
-  </div>
+    </div>
 </template>
 <script>
-import { POST_TOP_100_DATA } from "../assets/url";
+import { POST_TOP_100_DATA } from '../assets/url';
 export default {
     data() {
         return {
@@ -47,8 +49,8 @@ export default {
     },
     methods: {
         handleClose() {
-            this.$store.commit("handleNode", {
-                nodeTpye: "dataDialog",
+            this.$store.commit('handleNode', {
+                nodeTpye: 'dataDialog',
                 status: false
             });
         },
@@ -56,7 +58,7 @@ export default {
         getData() {
             this.$api
                 .post(POST_TOP_100_DATA, {
-                    data_user_id: localStorage.getItem("data_user_id"),
+                    data_user_id: localStorage.getItem('data_user_id'),
                     data_set_id: this.$store.state.current_set_id
                 })
                 .then(res => {

@@ -1,41 +1,31 @@
 <template>
-    <div class="report-dialog" v-show="this.$store.state.viewDataDialog">
+    <div class="data-view" v-show="this.$store.state.viewDataDialog">
         <!-- 数据集数据展示 -->
         <el-dialog
             title="查看数据"
             class="dataView"
+            width="1000px"
             :visible.sync="this.$store.state.viewDataDialog"
-            width="70%"
             :before-close="handleClose"
         >
-            <!-- <el-table
-                class="data-table"
-                border
-                stripe
-                style="width: 100%"
-                :data="tableData"
-            >
-                <el-table-column
-                    v-for="(item, key, index) in tableData[0]"
-                    :key="index"
-                    :label="key"
-                    :prop="key"
-                ></el-table-column>
-            </el-table> -->
-            <el-table
-                :data="tableData"
-                border
-                height="400"
-                :default-sort="{ prop: 'record_id', order: 'ascending' }"
-                style="width: 100%"
-            >
+            <div class="tab-button-line">
+                <el-button
+                    v-for="(item, index) in this.$store.state.currentDialog
+                        .nodeIndex"
+                    :key="item"
+                    :type="index === postNum ? 'primary' : ''"
+                    @click="getReport(index)"
+                >
+                    {{ item }}
+                </el-button>
+            </div>
+            <el-table :data="tableData" border height="400">
                 <el-table-column
                     :key="value.record_id"
                     sortable
-                    v-for="(value, key) in tableData[0]"
+                    v-for="(value, key) in tableData[0] || []"
                     :prop="key"
                     :label="key"
-                    width="180"
                 ></el-table-column>
             </el-table>
         </el-dialog>
@@ -46,6 +36,7 @@ import { GET_RESULT_REPORT } from '../assets/url.js';
 export default {
     data() {
         return {
+            postNum: 0,
             label_list_duofen: [
                 'category',
                 'f1-score',
@@ -53,16 +44,7 @@ export default {
                 'recall',
                 'total'
             ],
-            arr1: [
-                [12, 0, 0],
-                [0, 10, 1],
-                [0, 0, 7]
-            ],
-            arr2: [
-                [1, 0.4, 0.6],
-                [0, 0.9091, 0.0901],
-                [0, 0, 1]
-            ],
+            tabList: this.$store.state.currentDialog.nodeIndex,
             LabelList: ['setosa', 'versicolor', 'virginica'],
             titleList: [
                 '聚类模型评估分析报告',
@@ -83,7 +65,7 @@ export default {
                 '#1677FF'
             ],
             echartsData: [],
-            tableData: [], // 列表
+            tableData: [{}], // 列表
             duofenleiData: [],
             rocData: {},
             AUC: '',
@@ -99,38 +81,38 @@ export default {
     watch: {
         dialogVisible2() {
             this.getReport();
+            this.postNum = 0;
         }
     },
     methods: {
+        // 改变当前数据类型 根据nodeIndex 判断
         handleClose() {
             this.$store.commit('handleNode', {
                 nodeTpye: 'viewDataDialog',
                 status: false
             });
         },
-        getReport() {
+        getReport(nodeIndexNum) {
+            this.tableData = [];
+            this.postNum = nodeIndexNum || 0;
+            // 过滤拆分的参数
+            let nodeIndex = this.$store.state.currentDialog.nodeIndex;
+            let indexParam = nodeIndex[this.postNum];
+            if (this.$store.state.currentDialog.nodeName === '拆分') {
+                // 拆分节点后台保存文件名有问题需要格式化
+                indexParam = indexParam.split('_')[0];
+            }
             this.$api
                 .get(GET_RESULT_REPORT, {
-                    run_uuid: 'ffd41ca53cea4a2aae34a6c1114d4bb0',
-                    index: this.$store.state.currentDialog.nodeIndex // 列表
+                    run_uuid: this.$store.state.currentDialog.run_uuid,
+                    index: indexParam // 列表
                 })
                 .then(res => {
-                    this.tableData =
-                        res.data[this.$store.state.currentDialog.nodeIndex];
-                    // let str = this.$store.state.currentDialog.nodeIndex;
-                    // if (res.data.code !== 200) {
-                    //     return;
-                    // }
-                    // this.tableData = [];
-                    // for (let i = 0; i < res.data[str]['f1'].length; i++) {
-                    //     this.tableData.push({});
-                    // }
-                    // for (let key in res.data[str]) {
-                    //     for (let k = 0; k < res.data[str][key].length; k++) {
-                    //         this.tableData[k][key] = res.data[str][key][k];
-                    //     }
-                    // }
-                    console.log(this.tableData);
+                    if (res.data.message === '请先运行此节点') {
+                        this.tableData = [];
+                        return;
+                    }
+                    this.tableData = res.data[indexParam];
                 });
         }
     },
@@ -138,221 +120,53 @@ export default {
 };
 </script>
 <style lang="scss">
-.report-dialog {
-    /deep/ .el-table__empty-block {
-        background: #3a3d4a;
-    }
-    .matrix-box {
-        margin-top: 50px;
-        margin-left: 80px;
-        border-left: 1px solid #eee;
-        border-top: 1px solid #eee;
-        box-sizing: border-box;
-        position: relative;
-        .pos-span-1 {
-            position: absolute;
-            left: -80px;
-            top: 0px;
-            transform: rotateZ(-90deg);
-            display: inline-block;
-            width: 60px;
-            text-align: center;
-        }
-        .pos-span-2 {
-            position: absolute;
-            bottom: -55px;
-            left: 136px;
-            display: inline-block;
-            width: 60px;
-            text-align: center;
-        }
-        .matrix-line {
-            display: flex;
-            background: rgba(196, 222, 255, 1);
-            .matrix-td {
-                flex: 1;
-                width: 100px;
-                height: 100px;
-                text-align: center;
-                border-right: 1px solid #eee;
-                border-bottom: 1px solid #eee;
-                box-sizing: border-box;
-                line-height: 100px;
-                background: cornflowerblue;
-                opacity: 1;
-                color: #333;
-            }
-        }
-        .matrix-tool-x {
-            position: absolute;
-            width: 300px;
-            bottom: -30px;
-            left: 0;
-            i {
-                width: 1px;
-                height: 6px;
-                background: #fff;
-                display: block;
-                position: absolute;
-                left: 50px;
-                top: -17px;
-            }
-            .matrix-tool-item {
-                width: 100px;
-                text-align: center;
-                display: inline-block;
-                position: relative;
-            }
-        }
-        .matrix-tool-y {
-            position: absolute;
-            width: 100px;
-            bottom: 0;
-            left: -20px;
-            i {
-                width: 6px;
-                height: 1px;
-                background: #fff;
-                display: block;
-                position: absolute;
-                left: 19px;
-                top: 50px;
-            }
-            .matrix-tool-item {
-                width: 100px;
-                height: 100px;
-                text-align: right;
-                display: block;
-                position: relative;
-                line-height: 100px;
-                span {
-                    position: absolute;
-                    left: -90px;
-                    width: 100px;
-                    text-align: right;
-                }
-            }
-        }
-    }
-    .chart-box {
-        width: 100%;
-        height: 360px;
-        padding-top: 10px;
-        .chart-left {
-            width: 22%;
-            float: left;
-            padding-right: 10px;
-            box-sizing: border-box;
-            .chart-item {
-                width: 100%;
-                height: 90px;
-                position: relative;
-                margin-bottom: 2px;
-                span {
-                    position: absolute;
-                    top: 2px;
-                    left: 6px;
-                    background-color: #4c4f5f;
-                    line-height: 24px;
-                    font-size: 12px;
-                    padding: 0 10px;
-                }
-                .active {
-                    background-color: #3d7fff;
-                    color: #fff;
-                }
-                img {
-                    width: 100%;
-                    height: 100%;
-                    display: block;
-                }
-            }
-        }
-        .chart-right {
-            width: 78%;
-            float: left;
-            height: 360px;
-            background: #3a3d4a;
-        }
-    }
-    .el-dialog {
-        width: 800px !important;
-    }
-    .el-button--primary {
-        background-color: #3d7fff;
-        border: 1px solid #3d7fff;
-        border-right: 1px solid #494c54 !important;
-        border-left: 1px solid #494c54 !important;
-    }
-    .el-button-group > .el-button {
-        width: 100px;
-    }
-    .el-button--default {
-        background-color: #2a2d36;
-        border: 1px solid #494c54;
-        color: #fff;
-    }
-    .data-table {
-        margin-top: 10px;
-        border-top: 1px solid #494c54 !important;
-        border-left: 1px solid #494c54;
-        border-bottom: none;
-    }
-    .el-table--border::after,
-    .el-table--group::after,
-    .el-table::before {
-        background-color: #494c54;
-    }
-    .el-dialog,
-    .el-pager li {
-        background: #2a2d36;
-    }
-    .el-dialog__title {
-        color: #fff;
-    }
-    .el-dialog__header {
-        border-bottom: 1px solid #3a404c;
-    }
-    .el-dialog__body {
-        color: #fff;
-    }
-    .el-table tr {
-        background: #2a2d36;
-        border-right: 1px solid #494c54;
-        color: #f5f5f5;
-    }
-    .el-table--enable-row-hover .el-table__body tr:hover > td {
-        background: #2a2d36;
-    }
-    .el-table td,
-    .el-table th.is-leaf {
-        border-right: 1px solid #494c54;
-        border-bottom: 1px solid #4f4c4c;
-    }
-    .el-table__row:last-child td {
-        border-bottom: 1px solid #4f4c4c;
-    }
-    .el-table th,
-    .el-table--striped .el-table__body tr.el-table__row--striped td {
-        background: #3a3d4a;
-    }
-    .report-table {
-        width: 100%;
-        border-collapse: collapse;
-        border-bottom: 1px solid #6c6c6c;
-        margin: 10px auto;
-        tr {
-            td {
-                line-height: 36px;
-                background: #30333d;
-                padding-left: 10px;
-                border-bottom: 1px solid #4f4c4c !important;
-            }
-            td:first-child {
-                width: 40%;
-                background: #3a3d4a;
-            }
-        }
-    }
+.tab-button-line {
+    padding-bottom: 20px;
+}
+.data-view .el-dialog {
+    background: #2a2d36 !important;
+}
+.data-view .el-dialog__title {
+    color: #ddd;
+}
+.data-view .el-table__empty-block {
+    background: #2a2d36 !important;
+}
+.data-view .el-table--border {
+    border: 1px solid #3a404c;
+}
+.data-view .el-table--border::after,
+.data-view .el-table--group::after,
+.data-view .el-table::before {
+    background-color: #3a404c;
+}
+.data-view .el-table th,
+.data-view .el-table tr {
+    background-color: #2a2d36 !important;
+    cursor: pointer;
+}
+.data-view .el-table__row:hover td {
+    background-color: #4a4d57 !important;
+}
+.data-view .el-table--striped .el-table__body tr.el-table__row--striped td {
+    background-color: #2a2d36 !important;
+}
+.data-view .el-table--border td,
+.data-view .el-table--border th,
+.data-view
+    .el-table__body-wrapper
+    .el-table--border.is-scrolling-left
+    ~ .el-table__fixed {
+    border-right: 1px solid #3a404c;
+}
+.data-view .el-table td,
+.data-view .el-table th.is-leaf {
+    border-bottom: 1px solid #3a404c;
+}
+.data-view ::-webkit-scrollbar {
+    background-color: #3a404c;
+}
+.data-view ::-webkit-scrollbar-thumb {
+    background-color: #ccc;
 }
 </style>
