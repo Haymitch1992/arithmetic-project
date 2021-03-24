@@ -2,54 +2,36 @@
     <div class="bg">
         <div class="online-box modelManagement">
             <div class="inp-line">
-                <!-- <el-dropdown>
-                    <el-button size="small">
-                        名称<i class="el-icon-arrow-down el-icon--right"></i>
-                    </el-button>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>名称1</el-dropdown-item>
-                        <el-dropdown-item>名称2</el-dropdown-item>
-                        <el-dropdown-item>名称3</el-dropdown-item>
-                        <el-dropdown-item>名称4</el-dropdown-item>
-                        <el-dropdown-item>名称5</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-                <el-input size="small" placeholder="请输入搜索内容" style="width: 300px"></el-input>
-                <el-button size="small">新增</el-button>
-                <el-button size="small">导入</el-button> -->
-                <!--                <span class="float-btn">-->
-                <!--                    <el-button size="small" type="primary">批量删除</el-button>-->
-                <!--                    <el-button size="small">批量导出</el-button>-->
-                <!--                    <el-button size="small">批量部署</el-button>-->
-                <!--                </span>-->
+                <el-input
+                    size="small"
+                    placeholder="请输入搜索内容"
+                    style="width: 300px"
+                ></el-input>
+                <el-button size="small">导入</el-button>
             </div>
             <el-table v-loading="loading" :data="datalist">
-                <!--                <el-table-column-->
-                <!--                    type="selection"-->
-                <!--                    width="55">-->
-                <!--                </el-table-column>-->
                 <el-table-column label="模型名称">
                     <template slot-scope="scope">
-                        <el-button type="text" size="small">
+                        <el-button
+                            type="text"
+                            size="small"
+                            @click="goModelDetail()"
+                        >
                             {{ scope.row.model_name }}
                         </el-button>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="frame_name"
-                    label="框架名称"
+                    prop="model_test_name"
+                    label="所属实验"
                 ></el-table-column>
                 <el-table-column
-                    prop="model_type"
-                    label="模型格式"
-                ></el-table-column>
-                <el-table-column
-                    prop="model_describe"
-                    label="模型描述"
+                    prop="model_versions_id"
+                    label="模型来源"
                 ></el-table-column>
                 <el-table-column prop="update_time" label="更新时间">
                     <template slot-scope="scope">
-                        <span>{{ scope.row.update_time | create_time }}</span>
+                        <span>{{ scope.row.create_time | create_time }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
@@ -73,6 +55,12 @@
                             删除
                         </el-button>
                         <el-button type="text" @click="deploy(scope.row)">
+                            部署
+                        </el-button>
+                        <el-button
+                            type="text"
+                            @click="openVersionDialog(scope.row)"
+                        >
                             部署
                         </el-button>
                     </template>
@@ -122,6 +110,57 @@
                     </el-button>
                 </div>
             </el-dialog>
+            <!-- 模型部署 -->
+            <el-dialog title="模型版本" :visible.sync="modelListVisible">
+                <el-table :data="modelList" style="width: 100%">
+                    <el-table-column
+                        prop="version"
+                        label="版本号"
+                        width="180"
+                    ></el-table-column>
+                    <el-table-column
+                        prop="status"
+                        label="模型状态"
+                        width="180"
+                    ></el-table-column>
+                    <el-table-column label="更新时间">
+                        <template slot-scope="scope">
+                            {{ scope.row.last_updated_time | create_time }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                        prop="description"
+                        label="描述信息"
+                    ></el-table-column>
+                    <el-table-column label="操作">
+                        <template slot-scope="scope">
+                            <el-button
+                                size="mini"
+                                @click="handleEdit(scope.$index, scope.row)"
+                            >
+                                部署
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination
+                    @size-change="handleSizeChange2"
+                    @current-change="handleCurrentChange2"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="currentSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="currentTotal"
+                ></el-pagination>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="modelListVisible = false">
+                        取 消
+                    </el-button>
+                    <el-button type="primary" @click="changeModel">
+                        确 定
+                    </el-button>
+                </div>
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -131,6 +170,7 @@ import {
     POST_CHANGE_MODEL,
     POST_DELETE_MODEL,
     POST_DEPLOY_MODEL,
+    GET_MODEL_VERSION,
     POST_MODEL_DATA
 } from '../../assets/url';
 import moment from 'moment';
@@ -159,6 +199,11 @@ export default {
     },
     data() {
         return {
+            modelList: [],
+            currentSize: 10,
+            currentPage: 1,
+            currentTotal: 0,
+            modelListVisible: false, // 模型列表
             loading: true,
             dialogFormVisible: false, // 修改模型信息弹框
             dialogFormVisible2: false, // 导出模型
@@ -182,6 +227,41 @@ export default {
         this.getModelData();
     },
     methods: {
+        goModelDetail() {
+            this.$router.push('/modelDetail');
+        },
+        handleSizeChange2(val) {
+            this.currentSize = val;
+            this.getVersions();
+            console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange2(val) {
+            this.currentPage = val;
+            this.getVersions();
+            console.log(`当前页: ${val}`);
+        },
+        getVersions() {
+            // GET_MODEL_VERSION
+            this.$api
+                .get(GET_MODEL_VERSION, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    model_only_name: 'u6-e104-n1608021172648',
+                    size: this.currentSize,
+                    page: this.currentPage
+                })
+                .then(res => {
+                    this.modelList = res.data.versions;
+                    this.currentTotal = res.data.count;
+                    console.log(res.data);
+                });
+        },
+        openVersionDialog() {
+            this.modelListVisible = true;
+            this.getVersions();
+        },
+        handleEdit() {},
+        // 查看部署列表
+        // 部署模型
         deploy(item) {
             this.$confirm('进行部署操作, 是否继续?', '提示', {
                 confirmButtonText: '确定',
@@ -313,6 +393,9 @@ export default {
     padding: 30px 30px 20px;
     box-sizing: border-box;
     box-shadow: 1px 2px 3px #e5e5e5;
+    /deep/ .el-dialog {
+        width: 800px;
+    }
     .w300 {
         width: 300px;
     }

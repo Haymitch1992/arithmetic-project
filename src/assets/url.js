@@ -97,6 +97,8 @@ export const POST_PERSONAL_INFO = '/api/userInfo/';
 
 // 模型信息获取
 export const POST_MODEL_DATA = '/api/modelData/';
+// 模型版本获取
+export const GET_MODEL_VERSION = '/api/versionsData/';
 // 模型删除
 export const POST_DELETE_MODEL = '/api/delModelData/';
 // 模型信息修改
