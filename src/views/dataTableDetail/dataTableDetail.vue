@@ -672,13 +672,14 @@ export default {
         if (this.$route.params.lableId) {
             this.data_set_id = this.$route.params.lableId;
             // 获取数据标注进度
+            this.getLable();
             this.getTaskProgress();
         } else {
             this.backList();
         }
-        this.getJsonData();
-        this.getLable();
-        this.getClassify();
+        // this.getJsonData();
+        // this.getLable();
+        // this.getClassify();
     },
     methods: {
         // 获取标注进度
@@ -710,6 +711,8 @@ export default {
                         setTimeout(() => {
                             this.progress_box = false;
                         }, 1000);
+
+                        this.getClassify();
                     }
                     // 判断一结束
                     console.log(res);
@@ -1102,6 +1105,9 @@ export default {
         },
         // 获取历史特征序列
         getJsonData(str) {
+            if (!str) {
+                return;
+            }
             let _this = this;
             this.$api
                 .get(

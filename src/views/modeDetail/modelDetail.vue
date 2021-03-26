@@ -146,12 +146,18 @@ export default {
             tableData: [],
             currentSize: 5,
             currentPage: 1,
-            currentTotal: 0
+            currentTotal: 0,
+            model_only_name: ''
         };
     },
     mounted() {
-        this.getModelInfo();
-        this.getVersions();
+        if (this.$route.params.model_only_name) {
+            this.model_only_name = this.$route.params.model_only_name;
+            this.getModelInfo();
+            this.getVersions();
+        } else {
+            this.backList();
+        }
     },
     methods: {
         handleSizeChange(val) {
@@ -169,7 +175,7 @@ export default {
             this.$api
                 .post(GET_MODEL_INFO, {
                     data_user_id: localStorage.getItem('data_user_id'),
-                    model_only_name: 'u6-e104-n1608021172648',
+                    model_only_name: this.model_only_name,
                     field_key: key,
                     value: this.model_info_data[key]
                 })
@@ -181,7 +187,7 @@ export default {
             this.$api
                 .get(GET_MODEL_INFO, {
                     data_user_id: localStorage.getItem('data_user_id'),
-                    model_only_name: 'u6-e104-n1608021172648'
+                    model_only_name: this.model_only_name
                 })
                 .then(res => {
                     this.model_info_data = res.data.model_info_data;
@@ -192,7 +198,7 @@ export default {
             this.$api
                 .get(GET_MODEL_VERSION, {
                     data_user_id: localStorage.getItem('data_user_id'),
-                    model_only_name: 'u6-e104-n1608021172648',
+                    model_only_name: this.model_only_name,
                     size: this.currentSize,
                     page: this.currentPage
                 })

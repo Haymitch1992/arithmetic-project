@@ -17,7 +17,7 @@
                         <el-button
                             type="text"
                             size="small"
-                            @click="goModelDetail()"
+                            @click="goModelDetail(scope.row)"
                         >
                             {{ scope.row.model_name }}
                         </el-button>
@@ -239,8 +239,11 @@ export default {
             this.dialogFormVisible3 = false;
             this.getModelData();
         },
-        goModelDetail() {
-            this.$router.push('/modelDetail');
+        goModelDetail(obj) {
+             this.$router.push({
+                name: 'modelDetail',
+                params: { model_only_name: obj.model_only_name }
+            });
         },
         handleSizeChange2(val) {
             this.currentSize = val;

@@ -6,7 +6,7 @@
         <!-- 模型格式 -->
         <!-- 框架名称 -->
         <!-- 模型类别 -->
-        <el-form ref="form" :model="form" label-width="80px">
+        <el-form ref="form" :model="form" label-width="120px">
             <el-form-item label="模型名称">
                 <el-input v-model="form.model_name"></el-input>
             </el-form-item>
