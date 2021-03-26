@@ -7,39 +7,61 @@
                     <el-col :span="6">
                         <div class="grid-content">
                             模型名称:
+                            <el-input
+                                v-model="model_info_data.model_name"
+                                @blur="postModelInfo('model_name')"
+                                class="line-input"
+                            ></el-input>
                         </div>
                     </el-col>
                     <el-col :span="6">
-                        <div class="grid-content">更新时间:2020-3-24</div>
+                        <div class="grid-content">
+                            创建时间:{{
+                                model_info_data.create_time | create_time
+                            }}
+                        </div>
                     </el-col>
-                </el-row>
-                <el-row :gutter="20">
                     <el-col :span="6">
-                        <div class="grid-content bg-purple">模型格式:null</div>
-                    </el-col>
-                    <el-col :span="6">
-                        <div class="grid-content bg-purple">框架名称:null</div>
+                        <div class="grid-content">
+                            更新时间:{{
+                                model_info_data.update_time | create_time
+                            }}
+                        </div>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="6">
                         <div class="grid-content bg-purple">
-                            生成方式:用户导入
+                            模型格式:{{ model_info_data.model_type }}
                         </div>
                     </el-col>
                     <el-col :span="6">
-                        <div class="grid-content bg-purple">所属实验：null</div>
+                        <div class="grid-content bg-purple">
+                            框架名称:{{ model_info_data.frame_name }}
+                        </div>
+                    </el-col>
+                    <el-col :span="6">
+                        <div class="grid-content bg-purple">
+                            模型导入方式:{{ model_info_data.model_versions_id }}
+                        </div>
+                    </el-col>
+                    <el-col :span="6">
+                        <div class="grid-content bg-purple">
+                            所属实验：{{ model_info_data.model_test_name }}
+                        </div>
                     </el-col>
                 </el-row>
+
                 <el-row :gutter="20">
                     <el-col :span="24">
                         <div class="grid-content bg-purple">
                             <h3>模型描述</h3>
                             <el-input
                                 type="textarea"
-                                :rows="5"
+                                :rows="3"
                                 placeholder="请输入内容"
-                                v-model="textarea"
+                                v-model="model_info_data.model_describe"
+                                @blur="postModelInfo('model_describe')"
                             ></el-input>
                         </div>
                     </el-col>
@@ -81,7 +103,7 @@
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
-                    :page-sizes="[10, 20, 30, 40]"
+                    :page-sizes="[5, 10, 15, 20]"
                     :page-size="currentSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="currentTotal"
@@ -92,7 +114,7 @@
 </template>
 
 <script>
-import { GET_MODEL_VERSION } from '../../assets/url';
+import { GET_MODEL_VERSION, GET_MODEL_INFO } from '../../assets/url';
 import moment from 'moment';
 
 export default {
@@ -119,14 +141,16 @@ export default {
     },
     data() {
         return {
+            model_info_data: {},
             textarea: '12313212',
             tableData: [],
-            currentSize: 10,
+            currentSize: 5,
             currentPage: 1,
             currentTotal: 0
         };
     },
     mounted() {
+        this.getModelInfo();
         this.getVersions();
     },
     methods: {
@@ -141,6 +165,28 @@ export default {
             console.log(`当前页: ${val}`);
         },
         handleDelete() {},
+        postModelInfo(key) {
+            this.$api
+                .post(GET_MODEL_INFO, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    model_only_name: 'u6-e104-n1608021172648',
+                    field_key: key,
+                    value: this.model_info_data[key]
+                })
+                .then(res => {
+                    // this.model_info_data = res.data.model_info_data;
+                });
+        },
+        getModelInfo() {
+            this.$api
+                .get(GET_MODEL_INFO, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    model_only_name: 'u6-e104-n1608021172648'
+                })
+                .then(res => {
+                    this.model_info_data = res.data.model_info_data;
+                });
+        },
         getVersions() {
             // GET_MODEL_VERSION
             this.$api
@@ -167,8 +213,12 @@ export default {
 .modelDetail {
     width: 1000px;
     .grid-content {
-        line-height: 48px;
-        font-size: 16px;
+        line-height: 40px;
+        font-size: 14px;
+    }
+    .line-input {
+        display: inline-block;
+        width: 150px;
     }
 }
 .online-box {

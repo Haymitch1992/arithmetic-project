@@ -95,10 +95,12 @@ export const GET_PERSONAL_INFO = '/api/userInfo/';
 // 个人信息的修改
 export const POST_PERSONAL_INFO = '/api/userInfo/';
 
-// 模型信息获取
+// 模型列表获取
 export const POST_MODEL_DATA = '/api/modelData/';
 // 模型版本获取
 export const GET_MODEL_VERSION = '/api/versionsData/';
+// 模型详情获取
+export const GET_MODEL_INFO = '/api/modelInfo/';
 // 模型删除
 export const POST_DELETE_MODEL = '/api/delModelData/';
 // 模型信息修改
@@ -164,6 +166,8 @@ export const POST_UPLOAD_FILE = '/api/upload/';
 
 // 文件分片上传合并指令
 export const POST_JOIN_FILE = '/api/joinFile/';
+// 模型分片上传合并指令
+export const POST_JOIN_MODEL = '/api/joinModel/';
 
 // 演示文件列表
 export const GET_FILE_LIST = '/api/AllVideoData/';

@@ -33,7 +33,7 @@ module.exports = {
         pathRewrite:{
           "^/debug": ''
         },
-        changeOrigin: true,//是否跨域
+        changeOrigin: true, // 是否跨域
         ws: false, // proxy websockets
       },
     },

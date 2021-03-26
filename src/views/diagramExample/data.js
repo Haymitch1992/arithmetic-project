@@ -888,55 +888,193 @@ export const nodeList2 = [
     {
         label: '特征选择',
         nodeSwitch: true,
-        nodeItem: [ {
-            name: '过滤式特征选择',
-            node_type: 'item-1',
-            in_ports: [0],
-            in_ports_text: ['输入'],
-            out_ports: [0],
-            out_ports_text: ['输出'],
-            iconClassName: 'el-icon-loading',
-            form: [
-                {
-                    "label": "字段设置",
-                    "data": [
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'select', // 输入框
-                            "label": "选择特征列",
-                            "placeholder": "选择要标注修改的表头",
-                            "value": "1",
-                            "tag": "select_characteristic"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "选择标签列",
-                            "value": "2",
-                            "tag": "select_tag"
-                        }
-                    ]
-                }, {
-                    "label": "参数设置",
-                    "data": [
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "树的个数",
-                            "value": "3",
-                            "tag": "near_number"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "单棵树的最大深度",
-                            "value": "1",
-                            "tag": "near_number"
-                        }
-                    ]
-                }
-            ]
-        }]
+        nodeItem: [
+            {
+                name: '过滤式特征选择',
+                component_id: 'select_feature',
+                is_generate_model: "false",
+                node_type: 'item-1',
+                in_ports: [0],
+                in_ports_text: ['输入'],
+                in_ports_name: ['dataset_path'],
+                out_ports: [0],
+                out_ports_text: ['输出'],
+                iconClassName: 'el-icon-loading',
+                out_ports_name: ['input_data_select'],
+                form: [
+                    {
+                        "label": "字段设置",
+                        "data": [
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'btn', // 输入框
+                                "label": "选择特征列",
+                                "placeholder": "选择特征列",
+                                "value": {
+                                    "node_params": {
+                                        "select_feature_columns": []
+                                    }
+                                },
+                                "tag": "select_feature_columns"
+                            },
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'btn', // 输入框
+                                "label": "选择标签列",
+                                "placeholder": "选择标签列",
+                                "value": {
+                                    "node_params": {
+                                        "select_target_columns": []
+                                    }
+                                },
+                                "tag": "select_target_columns"
+                            }
+                        ]
+                    }, {
+                        "label": "参数设置",
+                        "data": [
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'select-options', // 输入框
+                                "label": "特征选择方法",
+                                // 参数列表
+                                "options": [
+                                    {
+                                        "label": "方差法",
+                                        "value": "variance"
+                                    },
+                                    {
+                                        "label": "ANOVA法",
+                                        "value": "f_classif"
+                                    },
+                                    {
+                                        "label": "卡方检验法",
+                                        "value": "chi2"
+                                    },
+                                    {
+                                        "label": "互信息法回归",
+                                        "value": "mutual_info_regression"
+                                    },
+                                    {
+                                        "label": "互信息发分类",
+                                        "value": "mutual_info_classif"
+                                    }
+                                ],
+                                "value": {
+                                    "node_params": {
+                                        "select_method": 'variance'
+                                    }
+                                },
+                                "tag": "select_method"
+                            },
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'input-default', // 输入框
+                                "label": "保留topN特征",
+                                "value": {
+                                    "node_params": {
+                                        "remains": '10'
+                                    }
+                                },
+                                "tag": "remains"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                name: '嵌入式特征选择',
+                component_id: 'embedded_select_feature',
+                is_generate_model: "false",
+                node_type: 'item-1',
+                in_ports: [0],
+                in_ports_text: ['输入'],
+                in_ports_name: ['dataset_path'],
+                out_ports: [0],
+                out_ports_text: ['输出'],
+                iconClassName: 'el-icon-loading',
+                out_ports_name: ['input_data_embedded_select'],
+                form: [
+                    {
+                        "label": "字段设置",
+                        "data": [
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'btn', // 输入框
+                                "label": "选择特征列",
+                                "placeholder": "选择特征列",
+                                "value": {
+                                    "node_params": {
+                                        "select_feature_columns": []
+                                    }
+                                },
+                                "tag": "select_feature_columns"
+                            },
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'btn', // 输入框
+                                "label": "选择标签列",
+                                "placeholder": "选择标签列",
+                                "value": {
+                                    "node_params": {
+                                        "select_target_columns": []
+                                    }
+                                },
+                                "tag": "select_target_columns"
+                            }
+                        ]
+                    }, {
+                        "label": "参数设置",
+                        "data": [
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'select-options', // 输入框
+                                "label": "嵌入模型选择",
+                                // 参数列表
+                                "options": [
+                                    {
+                                        "label": "逻辑回归",
+                                        "value": "lr"
+                                    },
+                                    {
+                                        "label": "SVC",
+                                        "value": "svc"
+                                    },
+                                    {
+                                        "label": "GBDT",
+                                        "value": "gbdt"
+                                    },
+                                    {
+                                        "label": "决策树",
+                                        "value": "dt"
+                                    },
+                                    {
+                                        "label": "随机森林",
+                                        "value": "rf"
+                                    }
+                                ],
+                                "value": {
+                                    "node_params": {
+                                        "select_method": 'lr'
+                                    }
+                                },
+                                "tag": "select_method"
+                            },
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'input-default', // 输入框
+                                "label": "保留topN特征",
+                                "value": {
+                                    "node_params": {
+                                        "remains": '10'
+                                    }
+                                },
+                                "tag": "remains"
+                            }
+                        ]
+                    }
+                ]
+            }]
     },
     {
         label: '特征生成',
@@ -996,30 +1134,31 @@ export const nodeList2 = [
         nodeSwitch: true,
         nodeItem: [ {
             name: '异常检测模块',
+            component_id: 'detect_feature',
+            is_generate_model: "false",
             node_type: 'item-1',
             in_ports: [0],
             in_ports_text: ['输入'],
+            in_ports_name: ['dataset_path'],
             out_ports: [0],
             out_ports_text: ['输出'],
             iconClassName: 'el-icon-loading',
+            out_ports_name: ['input_data_detect'],
             form: [
                 {
                     "label": "字段设置",
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'select', // 输入框
+                            "type": 'btn', // 输入框
                             "label": "选择特征列",
-                            "placeholder": "选择要标注修改的表头",
-                            "value": "1",
-                            "tag": "select_characteristic"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "选择标签列",
-                            "value": "2",
-                            "tag": "select_tag"
+                            "placeholder": "选择特征列",
+                            "value": {
+                                "node_params": {
+                                    "select_feature_columns": []
+                                }
+                            },
+                            "tag": "select_feature_columns"
                         }
                     ]
                 }, {
@@ -1027,17 +1166,21 @@ export const nodeList2 = [
                     "data": [
                         {
                             // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "树的个数",
-                            "value": "3",
-                            "tag": "near_number"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "单棵树的最大深度",
-                            "value": "1",
-                            "tag": "near_number"
+                            "type": 'select-options', // 输入框
+                            "label": "选择检查方法",
+                            // 参数列表
+                            "options": [
+                                {
+                                    "label": "箱型图",
+                                    "value": "boxplot"
+                                }
+                            ],
+                            "value": {
+                                "node_params": {
+                                    "detect_method": 'boxplot'
+                                }
+                            },
+                            "tag": "detect_method"
                         }
                     ]
                 }

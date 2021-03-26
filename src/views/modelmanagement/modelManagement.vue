@@ -7,7 +7,9 @@
                     placeholder="请输入搜索内容"
                     style="width: 300px"
                 ></el-input>
-                <el-button size="small">导入</el-button>
+                <el-button size="small" @click="dialogFormVisible3 = true">
+                    导入
+                </el-button>
             </div>
             <el-table v-loading="loading" :data="datalist">
                 <el-table-column label="模型名称">
@@ -116,14 +118,12 @@
                     <el-table-column
                         prop="version"
                         label="版本号"
-                        width="180"
                     ></el-table-column>
                     <el-table-column
                         prop="status"
                         label="模型状态"
-                        width="180"
                     ></el-table-column>
-                    <el-table-column label="更新时间">
+                    <el-table-column label="更新时间" width="280">
                         <template slot-scope="scope">
                             {{ scope.row.last_updated_time | create_time }}
                         </template>
@@ -161,11 +161,15 @@
                     </el-button>
                 </div>
             </el-dialog>
+            <el-dialog title="模型上传" :visible.sync="dialogFormVisible3">
+                <modelUpload @updateFileList="updateFileList"></modelUpload>
+            </el-dialog>
         </div>
     </div>
 </template>
 
 <script>
+import modelUpload from '../../components/modelUpload';
 import {
     POST_CHANGE_MODEL,
     POST_DELETE_MODEL,
@@ -177,6 +181,9 @@ import moment from 'moment';
 
 export default {
     name: 'home',
+    components: {
+        modelUpload
+    },
     filters: {
         modelStatusZn(val) {
             switch (val) {
@@ -207,6 +214,7 @@ export default {
             loading: true,
             dialogFormVisible: false, // 修改模型信息弹框
             dialogFormVisible2: false, // 导出模型
+            dialogFormVisible3: false, // 模型上传
             currentPage4: 1,
             size: 10,
             page_count: 0,
@@ -227,6 +235,10 @@ export default {
         this.getModelData();
     },
     methods: {
+        updateFileList() {
+            this.dialogFormVisible3 = false;
+            this.getModelData();
+        },
         goModelDetail() {
             this.$router.push('/modelDetail');
         },
@@ -240,8 +252,9 @@ export default {
             this.getVersions();
             console.log(`当前页: ${val}`);
         },
-        getVersions() {
+        getVersions(obj) {
             // GET_MODEL_VERSION
+            console.log('***************', obj);
             this.$api
                 .get(GET_MODEL_VERSION, {
                     data_user_id: localStorage.getItem('data_user_id'),
@@ -255,9 +268,9 @@ export default {
                     console.log(res.data);
                 });
         },
-        openVersionDialog() {
+        openVersionDialog(obj) {
             this.modelListVisible = true;
-            this.getVersions();
+            this.getVersions(obj);
         },
         handleEdit() {},
         // 查看部署列表
