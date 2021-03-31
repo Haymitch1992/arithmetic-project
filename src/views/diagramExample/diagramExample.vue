@@ -430,6 +430,10 @@ export default {
         this.onkeydown = null; // 销毁事件
     },
     methods: {
+        inheritNodeParams() {
+            // 继承已选择的数据集
+            // 从已选择的节点继承 传递到 后续的节点上
+        },
         clearLink() {
             // 清空 因数据集变化关联的节点参数
             let nodeArr = this.yourJSONDataFillThere.nodes;

@@ -56,14 +56,14 @@
                         >
                             删除
                         </el-button>
-                        <el-button type="text" @click="deploy(scope.row)">
+                        <!-- <el-button type="text" @click="deploy(scope.row)">
                             部署
-                        </el-button>
+                        </el-button> -->
                         <el-button
                             type="text"
                             @click="openVersionDialog(scope.row)"
                         >
-                            部署
+                            模型版本
                         </el-button>
                     </template>
                 </el-table-column>
@@ -123,7 +123,7 @@
                         prop="status"
                         label="模型状态"
                     ></el-table-column>
-                    <el-table-column label="更新时间" width="280">
+                    <el-table-column label="更新时间" width="160">
                         <template slot-scope="scope">
                             {{ scope.row.last_updated_time | create_time }}
                         </template>
@@ -134,11 +134,14 @@
                     ></el-table-column>
                     <el-table-column label="操作">
                         <template slot-scope="scope">
+                            <el-button size="mini" @click="deploy(scope.row)">
+                                部署
+                            </el-button>
                             <el-button
                                 size="mini"
-                                @click="handleEdit(scope.$index, scope.row)"
+                                @click="exportModel(scope.row)"
                             >
-                                部署
+                                导出
                             </el-button>
                         </template>
                     </el-table-column>
@@ -175,6 +178,7 @@ import {
     POST_DELETE_MODEL,
     POST_DEPLOY_MODEL,
     GET_MODEL_VERSION,
+    POST_EXPORT_MODEL_FILE,
     POST_MODEL_DATA
 } from '../../assets/url';
 import moment from 'moment';
@@ -206,6 +210,7 @@ export default {
     },
     data() {
         return {
+            model_only_name: '',
             modelList: [],
             currentSize: 10,
             currentPage: 1,
@@ -240,7 +245,7 @@ export default {
             this.getModelData();
         },
         goModelDetail(obj) {
-             this.$router.push({
+            this.$router.push({
                 name: 'modelDetail',
                 params: { model_only_name: obj.model_only_name }
             });
@@ -255,13 +260,13 @@ export default {
             this.getVersions();
             console.log(`当前页: ${val}`);
         },
-        getVersions(obj) {
+        getVersions() {
             // GET_MODEL_VERSION
-            console.log('***************', obj);
+
             this.$api
                 .get(GET_MODEL_VERSION, {
                     data_user_id: localStorage.getItem('data_user_id'),
-                    model_only_name: 'u6-e104-n1608021172648',
+                    model_only_name: this.model_only_name,
                     size: this.currentSize,
                     page: this.currentPage
                 })
@@ -273,10 +278,25 @@ export default {
         },
         openVersionDialog(obj) {
             this.modelListVisible = true;
-            this.getVersions(obj);
+            this.model_only_name = obj.model_only_name;
+            this.getVersions();
         },
-        handleEdit() {},
         // 查看部署列表
+        exportModel(item) {
+            console.log(item);
+            this.$api
+                .get(POST_EXPORT_MODEL_FILE, {
+                    version: item.version,
+                    model_only_name: item.name
+                })
+                .then(res => {
+                    this.downLoadFile(res.data.zip_path);
+                });
+        },
+        downLoadFile(str) {
+            // 导出数据集
+            window.location.href = this.globalUlr + str;
+        },
         // 部署模型
         deploy(item) {
             this.$confirm('进行部署操作, 是否继续?', '提示', {

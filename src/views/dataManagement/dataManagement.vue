@@ -115,7 +115,7 @@
                                 <!-- <el-button type="text"  @click="getDataNumber(scope.row)"  v-if="scope.row.data_type===3">导出数据集</el-button> -->
                                 <!-- 2 不可标注 -->
                                 <el-button
-                                    v-if="scope.row.data_lable === 0"
+                                    v-if="scope.row.data_label === 0"
                                     type="text"
                                     size="small"
                                     @click="createdTip(scope.row.id)"
@@ -125,8 +125,8 @@
                                 </el-button>
                                 <el-button
                                     v-if="
-                                        scope.row.data_lable === 1 ||
-                                            scope.row.data_lable === 3
+                                        scope.row.data_label === 1 ||
+                                            scope.row.data_label === 3
                                     "
                                     type="text"
                                     @click="goDetail(scope.row.id)"
@@ -136,8 +136,8 @@
                                 </el-button>
                                 <el-button
                                     v-if="
-                                        scope.row.data_lable === 1 ||
-                                            scope.row.data_lable === 3
+                                        scope.row.data_label === 1 ||
+                                            scope.row.data_label === 3
                                     "
                                     type="text"
                                     @click="changedTip(scope.row.id)"
@@ -1023,7 +1023,7 @@ export default {
         },
         getFormValue(id) {
             this.$api.get(GET_OPTIONS + '?data_set_id=' + id).then(res => {
-                this.formData2.set_header_input = res.data.all_data_lable.set_header_input.split(
+                this.formData2.set_header_input = res.data.all_data_label.set_header_input.split(
                     ','
                 );
                 this.formData2.set_header_type =

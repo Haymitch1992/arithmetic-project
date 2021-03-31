@@ -16,6 +16,16 @@
                         删除节点
                     </span>
                     <span
+                        v-if="isEditAreaShow.can_add_out"
+                        @click="changePort('out_ports')"
+                    >
+                        <i
+                            class="el-icon-finished"
+                            style="margin-right:8px;"
+                        ></i>
+                        添加输出
+                    </span>
+                    <span
                         v-if="isEditAreaShow.nodeName === '数据集'"
                         @click="openData()"
                     >
@@ -79,7 +89,7 @@
                         查看分析报告
                     </span>
                     <!-- <span @click="changePort('in_ports')">添加输入</span> -->
-                    <!--                <span @click="changePort('out_ports')">添加输出</span>-->
+
                     <span v-if="isEditAreaShow.detail" @click="editNode">
                         编辑
                     </span>

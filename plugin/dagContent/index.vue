@@ -236,6 +236,27 @@ export default {
         },
 
         linkEnd(i, nth) {
+            // 进行判断 当前节点是否已经有连线 如果有则终止
+            let DataAll = this.DataAll.edges;
+            DataAll.forEach(item => {
+                // 当前节点的输出 不能存在两个连线
+                if (
+                    item.src_node_id ===
+                        this.DataAll.nodes[this.choice.index].id &&
+                    item.src_output_idx === this.choice.point
+                ) {
+                    this.$message.error('当前节点不能再连线');
+                    throw Error('当前节点不能再连线');
+                }
+                // 当前节点的输入 不能存在两个两线
+                if (
+                    item.dst_node_id === this.DataAll.nodes[i].id &&
+                    item.dst_input_idx === nth
+                ) {
+                    this.$message.error('当前节点不能再连线');
+                    throw Error('当前节点不能再连线');
+                }
+            });
             // 连线结束 i, 目标点序号 nth 出发点 choice.index 出发点序号 choice.point
             if (this.currentEvent === 'dragLink') {
                 let params = {
@@ -531,6 +552,7 @@ export default {
             const y = e.y - this.initPos.top;
             const form = this.DataAll.nodes[i].form || null;
             const nodeIndex = this.DataAll.nodes[i].out_ports_name || null;
+            const can_add_out = this.DataAll.nodes[i].can_add_out || null;
             this.is_edit_area = {
                 value: true,
                 x,
@@ -542,6 +564,7 @@ export default {
                 nodeIndex,
                 nodeType,
                 run_uuid,
+                can_add_out,
                 rightClickEvent
             };
             e.stopPropagation();
@@ -707,6 +730,17 @@ export default {
                     item[action]
                         ? item[action].push(item[action].length)
                         : (item[action] = ['0']);
+                }
+                // 额外
+                if (item.id === id) {
+                    // 赋值当前节点的输出名称
+                    let nodeLength = item['out_ports_text'].length - 1;
+                    item['out_ports_text'].push(
+                        item['out_ports_text'][nodeLength]
+                    );
+                    item['out_ports_name'].push(
+                        item['out_ports_name'][nodeLength]
+                    );
                 }
             });
             this.$emit('updateDAG', this.DataAll, 'changePort');

@@ -956,7 +956,7 @@ export const nodeList2 = [
                                         "value": "mutual_info_regression"
                                     },
                                     {
-                                        "label": "互信息发分类",
+                                        "label": "互信息法分类",
                                         "value": "mutual_info_classif"
                                     }
                                 ],
@@ -1077,59 +1077,6 @@ export const nodeList2 = [
             }]
     },
     {
-        label: '特征生成',
-        nodeSwitch: true,
-        nodeItem: [ {
-            name: '特征编码',
-            node_type: 'item-1',
-            in_ports: [0],
-            in_ports_text: ['输入'],
-            out_ports: [0],
-            out_ports_text: ['输出'],
-            iconClassName: 'el-icon-loading',
-            form: [
-                {
-                    "label": "字段设置",
-                    "data": [
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'select', // 输入框
-                            "label": "选择特征列",
-                            "placeholder": "选择要标注修改的表头",
-                            "value": "1",
-                            "tag": "select_characteristic"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "选择标签列",
-                            "value": "2",
-                            "tag": "select_tag"
-                        }
-                    ]
-                }, {
-                    "label": "参数设置",
-                    "data": [
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "树的个数",
-                            "value": "3",
-                            "tag": "near_number"
-                        },
-                        {
-                            // 类型判断 下拉框|输入框
-                            "type": 'input-default', // 输入框
-                            "label": "单棵树的最大深度",
-                            "value": "1",
-                            "tag": "near_number"
-                        }
-                    ]
-                }
-            ]
-        }]
-    },
-    {
         label: '异常检测',
         nodeSwitch: true,
         nodeItem: [ {
@@ -1155,10 +1102,10 @@ export const nodeList2 = [
                             "placeholder": "选择特征列",
                             "value": {
                                 "node_params": {
-                                    "select_feature_columns": []
+                                    "select_columns": []
                                 }
                             },
-                            "tag": "select_feature_columns"
+                            "tag": "select_columns"
                         }
                     ]
                 }, {
@@ -1194,6 +1141,7 @@ export const nodeList3 = [
         nodeSwitch: true,
         nodeItem: [{
             name: '分类-KNN',
+            can_add_out: true, // 能否添加输出
             component_id: 'cla_knn',
             node_type: 'item-2',
             iconClassName: 'el-icon-loading',
@@ -1252,6 +1200,7 @@ export const nodeList3 = [
             ]
         }, {
             name: '逻辑回归',
+            can_add_out: true, // 能否添加输出
             component_id: 'cla_lr',
             node_type: 'item-2',
             iconClassName: 'el-icon-loading',
@@ -1335,6 +1284,7 @@ export const nodeList3 = [
             ]
         }, {
             name: '分类-支持向量机',
+            can_add_out: true, // 能否添加输出
             component_id: 'cla_svc',
             node_type: 'item-2',
             iconClassName: 'el-icon-loading',
@@ -1423,6 +1373,7 @@ export const nodeList3 = [
             ]
         }, {
             name: '分类-随机森林',
+            can_add_out: true, // 能否添加输出
             component_id: 'cla_rf',
             node_type: 'item-2',
             in_ports: [0],
@@ -1509,6 +1460,7 @@ export const nodeList3 = [
         nodeSwitch: true,
         nodeItem: [{
             name: '回归-KNN',
+            can_add_out: true, // 能否添加输出
             component_id: 'reg_knn',
             node_type: 'item-2',
             iconClassName: 'el-icon-loading',
@@ -1568,6 +1520,7 @@ export const nodeList3 = [
         }, {
             name: '回归-支持向量机',
             component_id: 'reg_svr',
+            can_add_out: true, // 能否添加输出
             node_type: 'item-2',
             iconClassName: 'el-icon-loading',
             in_ports: [0],
@@ -1656,6 +1609,7 @@ export const nodeList3 = [
         }, {
             name: '回归-随机森林',
             component_id: 'reg_rf',
+            can_add_out: true, // 能否添加输出
             node_type: 'item-2',
             is_generate_model: "true",
             in_ports: [0],
@@ -1742,6 +1696,7 @@ export const nodeList3 = [
         nodeSwitch: true,
         nodeItem: [{
             name: 'kMeans',
+            can_add_out: true, // 能否添加输出
             component_id: 'kmeans',
             node_type: 'item-2',
             iconClassName: 'el-icon-loading',
@@ -1791,6 +1746,7 @@ export const nodeList3 = [
         {
             name: 'DBSCAN',
             component_id: 'dbscan',
+            can_add_out: true, // 能否添加输出
             node_type: 'item-2',
             iconClassName: 'el-icon-loading',
             in_ports: [0],
