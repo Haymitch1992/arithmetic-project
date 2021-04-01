@@ -56,6 +56,8 @@ export const CREATE_PROJECT = '/api/new_project/';
 export const GET_ALL_PROJECT = '/api/all_project/';
 // 删除项目
 export const DELETE_PROJECT = '/api/delProject/';
+// 日志上传及查看
+export const OPERATION_LOG = '/api/testLog/';
 
 // 创建实验
 export const CREATE_TEST = '/api/createTest/';

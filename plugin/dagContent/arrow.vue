@@ -1,31 +1,60 @@
 <!--  剪头渲染组件  -->
 <template>
-  <g v-if="this.DataAll">
-    <path
-    @mouseover="pathHover"
-    @mouseout="pathOut"
-    :class="(isHover || r_click_menu) ? 'connector-hl' : each.type && each.type == 'active' ? 'connector-active' : each.type && each.type == 'success' ? 'connector' : 'defaultArrow'"
-    :d="computedLink()"
-    :style="each.style"
-    @contextmenu="r_click($event)"
-    ></path>
-    <text ref="edgeText" v-if="each.edgesText" :style="computedText()">{{each.edgesText}}</text>
-    <polyline class="only-watch-el" :points="computedArrow()"
-    style="stroke:#006600;"/>
-    <circle class="only-watch-el" :cx="computedCx()" :cy="computedCy()" r="5"
-      style="stroke:#006600;
+    <g v-if="this.DataAll">
+        <path
+            @mouseover="pathHover"
+            @mouseout="pathOut"
+            :class="
+                isHover || r_click_menu
+                    ? 'connector-hl'
+                    : each.type && each.type == 'active'
+                    ? 'connector-active'
+                    : each.type && each.type == 'success'
+                    ? 'connector'
+                    : 'defaultArrow'
+            "
+            :d="computedLink()"
+            :style="each.style"
+            @contextmenu="r_click($event)"
+        ></path>
+        <text ref="edgeText" v-if="each.edgesText" :style="computedText()">
+            {{ each.edgesText }}
+        </text>
+        <polyline
+            class="only-watch-el"
+            :points="computedArrow()"
+            style="stroke:#006600;"
+        />
+        <circle
+            class="only-watch-el"
+            :cx="computedCx()"
+            :cy="computedCy()"
+            r="5"
+            style="stroke:#006600;
       stroke-width: 2;
-      fill:#FFFFFF"/>
-      <g v-if="r_click_menu">
-        <foreignObject width="100%" height="100%" style="position: relative" @click="click_menu_cover($event)">
-          <body xmlns="http://www.w3.org/1999/xhtml" :style="menu_style">
-              <div class="menu_contain">
-                <span @click="delEdges">删除</span>
-              </div>
-          </body>
-        </foreignObject>
-      </g>
-  </g>
+      fill:#FFFFFF"
+        />
+        <g v-if="r_click_menu">
+            <foreignObject
+                width="100%"
+                height="100%"
+                style="position: relative"
+                @click="click_menu_cover($event)"
+            >
+                <body xmlns="http://www.w3.org/1999/xhtml" :style="menu_style">
+                    <div class="menu_contain">
+                        <span @click="delEdges">
+                            <i
+                                class="el-icon-delete"
+                                style="margin-right:8px;"
+                            ></i>
+                            删除连线
+                        </span>
+                    </div>
+                </body>
+            </foreignObject>
+        </g>
+    </g>
 </template>
 <script>
 export default {
@@ -314,18 +343,21 @@ export default {
     cursor: pointer;
 }
 .menu_contain {
+    background: #ffffff;
+    color: #fff;
     width: 150px;
     border: 1px solid rgba(1, 1, 1, 0.3);
-    background: #ffffff;
+    background: #2a2d36;
     border-radius: 5px;
     padding: 3px;
 }
 .meun_contain span {
     width: 100%;
-    display: inline-block;
-}
-.menu_contain span:hover {
-    background-color: rgba(40, 157, 233, 0.3);
-    cursor: none;
+    display: block;
+    line-height: 30px;
+    padding-left: 10px;
+    box-sizing: border-box;
+    font-size: 12px;
+    color: #fff;
 }
 </style>

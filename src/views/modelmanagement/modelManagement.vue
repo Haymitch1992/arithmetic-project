@@ -40,30 +40,15 @@
                     <template slot-scope="scope">
                         <el-button
                             type="text"
-                            @click="
-                                editModel(
-                                    scope.row.id,
-                                    scope.row.model_name,
-                                    scope.row.model_describe
-                                )
-                            "
+                            @click="openVersionDialog(scope.row)"
                         >
-                            修改
+                            模型版本
                         </el-button>
                         <el-button
                             type="text"
                             @click="deleteModel(scope.row.id)"
                         >
                             删除
-                        </el-button>
-                        <!-- <el-button type="text" @click="deploy(scope.row)">
-                            部署
-                        </el-button> -->
-                        <el-button
-                            type="text"
-                            @click="openVersionDialog(scope.row)"
-                        >
-                            模型版本
                         </el-button>
                     </template>
                 </el-table-column>
@@ -80,38 +65,6 @@
                     :total="page_count"
                 ></el-pagination>
             </div>
-            <!-- 修改模型 -->
-            <el-dialog title="修改此模型信息" :visible.sync="dialogFormVisible">
-                <el-form :model="form" label-width="120px">
-                    <el-form-item label="当前模型名称">
-                        <span style="color:#1777FF;">{{ form.modelId }}</span>
-                    </el-form-item>
-                    <el-form-item label="模型名称">
-                        <el-input
-                            class="w300"
-                            size="small"
-                            v-model="form.newModelId"
-                            autocomplete="off"
-                        ></el-input>
-                    </el-form-item>
-                    <el-form-item label="模型描述">
-                        <el-input
-                            class="w300"
-                            size="small"
-                            v-model="form.modelDescribe"
-                            autocomplete="off"
-                        ></el-input>
-                    </el-form-item>
-                </el-form>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">
-                        取 消
-                    </el-button>
-                    <el-button type="primary" @click="changeModel">
-                        确 定
-                    </el-button>
-                </div>
-            </el-dialog>
             <!-- 模型部署 -->
             <el-dialog title="模型版本" :visible.sync="modelListVisible">
                 <el-table :data="modelList" style="width: 100%">
@@ -156,11 +109,8 @@
                     :total="currentTotal"
                 ></el-pagination>
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="modelListVisible = false">
-                        取 消
-                    </el-button>
-                    <el-button type="primary" @click="changeModel">
-                        确 定
+                    <el-button type="primary" @click="modelListVisible = false">
+                        确定
                     </el-button>
                 </div>
             </el-dialog>
@@ -329,23 +279,6 @@ export default {
                         type: 'info',
                         message: '已取消部署'
                     });
-                });
-        },
-        changeModel(delId) {
-            this.$api
-                .post(POST_CHANGE_MODEL, {
-                    data_user_id: localStorage.getItem('data_user_id'),
-                    data_model_id: this.form.modelId,
-                    data_model_name: this.form.newModelId,
-                    data_model_describe: this.form.modelDescribe
-                })
-                .then(res => {
-                    this.dialogFormVisible = false;
-                    this.$message({
-                        type: 'success',
-                        message: '修改成功!'
-                    });
-                    this.getModelData();
                 });
         },
         postDelete(delId) {

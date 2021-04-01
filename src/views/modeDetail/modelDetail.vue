@@ -6,7 +6,7 @@
                 <el-row :gutter="20">
                     <el-col :span="6">
                         <div class="grid-content">
-                            模型名称:
+                            <span>模型名称:</span>
                             <el-input
                                 v-model="model_info_data.model_name"
                                 @blur="postModelInfo('model_name')"
@@ -16,38 +16,40 @@
                     </el-col>
                     <el-col :span="6">
                         <div class="grid-content">
-                            创建时间:{{
-                                model_info_data.create_time | create_time
-                            }}
+                            <span>创建时间:</span>
+                            {{ model_info_data.create_time | create_time }}
                         </div>
                     </el-col>
                     <el-col :span="6">
                         <div class="grid-content">
-                            更新时间:{{
-                                model_info_data.update_time | create_time
-                            }}
+                            <span>更新时间:</span>
+                            {{ model_info_data.update_time | create_time }}
                         </div>
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
                     <el-col :span="6">
                         <div class="grid-content bg-purple">
-                            模型格式:{{ model_info_data.model_type }}
+                            <span>模型格式:</span>
+                            {{ model_info_data.model_type }}
                         </div>
                     </el-col>
                     <el-col :span="6">
                         <div class="grid-content bg-purple">
-                            框架名称:{{ model_info_data.frame_name }}
+                            <span>框架名称:</span>
+                            {{ model_info_data.frame_name }}
                         </div>
                     </el-col>
                     <el-col :span="6">
                         <div class="grid-content bg-purple">
-                            模型导入方式:{{ model_info_data.model_versions_id }}
+                            <span>导入方式:</span>
+                            {{ model_info_data.model_versions_id }}
                         </div>
                     </el-col>
                     <el-col :span="6">
                         <div class="grid-content bg-purple">
-                            所属实验：{{ model_info_data.model_test_name }}
+                            <span>所属实验:</span>
+                            {{ model_info_data.model_test_name }}
                         </div>
                     </el-col>
                 </el-row>
@@ -80,7 +82,7 @@
                     ></el-table-column>
                     <el-table-column label="更新时间">
                         <template slot-scope="scope">
-                            {{ scope.row.last_updated_time | create_time }}
+                            {{ scope.row.last_updated_time | create_time2 }}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -100,6 +102,7 @@
                     </el-table-column>
                 </el-table>
                 <el-pagination
+                    style="padding-top:20px;"
                     @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page="currentPage"
@@ -137,6 +140,10 @@ export default {
         create_time(val) {
             if (!val) return '';
             return moment(val).format('YYYY-MM-DD HH:mm:ss');
+        },
+        create_time2(val) {
+            if (!val) return '';
+            return moment(val * 1000).format('YYYY-MM-DD HH:mm:ss');
         }
     },
     data() {
@@ -221,6 +228,9 @@ export default {
     .grid-content {
         line-height: 40px;
         font-size: 14px;
+        span {
+            margin-right: 6px;
+        }
     }
     .line-input {
         display: inline-block;

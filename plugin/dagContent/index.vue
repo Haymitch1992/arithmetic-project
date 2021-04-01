@@ -66,6 +66,7 @@
             @nodesPersonalEvent="nodesPersonalEvent"
             @delNode="delNode"
             @changePort="changePort"
+            @operationLog="operationLog"
             @close_click_nodes="close_click_nodes"
         />
         <Control
@@ -117,6 +118,10 @@ export default {
         sessionStorage['svg_top'] = 0;
     },
     methods: {
+        operationLog(str) {
+            // 记录日志
+            this.$emit('operationLog', str);
+        },
         showRunStatus(obj, status) {
             // 显示或隐藏节点状态
             this.item = obj;
@@ -271,6 +276,32 @@ export default {
                 this.addEdge(params, that);
             }
             this.currentEvent = null;
+            console.log(this.DataAll.nodes[this.choice.index]);
+            this.operationLog(
+                `${this.DataAll.nodes[this.choice.index].name} 连接到 ${
+                    this.DataAll.nodes[i].name
+                }`
+            );
+            // 找到当前节点 this.DataAll.nodes[this.choice.index] 和 连接的节点 this.DataAll.nodes[i]
+            // 赋值特征列
+            let currentTag = this.DataAll.nodes[this.choice.index].form[0];
+            let targetTag = this.DataAll.nodes[i].form[0];
+            // 判断是否赋值
+            if (
+                currentTag.data[0].tag === targetTag.data[0].tag &&
+                targetTag.data[0].tag === 'select_feature_columns'
+            ) {
+                targetTag.data[0].value.node_params.select_feature_columns =
+                    currentTag.data[0].value.node_params.select_feature_columns;
+            }
+            if (
+                currentTag.data[1].tag === targetTag.data[1].tag &&
+                targetTag.data[1].tag === 'select_target_columns'
+            ) {
+                targetTag.data[1].value.node_params.select_target_columns =
+                    currentTag.data[1].value.node_params.select_target_columns;
+            }
+            //
         },
         /**
          *  svg画板缩放行为

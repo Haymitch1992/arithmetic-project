@@ -211,12 +211,17 @@ export default {
             };
         },
         delEdges() {
+            console.log(this.isEditAreaShow);
             let params = {
                 model_id: sessionStorage['newGraph'],
                 id: this.isEditAreaShow.id
             };
             this.$emit('delNode', params);
             this.$emit('close_click_nodes');
+            this.$emit(
+                'operationLog',
+                `删除节点 ${this.isEditAreaShow.nodeName}`
+            );
         },
         changePort(action) {
             this.$emit('changePort', action, this.isEditAreaShow.id);

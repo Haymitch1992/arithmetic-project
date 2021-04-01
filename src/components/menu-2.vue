@@ -45,20 +45,25 @@ export default {
             switch (num) {
                 case 99:
                     this.$store.commit('changeCount', 99);
+                    if (this.$route.path === '/plan') return;
                     this.$router.push('/plan');
                     break;
                 case 0:
                     this.$store.commit('changeCount', 0);
+                    console.log('**************************', this.$route.path);
+                    if (this.$route.path === '/diagramExample') return;
                     this.$router.push('/diagramExample');
                     break;
                 case 1:
                     // 修改模型页左侧的内容显示 为组件
                     this.$store.commit('changeCount', 1);
+                    if (this.$route.path === '/diagramExample') return;
                     this.$router.push('/diagramExample');
                     break;
                 case 2:
                     // 修改模型页左侧的内容显示 为数据
                     this.$store.commit('changeCount', 2);
+                    if (this.$route.path === '/diagramExample') return;
                     this.$router.push('/diagramExample');
                     break;
             }

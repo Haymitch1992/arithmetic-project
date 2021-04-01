@@ -12,8 +12,8 @@ module.exports = {
     proxyTable: {
       '/api': {//代理api
         // target:"http://47.95.214.123:8080",// 测试服务器
-        // target:"http://172.51.216.152:5001/",
-        target:"http://172.51.216.152:5001",// 徐昊的服务器
+        target:"http://172.51.216.152:5001/",
+        // target:"http://192.168.61.193:8000",// 徐昊的服务器
         pathRewrite:{
           "^/api": ''
         },

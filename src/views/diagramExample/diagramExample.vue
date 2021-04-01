@@ -32,6 +32,10 @@
                         <i class="iconfont iconzidonghua"></i>
                         自动调参
                     </li>
+                    <li @click="showTestLog = true">
+                        <i class="iconfont iconzidonghua"></i>
+                        操作日志
+                    </li>
                 </ul>
             </div>
             <div class="page-left" v-show="$store.state.count === 0">
@@ -199,6 +203,7 @@
                     @updateDAG="updateDAG"
                     @editNodeDetails="editNodeDetails"
                     @doSthPersonal="doSthPersonal"
+                    @operationLog="operationLog"
                 ></DAGBoard>
                 <!-- 用来模拟拖拽添加的元素 -->
                 <node-bus
@@ -213,6 +218,12 @@
                 :dialogTableVisible="dialogTableVisible"
                 @closeOptions="closeAutoMaticOptions"
             ></automaticOptions>
+            <!-- 操作日志的展示 -->
+            <testLog
+                v-if="showTestLog"
+                @CloseTestLog="CloseTestLog"
+                :data_test_id="data_test_id"
+            ></testLog>
         </div>
         <demonStation v-if="this.$store.state.demoStationStatus"></demonStation>
         <!--创建实验-->
@@ -284,6 +295,7 @@ import {
     POST_ADD_MODEL_DATA,
     POST_DEPLOY_MODEL_SAVE,
     POST_DEPLOY_MODEL,
+    OPERATION_LOG,
     GET_ALL_MODULE,
     POST_ALL_MODULE,
     ALL_DATA_LIST
@@ -302,6 +314,7 @@ import axios from 'axios';
 import logDialog from '../../components/logDialog';
 import analysisDialog from '../../components/analysisDialog';
 import viewDataDialog from '../../components/viewDataDialog';
+import testLog from '../../components/testLog';
 
 export default {
     components: {
@@ -317,6 +330,7 @@ export default {
         logDialog,
         analysisDialog,
         viewDataDialog,
+        testLog,
         searchBox
     },
     computed: {
@@ -333,6 +347,7 @@ export default {
     props: {},
     data() {
         return {
+            showTestLog: false,
             getAllTestStatus: false,
             searchNode: '',
             searchNodeList: [],
@@ -430,9 +445,13 @@ export default {
         this.onkeydown = null; // 销毁事件
     },
     methods: {
+        CloseTestLog() {
+            this.showTestLog = false;
+        },
         inheritNodeParams() {
             // 继承已选择的数据集
             // 从已选择的节点继承 传递到 后续的节点上
+            // 判断条件是从数据集从上往下去找
         },
         clearLink() {
             // 清空 因数据集变化关联的节点参数
@@ -533,6 +552,19 @@ export default {
             // 关闭
             this.showSelectDialog = false;
         },
+        // 操作日志
+        operationLog(str) {
+            this.$api
+                .post(OPERATION_LOG, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    data_test_id: this.data_test_id,
+                    message: str
+                })
+                .then(res => {
+                    console.log(res.data);
+                });
+        },
+
         // 获取数据集列表
         getDataList() {
             this.$api
@@ -1298,7 +1330,10 @@ export default {
                 });
                 this.dragBus = true;
             }
-            this.saveNode();
+            if (dragDes) {
+                this.operationLog(`新增节点 ${dragDes.name}`);
+                this.saveNode();
+            }
         },
         moveNodesBus(e) {
             // 移动模拟节点
