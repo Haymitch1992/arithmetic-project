@@ -111,6 +111,8 @@ export const POST_CHANGE_MODEL = '/api/alterModelData/';
 export const POST_ALL_DEPLOY_MODEL = '/api/allDeployModel/';
 // 导出模型
 export const POST_EXPORT_MODEL_FILE = '/api/exportFile/';
+// 删除模型版本
+export const DELETE_MODE_DATA = '/api/delModelData/';
 
 // 模型导出
 export const POST_EXPORT_MODEL = '/api/deriveDeployModel/';

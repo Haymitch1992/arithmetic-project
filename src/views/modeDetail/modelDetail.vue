@@ -69,7 +69,7 @@
                     </el-col>
                 </el-row>
                 <h3>版本信息</h3>
-                <el-table :data="tableData" style="width: 100%">
+                <el-table :data="tableData" style="width: 100%" border>
                     <el-table-column
                         prop="version"
                         label="版本号"
@@ -94,7 +94,7 @@
                             <el-button
                                 size="mini"
                                 type="danger"
-                                @click="handleDelete(scope.$index, scope.row)"
+                                @click="handleDelete(scope.row)"
                             >
                                 删除
                             </el-button>
@@ -117,7 +117,11 @@
 </template>
 
 <script>
-import { GET_MODEL_VERSION, GET_MODEL_INFO } from '../../assets/url';
+import {
+    GET_MODEL_VERSION,
+    GET_MODEL_INFO,
+    DELETE_MODE_DATA
+} from '../../assets/url';
 import moment from 'moment';
 
 export default {
@@ -177,7 +181,31 @@ export default {
             this.getVersions();
             console.log(`当前页: ${val}`);
         },
-        handleDelete() {},
+        handleDelete(obj) {
+            // 删除模型版本
+            this.$confirm('进行删除操作, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+                .then(() => {
+                    this.$api
+                        .get(DELETE_MODE_DATA, {
+                            model_only_name: this.model_only_name,
+                            version: obj.version
+                        })
+                        .then(res => {
+                            this.getVersions();
+                            // this.model_info_data = res.data.model_info_data;
+                        });
+                })
+                .catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消'
+                    });
+                });
+        },
         postModelInfo(key) {
             this.$api
                 .post(GET_MODEL_INFO, {

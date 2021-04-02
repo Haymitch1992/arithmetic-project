@@ -1,57 +1,64 @@
 <template>
     <div class="device-video">
-        <!-- 表单提交 -->
-        <!-- 模型名称 -->
-        <!-- 模型描述 -->
-        <!-- 模型格式 -->
-        <!-- 框架名称 -->
-        <!-- 模型类别 -->
-        <el-form ref="form" :model="form" label-width="120px">
-            <el-form-item label="模型名称">
-                <el-input v-model="form.model_name"></el-input>
-            </el-form-item>
-            <el-form-item label="模型描述">
-                <el-input
-                    type="textarea"
-                    v-model="form.model_describe"
-                ></el-input>
-            </el-form-item>
-            <el-form-item label="模型格式">
-                <el-input v-model="form.model_type"></el-input>
-            </el-form-item>
-            <el-form-item label="框架名称">
-                <el-input v-model="form.frame_name"></el-input>
-            </el-form-item>
-            <el-form-item label="模型类别">
-                <el-select
-                    v-model="form.model_category"
-                    placeholder="请选择模型类别"
-                >
-                    <el-option label="文本类" value="1"></el-option>
-                    <el-option label="图像、视频类" value="2"></el-option>
-                </el-select>
-            </el-form-item>
-        </el-form>
-        <!-- 上传 -->
-        <uploader
-            :options="options"
-            :fileStatusText="fileStatusText"
-            class="uploader-example"
-            :autoStart="false"
-            ref="uploader"
-            @file-added="onFileAdded"
-            @file-success="onFileSuccess"
-            style="width: 100%"
+        <el-dialog
+            title="模型上传"
+            :visible.sync="dialogFormVisible3"
+            :before-close="handleClose"
         >
-            <uploader-unsupport></uploader-unsupport>
-            <uploader-drop @click.native="changeUpload">
-                <span class="upload-info">
-                    可以将本地的视频资源上传至服务器
-                </span>
-                <uploader-btn class="upload-btn">上传</uploader-btn>
-            </uploader-drop>
-            <uploader-list v-if="panelShow"></uploader-list>
-        </uploader>
+            <el-form
+                ref="form"
+                :rules="rules"
+                :model="form"
+                label-width="120px"
+            >
+                <el-form-item label="模型名称" prop="model_name">
+                    <el-input v-model="form.model_name"></el-input>
+                </el-form-item>
+                <el-form-item label="模型描述" prop="model_describe">
+                    <el-input
+                        type="textarea"
+                        v-model="form.model_describe"
+                    ></el-input>
+                </el-form-item>
+                <el-form-item label="模型格式" prop="model_type">
+                    <el-input v-model="form.model_type"></el-input>
+                </el-form-item>
+                <el-form-item label="框架名称" prop="frame_name">
+                    <el-input v-model="form.frame_name"></el-input>
+                </el-form-item>
+                <el-form-item label="模型类别" prop="model_category">
+                    <el-select
+                        v-model="form.model_category"
+                        placeholder="请选择模型类别"
+                    >
+                        <el-option label="文本类" value="1"></el-option>
+                        <el-option label="图像、视频类" value="2"></el-option>
+                    </el-select>
+                </el-form-item>
+            </el-form>
+            <!-- 上传 -->
+            <div @click="submitForm('form')">
+                <uploader
+                    :options="options"
+                    :fileStatusText="fileStatusText"
+                    class="uploader-example"
+                    :autoStart="false"
+                    ref="uploader"
+                    @file-added="onFileAdded"
+                    @file-success="onFileSuccess"
+                    style="width: 100%"
+                >
+                    <uploader-unsupport></uploader-unsupport>
+                    <uploader-drop @click.native="changeUpload">
+                        <span class="upload-info">
+                            可以将本地的视频资源上传至服务器
+                        </span>
+                        <uploader-btn class="upload-btn">上传</uploader-btn>
+                    </uploader-drop>
+                    <uploader-list v-if="panelShow"></uploader-list>
+                </uploader>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -73,11 +80,49 @@ export default {
     },
     data() {
         return {
+            dialogFormVisible3: true,
+            rules: {
+                model_name: [
+                    {
+                        required: true,
+                        message: '请输入模型名称',
+                        trigger: 'blur'
+                    }
+                ],
+                model_describe: [
+                    {
+                        required: true,
+                        message: '请输入模型描述',
+                        trigger: 'blur'
+                    }
+                ],
+                model_type: [
+                    {
+                        required: true,
+                        message: '请输入模型格式',
+                        trigger: 'blur'
+                    }
+                ],
+                frame_name: [
+                    {
+                        required: true,
+                        message: '请输入框架名称',
+                        trigger: 'blur'
+                    }
+                ],
+                model_category: [
+                    {
+                        required: true,
+                        message: '请选择活动名称',
+                        trigger: 'blur'
+                    }
+                ]
+            },
             form: {
-                model_name: '模型名称', // 模型名称
-                model_describe: '模型描述', // 模型描述
-                model_type: '.kpl',
-                frame_name: '框架名称', // 框架名称
+                model_name: '', // 模型名称
+                model_describe: '', // 模型描述
+                model_type: '',
+                frame_name: '', // 框架名称
                 model_category: '1'
             },
             fileStatusText: {
@@ -124,6 +169,9 @@ export default {
     },
     mounted() {},
     methods: {
+        handleClose() {
+            this.$emit('closeDialog');
+        },
         onSubmit() {
             console.log('submit!');
         },
@@ -153,8 +201,15 @@ export default {
             console.log(statusMap[status].text);
         },
         onFileAdded(file) {
-            this.panelShow = true;
-            this.computeMD5(file);
+            this.$refs['form'].validate(valid => {
+                if (valid) {
+                    this.panelShow = true;
+                    this.computeMD5(file);
+                } else {
+                    this.$message.error('请正确填写表单信息');
+                    return false;
+                }
+            });
         },
         computeMD5(file) {
             let fileReader = new FileReader();
@@ -296,11 +351,6 @@ export default {
         margin-right: 14px;
     }
     .uploader-list {
-        position: absolute;
-        top: 65px;
-        left: 0;
-        width: 100%;
-        z-index: 100;
         background: #eee;
     }
     .uploader-drop {

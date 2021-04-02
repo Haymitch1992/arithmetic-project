@@ -67,7 +67,7 @@
             </div>
             <!-- 模型部署 -->
             <el-dialog title="模型版本" :visible.sync="modelListVisible">
-                <el-table :data="modelList" style="width: 100%">
+                <el-table :data="modelList" style="width: 100%" border>
                     <el-table-column
                         prop="version"
                         label="版本号"
@@ -85,7 +85,7 @@
                         prop="description"
                         label="描述信息"
                     ></el-table-column>
-                    <el-table-column label="操作">
+                    <el-table-column label="操作" width="200">
                         <template slot-scope="scope">
                             <el-button size="mini" @click="deploy(scope.row)">
                                 部署
@@ -100,6 +100,7 @@
                     </el-table-column>
                 </el-table>
                 <el-pagination
+                    style="margin-top:20px;"
                     @size-change="handleSizeChange2"
                     @current-change="handleCurrentChange2"
                     :current-page="currentPage"
@@ -114,9 +115,12 @@
                     </el-button>
                 </div>
             </el-dialog>
-            <el-dialog title="模型上传" :visible.sync="dialogFormVisible3">
-                <modelUpload @updateFileList="updateFileList"></modelUpload>
-            </el-dialog>
+
+            <modelUpload
+                @updateFileList="updateFileList"
+                @closeDialog="dialogFormVisible3 = false"
+                v-if="dialogFormVisible3"
+            ></modelUpload>
         </div>
     </div>
 </template>
