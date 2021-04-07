@@ -21,10 +21,24 @@
                     ></el-input>
                 </el-form-item>
                 <el-form-item label="模型格式" prop="model_type">
-                    <el-input v-model="form.model_type"></el-input>
+                    <el-select
+                        v-model="form.model_type"
+                        placeholder="请选择模型类别"
+                    >
+                        <el-option
+                            label="scikit-learn  Pkl"
+                            value=".pkl"
+                        ></el-option>
+                        <el-option label="Keras H5" value=".h5"></el-option>
+                        <el-option label="Pytorch Pt" value=".pt"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="框架名称" prop="frame_name">
-                    <el-input v-model="form.frame_name"></el-input>
+                    <el-input
+                        v-model="form.frame_name"
+                        style="width:218px;"
+                        :disabled="true"
+                    ></el-input>
                 </el-form-item>
                 <el-form-item label="模型类别" prop="model_category">
                     <el-select
@@ -53,7 +67,9 @@
                         <span class="upload-info">
                             可以将本地的视频资源上传至服务器
                         </span>
-                        <uploader-btn class="upload-btn">上传</uploader-btn>
+                        <uploader-btn class="upload-btn" :attrs="attrs">
+                            上传
+                        </uploader-btn>
                     </uploader-drop>
                     <uploader-list v-if="panelShow"></uploader-list>
                 </uploader>
@@ -76,6 +92,28 @@ export default {
         // Uploader实例
         uploader() {
             return this.$refs.uploader.uploader;
+        }
+    },
+    watch: {
+        form: {
+            handler(newName, oldName) {
+                switch (newName.model_type) {
+                    case '.pkl':
+                        this.form.frame_name = '— —';
+                        break;
+                    case '.h5':
+                        this.form.frame_name = 'Keras';
+                        break;
+                    case '.pt':
+                        this.form.frame_name = 'Pytorch';
+                        break;
+                    default:
+                        this.form.frame_name = '';
+                }
+                console.log('obj.model_type changed');
+            },
+            immediate: true,
+            deep: true
         }
     },
     data() {
@@ -162,7 +200,10 @@ export default {
                     );
                 }
             },
-
+            attrs: {
+                // 接受的文件类型，形如['.png', '.jpg', '.jpeg', '.gif', '.bmp'...] 这里我封装了一下
+                accept: ['.zip']
+            },
             panelShow: false, // 选择文件后，展示上传panel
             activeName: 'first'
         };
@@ -314,6 +355,7 @@ export default {
                 form.append('frame_name', this.form.frame_name);
                 form.append('model_category', this.form.model_category);
                 this.$api.post(POST_JOIN_MODEL, form).then(res => {
+                    this.$message(res.data.mes);
                     this.$emit('updateFileList');
                 });
             } else {
