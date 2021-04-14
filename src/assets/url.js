@@ -105,6 +105,7 @@ export const GET_MODEL_VERSION = '/api/versionsData/';
 export const GET_MODEL_INFO = '/api/modelInfo/';
 // 模型删除
 export const POST_DELETE_MODEL = '/api/delModelData/';
+
 // 模型信息修改
 export const POST_CHANGE_MODEL = '/api/alterModelData/';
 // 已部署模型展示

@@ -9,12 +9,16 @@
                 tooltip-effect="dark"
                 style="width: 100%"
             >
-                <el-table-column label="服务ID/名称" align="center" width="120">
+                <el-table-column label="服务ID/名称" align="center">
                     <template slot-scope="scope">
                         <el-button
                             type="text"
                             @click="
-                                goDetail(scope.row.id, scope.row.model_run_uuid)
+                                goDetail(
+                                    scope.row.id,
+                                    scope.row.model_run_uuid,
+                                    scope.row
+                                )
                             "
                         >
                             {{ scope.row.model_name }}
@@ -22,21 +26,28 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                    prop="farme_name"
-                    label="框架名称"
-                    width="150"
+                    prop="version"
+                    label="版本号"
                 ></el-table-column>
                 <el-table-column
                     prop="model_type"
                     label="模型格式"
                 ></el-table-column>
+                <el-table-column prop="model_category" label="模型类型">
+                    <template slot-scope="scope">
+                        <span>
+                            {{ scope.row.model_category | categoryStatusZn }}
+                        </span>
+                    </template>
+                </el-table-column>
+
                 <el-table-column prop="model_status" label="模型状态">
                     <template slot-scope="scope">
                         <span
                             class="model-status"
-                            :class="'model-status-' + scope.row.model_status"
+                            :class="'model-status-' + scope.row.state"
                         ></span>
-                        {{ scope.row.model_status | modelStatusZn }}
+                        {{ scope.row.state | modelStatusZn }}
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -103,16 +114,24 @@ export default {
     filters: {
         modelStatusZn(val) {
             switch (val) {
-                case 1:
-                    return '未开始';
                 case 0:
-                    return '进行中';
+                    return '停止';
+                case 1:
+                    return '运行中';
                 case 2:
                     return '已完成';
                 case 3:
                     return '失败';
                 case 4:
                     return '已停止';
+            }
+        },
+        categoryStatusZn(val) {
+            switch (val) {
+                case 1:
+                    return '文本类';
+                case 2:
+                    return '图象类';
             }
         },
         create_time(val) {
@@ -175,7 +194,7 @@ export default {
         getList() {
             this.loading = true;
             this.$api
-                .post(POST_ALL_DEPLOY_MODEL, {
+                .get(POST_ALL_DEPLOY_MODEL, {
                     data_user_id: localStorage.getItem('data_user_id'),
                     data_model_keyword: 1,
                     size: this.pageSize,
@@ -184,7 +203,7 @@ export default {
                 .then(res => {
                     this.loading = false;
                     this.page_count = res.data.count;
-                    this.tableData = res.data.model_data;
+                    this.tableData = res.data.deploy_model_data;
                     console.log(res.data.model_data);
                 });
         },
@@ -192,11 +211,20 @@ export default {
             this.$store.commit('changeDeployId', mid);
             this.$router.push('/debug');
         },
-        goDetail(mid, uuid) {
+        goDetail(mid, uuid, obj) {
             // 存住当前ID
             this.$store.commit('changeDeployId', mid);
             this.$store.commit('saveRunUuid', uuid);
-            this.$router.push({ name: 'onlineDetail', params: { mid: mid } });
+            this.$router.push({
+                name: 'onlineDetail',
+                params: {
+                    modelObject: {
+                        version: obj.version,
+                        model_only_name: obj.model_only_name,
+                        mid: mid
+                    }
+                }
+            });
             // this.$router.push('/onlineDetail')
         },
         handleSelectionChange(val) {
@@ -242,10 +270,10 @@ export default {
         margin-right: 6px;
     }
     .model-status-0 {
-        background-color: #1677ff;
+        background-color: #dddddd;
     }
     .model-status-1 {
-        background-color: #dddddd;
+        background-color: #1677ff;
     }
     .model-status-2 {
         background-color: #52c41a;

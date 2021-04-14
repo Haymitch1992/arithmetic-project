@@ -2,25 +2,48 @@
     <div class="bg">
         <div class="online-box ">
             <div class="modelDetail">
-                <h3>基本信息</h3>
+                <h3>
+                    基本信息
+                    <el-button
+                        style="float:right;"
+                        type="text"
+                        v-if="!canEdit"
+                        @click="canEdit = true"
+                    >
+                        修改
+                    </el-button>
+                    <el-button
+                        type="text"
+                        style="float:right;"
+                        v-if="canEdit"
+                        @click="canEdit = false"
+                    >
+                        保存
+                    </el-button>
+                </h3>
                 <el-row :gutter="20">
-                    <el-col :span="6">
+                    <el-col :span="8">
                         <div class="grid-content">
                             <span>模型名称:</span>
+                            <span v-if="!canEdit">
+                                {{ model_info_data.model_name }}
+                            </span>
+
                             <el-input
                                 v-model="model_info_data.model_name"
                                 @blur="postModelInfo('model_name')"
                                 class="line-input"
+                                v-if="canEdit"
                             ></el-input>
                         </div>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="8">
                         <div class="grid-content">
                             <span>创建时间:</span>
                             {{ model_info_data.create_time | create_time }}
                         </div>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="8">
                         <div class="grid-content">
                             <span>更新时间:</span>
                             {{ model_info_data.update_time | create_time }}
@@ -28,37 +51,42 @@
                     </el-col>
                 </el-row>
                 <el-row :gutter="20">
-                    <el-col :span="6">
+                    <el-col :span="8">
                         <div class="grid-content bg-purple">
                             <span>模型格式:</span>
                             {{ model_info_data.model_type }}
                         </div>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="8">
                         <div class="grid-content bg-purple">
                             <span>框架名称:</span>
                             {{ model_info_data.frame_name }}
                         </div>
                     </el-col>
-                    <el-col :span="6">
+                    <el-col :span="8">
                         <div class="grid-content bg-purple">
                             <span>导入方式:</span>
                             {{ model_info_data.model_versions_id }}
                         </div>
                     </el-col>
-                    <el-col :span="6">
+                </el-row>
+                <el-row :gutter="20">
+                    <el-col :span="8">
                         <div class="grid-content bg-purple">
                             <span>所属实验:</span>
                             {{ model_info_data.model_test_name }}
                         </div>
                     </el-col>
                 </el-row>
-
                 <el-row :gutter="20">
                     <el-col :span="24">
                         <div class="grid-content bg-purple">
                             <h3>模型描述</h3>
+                            <span v-if="!canEdit">
+                                {{ model_info_data.model_describe }}
+                            </span>
                             <el-input
+                                v-if="canEdit"
                                 type="textarea"
                                 :rows="3"
                                 placeholder="请输入内容"
@@ -89,17 +117,6 @@
                         prop="description"
                         label="描述信息"
                     ></el-table-column>
-                    <el-table-column label="操作">
-                        <template slot-scope="scope">
-                            <el-button
-                                size="mini"
-                                type="danger"
-                                @click="handleDelete(scope.row)"
-                            >
-                                删除
-                            </el-button>
-                        </template>
-                    </el-table-column>
                 </el-table>
                 <el-pagination
                     style="padding-top:20px;"
@@ -152,6 +169,7 @@ export default {
     },
     data() {
         return {
+            canEdit: false,
             model_info_data: {},
             textarea: '12313212',
             tableData: [],
@@ -254,10 +272,11 @@ export default {
 .modelDetail {
     width: 1000px;
     .grid-content {
-        line-height: 40px;
+        line-height: 50px;
         font-size: 14px;
         span {
             margin-right: 6px;
+            font-weight: bold;
         }
     }
     .line-input {

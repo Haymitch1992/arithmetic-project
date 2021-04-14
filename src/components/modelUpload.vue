@@ -31,6 +31,10 @@
                         ></el-option>
                         <el-option label="Keras H5" value=".h5"></el-option>
                         <el-option label="Pytorch Pt" value=".pt"></el-option>
+                        <el-option
+                            label="scikit-learn PMML"
+                            value=".pmml"
+                        ></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="框架名称" prop="frame_name">
@@ -65,7 +69,7 @@
                     <uploader-unsupport></uploader-unsupport>
                     <uploader-drop @click.native="changeUpload">
                         <span class="upload-info">
-                            可以将本地的视频资源上传至服务器
+                            可以将本地的模型压缩包上传至服务器
                         </span>
                         <uploader-btn class="upload-btn" :attrs="attrs">
                             上传
@@ -106,6 +110,9 @@ export default {
                         break;
                     case '.pt':
                         this.form.frame_name = 'Pytorch';
+                        break;
+                    case '.pmml':
+                        this.form.frame_name = 'scikit-learn';
                         break;
                     default:
                         this.form.frame_name = '';

@@ -44,10 +44,7 @@
                         >
                             模型版本
                         </el-button>
-                        <el-button
-                            type="text"
-                            @click="deleteModel(scope.row.id)"
-                        >
+                        <el-button type="text" @click="deleteModel(scope.row)">
                             删除
                         </el-button>
                     </template>
@@ -133,7 +130,8 @@ import {
     POST_DEPLOY_MODEL,
     GET_MODEL_VERSION,
     POST_EXPORT_MODEL_FILE,
-    POST_MODEL_DATA
+    POST_MODEL_DATA,
+    DELETE_MODE_DATA
 } from '../../assets/url';
 import moment from 'moment';
 
@@ -253,43 +251,33 @@ export default {
         },
         // 部署模型
         deploy(item) {
-            this.$confirm('进行部署操作, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            })
-                .then(() => {
-                    this.$api
-                        .post(POST_DEPLOY_MODEL, {
-                            user_id: localStorage.getItem('data_user_id'),
-                            user_name: 'uesr1',
-                            experiment_name: item.model_test_name,
-                            request_url: this.this.globalUlr,
-                            model_path: item.model_path,
-                            artifact_path: item.artifact_path,
-                            data_model_id: item.id,
-                            data_model_name: item.model_name
-                        })
-                        .then(res => {
-                            this.$message({
-                                type: 'success',
-                                message: '部署成功!'
-                            });
-                            this.getModelData();
-                        });
+            console.log(item);
+            this.$api
+                .post(POST_DEPLOY_MODEL, {
+                    user_id: localStorage.getItem('data_user_id'),
+                    model_name: item.name,
+                    model_version: item.version,
+                    order: 'start'
+                    // user_name: 'uesr1',
+                    // experiment_name: item.model_test_name,
+                    // request_url: this.this.globalUlr,
+                    // model_path: item.model_path,
+                    // artifact_path: item.artifact_path,
+                    // data_model_id: item.id,
+                    // data_model_name: item.model_name
                 })
-                .catch(() => {
+                .then(res => {
                     this.$message({
-                        type: 'info',
-                        message: '已取消部署'
+                        type: 'success',
+                        message: '部署成功!'
                     });
+                    this.getModelData();
                 });
         },
-        postDelete(delId) {
+        postDelete() {
             this.$api
-                .post(POST_DELETE_MODEL, {
-                    data_user_id: localStorage.getItem('data_user_id'),
-                    data_model_id: delId
+                .get(DELETE_MODE_DATA, {
+                    model_only_name: this.model_only_name
                 })
                 .then(res => {
                     this.$message({
@@ -331,7 +319,7 @@ export default {
             console.log(`当前页: ${val}`);
             this.getModelData();
         },
-        deleteModel(delId) {
+        deleteModel(obj) {
             this.$confirm(
                 '是否确认删除模型及完成部署的环境资源, 是否继续?',
                 '提示',
@@ -342,7 +330,8 @@ export default {
                 }
             )
                 .then(() => {
-                    this.postDelete(delId);
+                    this.model_only_name = obj.model_only_name;
+                    this.postDelete();
                 })
                 .catch(() => {
                     this.$message({

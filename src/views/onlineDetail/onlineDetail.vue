@@ -1,52 +1,111 @@
 <template>
     <div class="bg">
         <div class="onlineDetail-box">
-            <div class="back-line"><span class="el-icon-arrow-left" @click="backPage()"></span>道岔转辙机故障诊断</div>
+            <div class="back-line">
+                <span class="el-icon-arrow-left" @click="backPage()"></span>
+                道岔转辙机故障诊断
+            </div>
             <div>
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <el-tab-pane label="服务详情" name="first">
                         <div class="btn-line">
-                            <el-button size="small" @click="changeStart" v-if="isStart">停止</el-button>
-                            <el-button size="small" @click="changeStart" v-if="!isStart">启动</el-button>
-                            <el-button size="small" @click="goDebug">在线调试</el-button>
-                            <el-button size="small" @click="dialogFormVisible=true">调用方式</el-button>
-                            <el-button size="small" type="primary">删除</el-button>
+                            <el-button
+                                size="small"
+                                @click="changeStart"
+                                v-if="isStart"
+                            >
+                                停止
+                            </el-button>
+                            <el-button
+                                size="small"
+                                @click="changeStart"
+                                v-if="!isStart"
+                            >
+                                启动
+                            </el-button>
+                            <el-button size="small" @click="goDebug">
+                                在线调试
+                            </el-button>
+                            <el-button
+                                size="small"
+                                @click="dialogFormVisible = true"
+                            >
+                                调用方式
+                            </el-button>
+                            <el-button size="small" type="primary">
+                                删除
+                            </el-button>
                         </div>
                         <div>
                             <h3 class="online-title">基本信息</h3>
                             <ul class="online-ul">
                                 <li>
                                     <span class="list-text">服务ID/名称</span>
-                                    <span class="list-content">{{pageObj.model_name}}</span>
+                                    <span class="list-content">
+                                        {{ pageObj.model_name }}
+                                    </span>
                                     <span class="list-text">运行时长</span>
-                                    <span class="list-content">{{pageObj.model_running_time|transferM}}分钟</span>
+                                    <span class="list-content">
+                                        {{
+                                            pageObj.model_running_time
+                                                | transferM
+                                        }}分钟
+                                    </span>
                                 </li>
                                 <li>
                                     <span class="list-text">服务方式</span>
-                                    <span class="list-content">{{pageObj.model_server}}</span>
+                                    <span class="list-content">
+                                        {{ pageObj.model_server }}
+                                    </span>
                                     <span class="list-text">服务说明</span>
-                                    <span class="list-content">{{pageObj.model_explain}}</span>
+                                    <span class="list-content">
+                                        {{ pageObj.model_explain }}
+                                    </span>
                                 </li>
                                 <li>
                                     <span class="list-text">模型状态</span>
-                                    <span class="list-content">{{pageObj.model_type?'已运行':'未运行'}}</span>
+                                    <span class="list-content">
+                                        {{
+                                            pageObj.model_type
+                                                ? '已运行'
+                                                : '未运行'
+                                        }}
+                                    </span>
                                     <span class="list-text">创建时间</span>
-                                    <span class="list-content">{{pageObj.update_time|create_time}}</span>
+                                    <span class="list-content">
+                                        {{ pageObj.update_time | create_time }}
+                                    </span>
                                 </li>
                                 <li>
                                     <span class="list-text">使用资源</span>
                                     <span class="progress-item">
-                                        <el-progress :width="60" color="#52cca3" :show-text="false" type="circle" :percentage="25"></el-progress>
+                                        <el-progress
+                                            :width="60"
+                                            color="#52cca3"
+                                            :show-text="false"
+                                            type="circle"
+                                            :percentage="25"
+                                        ></el-progress>
                                         <span class="progress-title">内存</span>
                                         <span class="progress-text">50M</span>
                                     </span>
                                     <span class="progress-item">
-                                        <el-progress :width="60" :show-text="false" type="circle" :percentage="25"></el-progress>
+                                        <el-progress
+                                            :width="60"
+                                            :show-text="false"
+                                            type="circle"
+                                            :percentage="25"
+                                        ></el-progress>
                                         <span class="progress-title">CPU</span>
                                         <span class="progress-text">1</span>
                                     </span>
                                     <span class="progress-item">
-                                        <el-progress :width="60" :show-text="false" type="circle" :percentage="25"></el-progress>
+                                        <el-progress
+                                            :width="60"
+                                            :show-text="false"
+                                            type="circle"
+                                            :percentage="25"
+                                        ></el-progress>
                                         <span class="progress-title">GPU</span>
                                         <span class="progress-text">1</span>
                                     </span>
@@ -56,30 +115,53 @@
                             <div class="editor-box"></div>
                         </div>
 
-                        <el-dialog title="调用方式" :visible.sync="dialogFormVisible" >
+                        <el-dialog
+                            title="调用方式"
+                            :visible.sync="dialogFormVisible"
+                        >
                             <el-form :model="form">
-                                <el-form-item label="访问地址" >
-                                    <el-input  autocomplete="off"></el-input>
+                                <el-form-item label="访问地址">
+                                    <el-input autocomplete="off"></el-input>
                                 </el-form-item>
-                                <el-form-item label="Tocken" >
-                                    <el-input  autocomplete="off"></el-input>
+                                <el-form-item label="Tocken">
+                                    <el-input autocomplete="off"></el-input>
                                 </el-form-item>
                             </el-form>
                             <div slot="footer" class="dialog-footer">
-                                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                                <el-button @click="dialogFormVisible = false">
+                                    取 消
+                                </el-button>
+                                <el-button
+                                    type="primary"
+                                    @click="dialogFormVisible = false"
+                                >
+                                    确 定
+                                </el-button>
                             </div>
                         </el-dialog>
                     </el-tab-pane>
                     <el-tab-pane label="事件查看" name="second">
                         <el-table :data="checked_all_incident">
-                            <el-table-column  label="事件类型" >
+                            <el-table-column label="事件类型">
                                 <template slot-scope="scope">
-                                    <span class="model-status" :class="'model-status-'+scope.row.state"></span>{{scope.row.state|typeZn}}
+                                    <span
+                                        class="model-status"
+                                        :class="
+                                            'model-status-' + scope.row.state
+                                        "
+                                    ></span>
+                                    {{ scope.row.state | typeZn }}
                                 </template>
                             </el-table-column>
-                            <el-table-column prop="incident_deca" label="事件信息"></el-table-column>
-                            <el-table-column prop="create_time" label="事件发生时间" sortable></el-table-column>
+                            <el-table-column
+                                prop="incident_deca"
+                                label="事件信息"
+                            ></el-table-column>
+                            <el-table-column
+                                prop="create_time"
+                                label="事件发生时间"
+                                sortable
+                            ></el-table-column>
                         </el-table>
                         <div class="pagination-line">
                             <el-pagination
@@ -90,8 +172,8 @@
                                 :page-sizes="[10, 20, 30, 40]"
                                 :page-size="pageSize"
                                 layout="total, sizes, prev, pager, next, jumper"
-                                :total="all_incident.length">
-                            </el-pagination>
+                                :total="all_incident.length"
+                            ></el-pagination>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="日志查看" name="third">
@@ -103,38 +185,84 @@
                                 start-placeholder="开始日期"
                                 size="small"
                                 value-format="yyyy-MM-dd"
-                                end-placeholder="结束日期">
-                            </el-date-picker>
-                            <el-button type="primary" size="small" @click="postLogQuery" style="width: 120px;">搜索</el-button>
+                                end-placeholder="结束日期"
+                            ></el-date-picker>
+                            <el-button
+                                type="primary"
+                                size="small"
+                                @click="postLogQuery"
+                                style="width: 120px;"
+                            >
+                                搜索
+                            </el-button>
                         </div>
                         <div class="log-box">
-                            <pre>{{logJson}}</pre>
+                            <pre>{{ logJson }}</pre>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="监控信息" name="fourth">
                         <h3 class="online-title">资源使用情况</h3>
                         <div class="progress-item-div">
-                            <el-progress type="circle" color="#6699ff" :percentage="75"></el-progress>
+                            <el-progress
+                                type="circle"
+                                color="#6699ff"
+                                :percentage="75"
+                            ></el-progress>
                             <p>CPU</p>
                             <ul>
-                                <li><span class="square-icon" style="background: #6699ff;"></span><span>已使用 0.75</span></li>
-                                <li><span class="square-icon"></span><span>可用 1</span></li>
+                                <li>
+                                    <span
+                                        class="square-icon"
+                                        style="background: #6699ff;"
+                                    ></span>
+                                    <span>已使用 0.75</span>
+                                </li>
+                                <li>
+                                    <span class="square-icon"></span>
+                                    <span>可用 1</span>
+                                </li>
                             </ul>
                         </div>
                         <div class="progress-item-div">
-                            <el-progress type="circle" color="#52cca3" :percentage="19"></el-progress>
+                            <el-progress
+                                type="circle"
+                                color="#52cca3"
+                                :percentage="19"
+                            ></el-progress>
                             <p>内存</p>
                             <ul>
-                                <li><span class="square-icon" style="background: #52cca3;"></span><span>已使用 0.75</span></li>
-                                <li><span class="square-icon"></span><span>可用 1</span></li>
+                                <li>
+                                    <span
+                                        class="square-icon"
+                                        style="background: #52cca3;"
+                                    ></span>
+                                    <span>已使用 0.75</span>
+                                </li>
+                                <li>
+                                    <span class="square-icon"></span>
+                                    <span>可用 1</span>
+                                </li>
                             </ul>
                         </div>
                         <div class="progress-item-div">
-                            <el-progress type="circle" color="#32c5ff" :percentage="75"></el-progress>
+                            <el-progress
+                                type="circle"
+                                color="#32c5ff"
+                                :percentage="75"
+                            ></el-progress>
                             <p>GPU</p>
                             <ul>
-                                <li><span class="square-icon" style="background: #32c5ff;"></span><span>已使用 0.75</span></li>
-                                <li><span class="square-icon"></span><span>可用 1</span></li>
+                                <li>
+                                    <span
+                                        class="square-icon"
+                                        style="background: #32c5ff;"
+                                    ></span>
+                                    <span>已使用 0.75</span>
+                                </li>
+                                <li>
+                                    <span class="square-icon"></span>
+                                    <span>可用 1</span>
+                                </li>
                             </ul>
                         </div>
                     </el-tab-pane>
@@ -142,21 +270,60 @@
                         <h3 class="online-title">扩缩容</h3>
                         <p style="font-size: 13px;">模型部署占用资源：</p>
                         <p style="font-size: 13px;">
-                            <span style="margin-right: 110px;"><span style="color:#FF3B30;margin-right:6px;">*</span>实例数</span>
-                            <span><span style="color:#FF3B30;margin-right:6px;">*</span>Quota(1核、4GB内存)</span>
-
+                            <span style="margin-right: 110px;">
+                                <span style="color:#FF3B30;margin-right:6px;">
+                                    *
+                                </span>
+                                实例数
+                            </span>
+                            <span>
+                                <span style="color:#FF3B30;margin-right:6px;">
+                                    *
+                                </span>
+                                Quota(1核、4GB内存)
+                            </span>
                         </p>
                         <div>
-                            <el-input-number size="small" v-model="num" controls-position="right" @change="handleChange" :min="1" :max="10"></el-input-number>
+                            <el-input-number
+                                size="small"
+                                v-model="num"
+                                controls-position="right"
+                                @change="handleChange"
+                                :min="1"
+                                :max="10"
+                            ></el-input-number>
                             <span style="margin: 0 10px;">X</span>
-                            <el-input-number size="small" v-model="num2" controls-position="right" @change="handleChange" :min="1" :max="10"></el-input-number>
+                            <el-input-number
+                                size="small"
+                                v-model="num2"
+                                controls-position="right"
+                                @change="handleChange"
+                                :min="1"
+                                :max="10"
+                            ></el-input-number>
                             <span style="margin: 0 10px;">=</span>
-                            <span style="color:#1677FF;">{{parseInt(num * num2)}}</span>
-                            <span style="color: #666;margin: 0 10px;">Quota(1核、4GB内存)</span>
+                            <span style="color:#1677FF;">
+                                {{ parseInt(num * num2) }}
+                            </span>
+                            <span style="color: #666;margin: 0 10px;">
+                                Quota(1核、4GB内存)
+                            </span>
                         </div>
                         <div class="set-info">
-                            <p><span class="el-icon-warning " style='color:#1677FF;margin-right: 4px;'></span>1Quota等于1核、4GB内存</p>
-                            <p><span class="el-icon-warning " style='color:#1677FF;margin-right: 4px;'></span>对于高稳定性要求的正式服务，建议使用包含多台机器的资源组，并部署多个资源实例。</p>
+                            <p>
+                                <span
+                                    class="el-icon-warning "
+                                    style="color:#1677FF;margin-right: 4px;"
+                                ></span>
+                                1Quota等于1核、4GB内存
+                            </p>
+                            <p>
+                                <span
+                                    class="el-icon-warning "
+                                    style="color:#1677FF;margin-right: 4px;"
+                                ></span>
+                                对于高稳定性要求的正式服务，建议使用包含多台机器的资源组，并部署多个资源实例。
+                            </p>
                         </div>
                         <h3 class="online-title">服务降级</h3>
                         <table class="check-table">
@@ -167,38 +334,70 @@
                             </tr>
                             <tr>
                                 <td>模型部署</td>
-                                <td><span class="model-status model-status-1" :class="{'model-status-2':!checkForm.value1}"></span>{{checkForm.value1?'已开启':'已停止'}}</td>
+                                <td>
+                                    <span
+                                        class="model-status model-status-1"
+                                        :class="{
+                                            'model-status-2': !checkForm.value1
+                                        }"
+                                    ></span>
+                                    {{ checkForm.value1 ? '已开启' : '已停止' }}
+                                </td>
                                 <td>
                                     <el-switch
-                                        v-model="checkForm.value1">
-                                    </el-switch>
+                                        v-model="checkForm.value1"
+                                    ></el-switch>
                                 </td>
                             </tr>
                             <tr>
                                 <td>服务日志</td>
-                                <td><span class="model-status model-status-1" :class="{'model-status-2':!checkForm.value2}"></span>{{checkForm.value2?'已开启':'已停止'}}</td>
+                                <td>
+                                    <span
+                                        class="model-status model-status-1"
+                                        :class="{
+                                            'model-status-2': !checkForm.value2
+                                        }"
+                                    ></span>
+                                    {{ checkForm.value2 ? '已开启' : '已停止' }}
+                                </td>
                                 <td>
                                     <el-switch
-                                        v-model="checkForm.value2">
-                                    </el-switch>
+                                        v-model="checkForm.value2"
+                                    ></el-switch>
                                 </td>
                             </tr>
                             <tr>
                                 <td>服务监控</td>
-                                <td><span class="model-status model-status-1" :class="{'model-status-2':!checkForm.value3}"></span>{{checkForm.value3?'已开启':'已停止'}}</td>
+                                <td>
+                                    <span
+                                        class="model-status model-status-1"
+                                        :class="{
+                                            'model-status-2': !checkForm.value3
+                                        }"
+                                    ></span>
+                                    {{ checkForm.value3 ? '已开启' : '已停止' }}
+                                </td>
                                 <td>
                                     <el-switch
-                                        v-model="checkForm.value3">
-                                    </el-switch>
+                                        v-model="checkForm.value3"
+                                    ></el-switch>
                                 </td>
                             </tr>
                             <tr>
                                 <td>在线调试</td>
-                                <td><span class="model-status model-status-1" :class="{'model-status-2':!checkForm.value4}"></span>{{checkForm.value4?'已开启':'已停止'}}</td>
+                                <td>
+                                    <span
+                                        class="model-status model-status-1"
+                                        :class="{
+                                            'model-status-2': !checkForm.value4
+                                        }"
+                                    ></span>
+                                    {{ checkForm.value4 ? '已开启' : '已停止' }}
+                                </td>
                                 <td>
                                     <el-switch
-                                        v-model="checkForm.value4">
-                                    </el-switch>
+                                        v-model="checkForm.value4"
+                                    ></el-switch>
                                 </td>
                             </tr>
                         </table>
@@ -242,6 +441,7 @@ export default {
     },
     data() {
         return {
+            modelObject: {},
             checkForm: {
                 value1: true,
                 value2: true,
@@ -363,9 +563,11 @@ export default {
         },
         getInfo() {
             this.$api
-                .post(POST_MODEL_INFO, {
+                .get(POST_MODEL_INFO, {
                     data_user_id: localStorage.getItem('data_user_id'),
-                    deploy_model_id: this.mid
+                    version: this.modelObject.version,
+                    model_only_name: this.modelObject.model_only_name
+                    // deploy_model_id: this.mid
                 })
                 .then(res => {
                     this.pageObj = { ...res.data };
@@ -404,12 +606,13 @@ export default {
         }
     },
     mounted() {
-        if (this.$route.params.mid) {
-            this.mid = this.$route.params.mid;
+        if (this.$route.params.modelObject) {
+            this.mid = this.$route.params.modelObject;
+            this.modelObject = this.$route.params.modelObject;
             this.getInfo();
             this.getLogInfo();
             this.getEventInfo();
-            console.log(this.$route.params.mid);
+            // console.log(this.$route.params.mid);
         } else {
             console.log('没有参数');
         }
