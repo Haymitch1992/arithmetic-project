@@ -66,21 +66,25 @@
                 ></el-table-column>
                 <el-table-column label="操作" width="260">
                     <template slot-scope="scope">
-                        <el-button type="text">启动</el-button>
                         <el-button
                             type="text"
-                            @click="deleteModel(scope.row.id)"
+                            v-if="scope.row.state === 0"
+                            @click="changeModelStatus('reboot', scope.row)"
+                        >
+                            启动
+                        </el-button>
+                        <el-button
+                            type="text"
+                            v-if="scope.row.state === 1"
+                            @click="changeModelStatus('stop', scope.row)"
+                        >
+                            停止
+                        </el-button>
+                        <el-button
+                            type="text"
+                            @click="changeModelStatus('delete', scope.row)"
                         >
                             删除
-                        </el-button>
-                        <el-button type="text" @click="debug(scope.row.id)">
-                            在线调试
-                        </el-button>
-                        <el-button
-                            type="text"
-                            @click="exportModel(scope.row.id)"
-                        >
-                            导出
                         </el-button>
                     </template>
                 </el-table-column>
@@ -105,6 +109,7 @@
 import {
     POST_ALL_DEPLOY_MODEL,
     POST_EXPORT_MODEL,
+    POST_DEPLOY_MODEL,
     POST_MODEL_LOG,
     POST_ONLINE_DELETE_MODEL
 } from '../../assets/url';
@@ -152,31 +157,22 @@ export default {
         this.getList();
     },
     methods: {
-        deleteModel(mid) {
-            this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            })
-                .then(() => {
-                    this.$api
-                        .post(POST_ONLINE_DELETE_MODEL, {
-                            data_user_id: localStorage.getItem('data_user_id'),
-                            deploy_model_id: mid
-                        })
-                        .then(res => {
-                            this.getList();
-                            this.$message({
-                                type: 'success',
-                                message: '删除成功!'
-                            });
-                        });
+        changeModelStatus(str, item) {
+            this.$api
+                .post(POST_DEPLOY_MODEL, {
+                    user_id: localStorage.getItem('data_user_id'),
+                    model_name: item.model_only_name,
+                    model_version: item.version,
+                    model_image_name: item.model_image_name,
+                    container_name: item.container_name,
+                    order: str
                 })
-                .catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
+                .then(res => {
+                    if (res.data.status === 'success') {
+                        this.$message.success('操作成功');
+                    }
+
+                    this.getList();
                 });
         },
         exportModel(mid) {
@@ -206,10 +202,6 @@ export default {
                     this.tableData = res.data.deploy_model_data;
                     console.log(res.data.model_data);
                 });
-        },
-        debug(mid) {
-            this.$store.commit('changeDeployId', mid);
-            this.$router.push('/debug');
         },
         goDetail(mid, uuid, obj) {
             // 存住当前ID

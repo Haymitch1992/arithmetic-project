@@ -145,6 +145,8 @@ export const POST_DEPLOY_MODEL = '/model/deploy';
 // 部署调试
 export const POST_DEPLOY_TEST = '/debug/invocations';
 
+export const POST_DEPLOY_DEBUG = '/api/requestModelApi/';
+
 // 数据中台开放主题
 export const GET_DATA_THEME = '/api/getDataTheme/';
 // 数据中台数据获取

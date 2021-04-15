@@ -233,6 +233,7 @@ export default {
                     value: this.model_info_data[key]
                 })
                 .then(res => {
+                    this.$message(res.data.mes);
                     // this.model_info_data = res.data.model_info_data;
                 });
         },

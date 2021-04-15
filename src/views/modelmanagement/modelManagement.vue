@@ -64,7 +64,12 @@
             </div>
             <!-- 模型部署 -->
             <el-dialog title="模型版本" :visible.sync="modelListVisible">
-                <el-table :data="modelList" style="width: 100%" border>
+                <el-table
+                    :data="modelList"
+                    style="width: 100%"
+                    border
+                    v-loading="loading2"
+                >
                     <el-table-column
                         prop="version"
                         label="版本号"
@@ -84,7 +89,11 @@
                     ></el-table-column>
                     <el-table-column label="操作" width="200">
                         <template slot-scope="scope">
-                            <el-button size="mini" @click="deploy(scope.row)">
+                            <el-button
+                                size="mini"
+                                @click="deploy(scope.row)"
+                                :disabled="scope.row.status === 'SUCCEED'"
+                            >
                                 部署
                             </el-button>
                             <el-button
@@ -169,6 +178,7 @@ export default {
             currentTotal: 0,
             modelListVisible: false, // 模型列表
             loading: true,
+            loading2: true,
             dialogFormVisible: false, // 修改模型信息弹框
             dialogFormVisible2: false, // 导出模型
             dialogFormVisible3: false, // 模型上传
@@ -226,6 +236,7 @@ export default {
                     this.modelList = res.data.versions;
                     this.currentTotal = res.data.count;
                     console.log(res.data);
+                    this.loading2 = false;
                 });
         },
         openVersionDialog(obj) {
@@ -251,7 +262,7 @@ export default {
         },
         // 部署模型
         deploy(item) {
-            console.log(item);
+            this.loading2 = true;
             this.$api
                 .post(POST_DEPLOY_MODEL, {
                     user_id: localStorage.getItem('data_user_id'),
@@ -271,7 +282,7 @@ export default {
                         type: 'success',
                         message: '部署成功!'
                     });
-                    this.getModelData();
+                    this.getVersions();
                 });
         },
         postDelete() {

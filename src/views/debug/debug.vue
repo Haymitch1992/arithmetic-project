@@ -1,33 +1,56 @@
 <template>
     <div class="bg">
         <div class="online-box">
-            <div class="back-line" @click="goDetail()"><span class="el-icon-arrow-left"></span>在线调试</div>
+            <div class="back-line" @click="goDetail()">
+                <span class="el-icon-arrow-left"></span>
+                在线调试
+            </div>
             <div>
                 <div class="debug-left">
                     <h3>在线调试请求参数</h3>
                     <div class="options-box">
-                        <el-form label-width="80px" class="form-box">
-                            <el-form-item :label="item.name" v-for="(item,index) in optionsList" :key="index">
-                                <el-input v-model="item.value"></el-input>
-                            </el-form-item>
-                        </el-form>
                         <div class="btn-line">
-                            <el-button type="primary" size="small" @click="dialogTableVisible=true">状态码查询</el-button>
-                            <el-button type="primary" size="small" @click="debug">调试</el-button>
+                            <el-button
+                                type="primary"
+                                size="small"
+                                @click="dialogTableVisible = true"
+                            >
+                                状态码查询
+                            </el-button>
+                            <el-button
+                                type="primary"
+                                size="small"
+                                @click="postDebug"
+                            >
+                                调试
+                            </el-button>
                         </div>
+                        <editor
+                            v-model="debugOptions"
+                            lang="html"
+                            height="500"
+                            @init="initEditor"
+                        ></editor>
                     </div>
                 </div>
                 <div class="debug-right">
                     <h3>调试信息</h3>
-                    <div class="info-box" >
-                        <pre>{{text}}</pre>
+                    <div class="info-box">
+                        <pre>{{ text }}</pre>
                     </div>
                 </div>
             </div>
             <el-dialog title="状态码查询" :visible.sync="dialogTableVisible">
                 <el-table border :data="tableData">
-                    <el-table-column property="value" label="状态码" width="150"></el-table-column>
-                    <el-table-column property="label" label="描述信息" ></el-table-column>
+                    <el-table-column
+                        property="value"
+                        label="状态码"
+                        width="150"
+                    ></el-table-column>
+                    <el-table-column
+                        property="label"
+                        label="描述信息"
+                    ></el-table-column>
                 </el-table>
             </el-dialog>
         </div>
@@ -39,71 +62,73 @@ import {
     POST_MODE_ONLINE,
     POST_MODEL_DATA,
     POST_DEPLOY_TEST,
+    POST_DEPLOY_DEBUG,
     GET_GAIN_NODE_PARAM
-} from "../../assets/url";
+} from '../../assets/url';
 
-import $axios from "axios";
+import $axios from 'axios';
 export default {
-    name: "home",
+    name: 'home',
     components: {
-        editor: require("vue2-ace-editor")
+        editor: require('vue2-ace-editor')
     },
 
     filters: {
         modelStatusZn(val) {
             switch (val) {
                 case 0:
-                    return "未开始";
+                    return '未开始';
                 case 1:
-                    return "进行中";
+                    return '进行中';
                 case 2:
-                    return "已完成";
+                    return '已完成';
                 case 3:
-                    return "失败";
+                    return '失败';
                 case 4:
-                    return "已停止";
+                    return '已停止';
             }
         }
     },
     data() {
         return {
+            debugOptions: '{"name":123}', // 上传的参数
             dialogTableVisible: false, // 状态码查询弹框
             text: {},
             params: [0, 0, 0, 0], // 上传的参数
             tableData: [
                 {
                     value: 200,
-                    label: "请求成功"
+                    label: '请求成功'
                 },
                 {
                     value: 400,
-                    label: "缺少信息请检查请求头、参数"
+                    label: '缺少信息请检查请求头、参数'
                 },
                 {
                     value: 401,
-                    label: "请求路劲非法"
+                    label: '请求路劲非法'
                 },
                 {
                     value: 404,
-                    label: "未得知请求域名"
+                    label: '未得知请求域名'
                 },
                 {
                     value: 405,
-                    label: "Token值未查到"
+                    label: 'Token值未查到'
                 },
                 {
                     value: 500,
-                    label: "参数不正确"
+                    label: '参数不正确'
                 },
                 {
                     value: 504,
-                    label: "后端请求超时"
+                    label: '后端请求超时'
                 }
             ],
-            host: "",
-            port: "",
+            host: '',
+            port: '',
             optionsList: [],
-            jsonEditor: JSON.stringify("[1,2,3,4]"),
+            jsonEditor: JSON.stringify('[1,2,3,4]'),
             options: {
                 enableBasicAutocompletion: true,
                 enableSnippets: true,
@@ -125,13 +150,33 @@ export default {
                     this.host = res.data.host;
                     this.port = res.data.port;
                     let obj = JSON.parse(res.data.run_parameter);
-                    let arr = obj.select_features_columns.split(",");
+                    let arr = obj.select_features_columns.split(',');
                     arr.forEach(element => {
                         this.optionsList.push({
                             name: element,
                             value: 0
                         });
                     });
+                });
+        },
+        postDebug(item) {
+            // POST_DEPLOY_DEBUG
+            this.$api
+                .post(POST_DEPLOY_DEBUG, {
+                    model_only_name: this.$route.params.obj.model_only_name,
+                    model_version: this.$route.params.obj.model_version,
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    parameter: this.debugOptions
+                    // user_name: 'uesr1',
+                    // experiment_name: item.model_test_name,
+                    // request_url: this.this.globalUlr,
+                    // model_path: item.model_path,
+                    // artifact_path: item.artifact_path,
+                    // data_model_id: item.id,
+                    // data_model_name: item.model_name
+                })
+                .then(res => {
+                    this.text = res;
                 });
         },
         debug() {
@@ -147,14 +192,14 @@ export default {
             obj.data = [arr];
             $axios({
                 url: POST_DEPLOY_TEST,
-                method: "post",
+                method: 'post',
                 data: JSON.stringify(obj),
                 // data:
                 //     '{"columns":["feature_1","feature_2","feature_3","feature_4","feature_5","feature_6","feature_7","feature_8","feature_9","feature_10"],"data":[[0,0,0,0,0,0,0,0,0,0]]}',
                 headers: {
-                    "content-type": "application/json"
+                    'content-type': 'application/json'
                 },
-                responseType: "json"
+                responseType: 'json'
             }).then(res => {
                 this.text = res;
                 console.log(res);
@@ -162,17 +207,17 @@ export default {
         },
         editorInit: function(editor) {
             // 右侧JSON相关可以忽略
-            require("brace/ext/language_tools"); // language extension prerequsite...
-            require("brace/mode/html");
-            require("brace/mode/javascript"); // language
-            require("brace/mode/less");
-            require("brace/theme/chrome");
-            require("brace/snippets/javascript"); // snippet
-            require("brace/mode/json");
-            require("brace/theme/tomorrow");
+            require('brace/ext/language_tools'); // language extension prerequsite...
+            require('brace/mode/html');
+            require('brace/mode/javascript'); // language
+            require('brace/mode/less');
+            require('brace/theme/chrome');
+            require('brace/snippets/javascript'); // snippet
+            require('brace/mode/json');
+            require('brace/theme/tomorrow');
         },
         goDetail() {
-            this.$router.push("/onlineDetail");
+            this.$router.push('/online');
         }
     }
 };

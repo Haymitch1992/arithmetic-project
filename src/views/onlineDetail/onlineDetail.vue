@@ -9,20 +9,6 @@
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <el-tab-pane label="服务详情" name="first">
                         <div class="btn-line">
-                            <el-button
-                                size="small"
-                                @click="changeStart"
-                                v-if="isStart"
-                            >
-                                停止
-                            </el-button>
-                            <el-button
-                                size="small"
-                                @click="changeStart"
-                                v-if="!isStart"
-                            >
-                                启动
-                            </el-button>
                             <el-button size="small" @click="goDebug">
                                 在线调试
                             </el-button>
@@ -32,48 +18,67 @@
                             >
                                 调用方式
                             </el-button>
-                            <el-button size="small" type="primary">
-                                删除
-                            </el-button>
                         </div>
                         <div>
                             <h3 class="online-title">基本信息</h3>
                             <ul class="online-ul">
                                 <li>
-                                    <span class="list-text">服务ID/名称</span>
-                                    <span class="list-content">
-                                        {{ pageObj.model_name }}
-                                    </span>
-                                    <span class="list-text">运行时长</span>
-                                    <span class="list-content">
-                                        {{
-                                            pageObj.model_running_time
-                                                | transferM
-                                        }}分钟
-                                    </span>
-                                </li>
-                                <li>
-                                    <span class="list-text">服务方式</span>
-                                    <span class="list-content">
-                                        {{ pageObj.model_server }}
-                                    </span>
-                                    <span class="list-text">服务说明</span>
-                                    <span class="list-content">
-                                        {{ pageObj.model_explain }}
-                                    </span>
-                                </li>
-                                <li>
-                                    <span class="list-text">模型状态</span>
-                                    <span class="list-content">
-                                        {{
-                                            pageObj.model_type
-                                                ? '已运行'
-                                                : '未运行'
-                                        }}
-                                    </span>
                                     <span class="list-text">创建时间</span>
                                     <span class="list-content">
-                                        {{ pageObj.update_time | create_time }}
+                                        {{ model_data.create_time }}
+                                    </span>
+                                    <span class="list-text">模型名称</span>
+                                    <span class="list-content">
+                                        {{ model_data.model_name }}分钟
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="list-text">模型描述</span>
+                                    <span class="list-content">
+                                        {{ model_data.model_describe }}
+                                    </span>
+                                    <span class="list-text">模型格式</span>
+                                    <span class="list-content">
+                                        {{ model_data.model_type }}
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="list-text">生成方式</span>
+                                    <span class="list-content">
+                                        {{ model_data.model_versions_id }}
+                                    </span>
+                                    <span class="list-text">部署时间</span>
+                                    <span class="list-content">
+                                        {{
+                                            model_info_data.create_time
+                                                | create_time
+                                        }}
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="list-text">容器名称</span>
+                                    <span class="list-content">
+                                        {{ model_info_data.container_name }}
+                                    </span>
+                                    <span class="list-text">镜像id</span>
+                                    <span class="list-content">
+                                        {{ model_info_data.image_id }}
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="list-text">模型状态描述</span>
+                                    <span class="list-content">
+                                        {{ model_info_data.message }}
+                                    </span>
+                                    <span class="list-text">模型版本号</span>
+                                    <span class="list-content">
+                                        {{ model_info_data.version }}
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="list-text">运行时间</span>
+                                    <span class="list-content">
+                                        {{ model_info_data.run_time }}
                                     </span>
                                 </li>
                                 <li>
@@ -121,10 +126,16 @@
                         >
                             <el-form :model="form">
                                 <el-form-item label="访问地址">
-                                    <el-input autocomplete="off"></el-input>
+                                    <el-input
+                                        autocomplete="off"
+                                        v-model="urlValue"
+                                    ></el-input>
                                 </el-form-item>
                                 <el-form-item label="Tocken">
-                                    <el-input autocomplete="off"></el-input>
+                                    <el-input
+                                        autocomplete="off"
+                                        v-model="tockenValue"
+                                    ></el-input>
                                 </el-form-item>
                             </el-form>
                             <div slot="footer" class="dialog-footer">
@@ -441,6 +452,8 @@ export default {
     },
     data() {
         return {
+            tockenValue: localStorage.getItem('data_user_token'),
+            urlValue: '',
             modelObject: {},
             checkForm: {
                 value1: true,
@@ -449,6 +462,8 @@ export default {
                 value4: false
             },
             logJson: {},
+            model_data: {},
+            model_info_data: {},
             pageObj: {
                 create_time: '',
                 model_explain: '',
@@ -570,7 +585,13 @@ export default {
                     // deploy_model_id: this.mid
                 })
                 .then(res => {
-                    this.pageObj = { ...res.data };
+                    this.model_data = res.data.model_data;
+                    this.model_info_data = res.data.model_info_data;
+                    this.urlValue =
+                        this.model_info_data.ip +
+                        ':' +
+                        this.model_info_data.port;
+                    // this.pageObj = { ...res.data };
                 });
         },
         handleChange(value) {
@@ -588,6 +609,15 @@ export default {
             }
         },
         goDebug() {
+            this.$router.push({
+                name: 'debug',
+                params: {
+                    obj: {
+                        model_version: this.model_info_data.version,
+                        model_only_name: this.model_info_data.model_only_name
+                    }
+                }
+            });
             this.$router.push('/debug');
         },
         handleSizeChange(val) {
@@ -610,8 +640,8 @@ export default {
             this.mid = this.$route.params.modelObject;
             this.modelObject = this.$route.params.modelObject;
             this.getInfo();
-            this.getLogInfo();
-            this.getEventInfo();
+            // this.getLogInfo();
+            // this.getEventInfo();
             // console.log(this.$route.params.mid);
         } else {
             console.log('没有参数');
