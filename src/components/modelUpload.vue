@@ -25,10 +25,6 @@
                         v-model="form.model_type"
                         placeholder="请选择模型类别"
                     >
-                        <el-option
-                            label="scikit-learn  Pkl"
-                            value="pkl"
-                        ></el-option>
                         <el-option label="Keras H5" value="h5"></el-option>
                         <el-option label="Pytorch Pt" value="pt"></el-option>
                         <el-option
@@ -102,9 +98,6 @@ export default {
         form: {
             handler(newName, oldName) {
                 switch (newName.model_type) {
-                    case 'pkl':
-                        this.form.frame_name = '— —';
-                        break;
                     case 'h5':
                         this.form.frame_name = 'Keras';
                         break;
