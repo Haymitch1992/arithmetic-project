@@ -25,12 +25,18 @@
                                 调试
                             </el-button>
                         </div>
-                        <editor
+                        <el-input
+                            type="textarea"
+                            placeholder="请输入内容"
+                            v-model="debugOptions"
+                            rows="10"
+                        ></el-input>
+                        <!-- <editor
                             v-model="debugOptions"
                             lang="html"
                             height="500"
                             @init="initEditor"
-                        ></editor>
+                        ></editor> -->
                     </div>
                 </div>
                 <div class="debug-right">
@@ -91,7 +97,8 @@ export default {
     },
     data() {
         return {
-            debugOptions: '{"name":123}', // 上传的参数
+            debugOptions:
+                '{"columns": ["Sepal_Length","Sepal_Width","Petal_Length","Petal_Width"],"data": [[1,2,3,4]]}', // 上传的参数
             dialogTableVisible: false, // 状态码查询弹框
             text: {},
             params: [0, 0, 0, 0], // 上传的参数
@@ -176,7 +183,7 @@ export default {
                     // data_model_name: item.model_name
                 })
                 .then(res => {
-                    this.text = res;
+                    this.text = res.data;
                 });
         },
         debug() {
