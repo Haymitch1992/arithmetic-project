@@ -192,7 +192,6 @@ export default {
             this.$api
                 .get(POST_ALL_DEPLOY_MODEL, {
                     data_user_id: localStorage.getItem('data_user_id'),
-                    data_model_keyword: 1,
                     size: this.pageSize,
                     page: this.currentPage4
                 })

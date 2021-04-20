@@ -9,7 +9,11 @@
                 <el-tabs v-model="activeName" @tab-click="handleClick">
                     <el-tab-pane label="服务详情" name="first">
                         <div class="btn-line">
-                            <el-button size="small" @click="goDebug">
+                            <el-button
+                                size="small"
+                                :disabled="model_state === 0"
+                                @click="goDebug"
+                            >
                                 在线调试
                             </el-button>
                             <el-button
@@ -452,6 +456,7 @@ export default {
     },
     data() {
         return {
+            model_state: 0,
             tockenValue: localStorage.getItem('data_user_token'),
             urlValue: '',
             modelObject: {},
@@ -592,6 +597,7 @@ export default {
                         ':' +
                         this.model_info_data.port;
                     // this.pageObj = { ...res.data };
+                    this.model_state = res.data.model_info_data.state;
                 });
         },
         handleChange(value) {

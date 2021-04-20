@@ -87,7 +87,7 @@
                         prop="description"
                         label="描述信息"
                     ></el-table-column>
-                    <el-table-column label="操作" width="200">
+                    <el-table-column label="操作" width="260">
                         <template slot-scope="scope">
                             <el-button
                                 size="mini"
@@ -96,11 +96,19 @@
                             >
                                 部署
                             </el-button>
+
                             <el-button
                                 size="mini"
                                 @click="exportModel(scope.row)"
                             >
                                 导出
+                            </el-button>
+                            <el-button
+                                size="mini"
+                                @click="goOnlineDetail(scope.row)"
+                                v-if="scope.row.status === 'SUCCEED'"
+                            >
+                                查看详情
                             </el-button>
                         </template>
                     </el-table-column>
@@ -210,6 +218,18 @@ export default {
             this.$router.push({
                 name: 'modelDetail',
                 params: { model_only_name: obj.model_only_name }
+            });
+        },
+        goOnlineDetail(obj) {
+            this.$router.push({
+                name: 'onlineDetail',
+                params: {
+                    modelObject: {
+                        version: obj.version,
+                        model_only_name: this.model_only_name,
+                        mid: 123
+                    }
+                }
             });
         },
         handleSizeChange2(val) {
