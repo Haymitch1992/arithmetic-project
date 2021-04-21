@@ -244,7 +244,8 @@ export default {
         },
         getVersions() {
             // GET_MODEL_VERSION
-
+            this.modelList = [];
+            this.loading2 = true;
             this.$api
                 .get(GET_MODEL_VERSION, {
                     data_user_id: localStorage.getItem('data_user_id'),
