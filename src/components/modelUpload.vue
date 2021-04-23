@@ -25,12 +25,8 @@
                         v-model="form.model_type"
                         placeholder="请选择模型类别"
                     >
-                        <el-option label="Keras H5" value="h5"></el-option>
-                        <el-option label="Pytorch Pt" value="pt"></el-option>
-                        <el-option
-                            label="scikit-learn PMML"
-                            value="pmml"
-                        ></el-option>
+                        <el-option label="PMML" value="pmml"></el-option>
+                        <el-option label="TorchScript" value="pt"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="框架名称" prop="frame_name">
@@ -45,8 +41,9 @@
                         v-model="form.model_category"
                         placeholder="请选择模型类别"
                     >
-                        <el-option label="文本类" value="1"></el-option>
-                        <el-option label="图像、视频类" value="2"></el-option>
+                        <el-option label="Image/Video" value="2"></el-option>
+                        <el-option label="Text" value="1"></el-option>
+                        <el-option label="Audio" value="3"></el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
@@ -98,14 +95,11 @@ export default {
         form: {
             handler(newName, oldName) {
                 switch (newName.model_type) {
-                    case 'h5':
-                        this.form.frame_name = 'Keras';
-                        break;
                     case 'pt':
                         this.form.frame_name = 'Pytorch';
                         break;
                     case 'pmml':
-                        this.form.frame_name = 'scikit-learn';
+                        this.form.frame_name = '---';
                         break;
                     default:
                         this.form.frame_name = '';
@@ -161,7 +155,7 @@ export default {
                 model_describe: '', // 模型描述
                 model_type: '',
                 frame_name: '', // 框架名称
-                model_category: '1'
+                model_category: '2'
             },
             fileStatusText: {
                 success: '成功',
