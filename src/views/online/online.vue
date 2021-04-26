@@ -136,7 +136,7 @@ export default {
                 case 1:
                     return '文本类';
                 case 2:
-                    return '图象类';
+                    return '图像类';
             }
         },
         create_time(val) {
