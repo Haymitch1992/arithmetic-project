@@ -965,9 +965,16 @@ export default {
                     data_set_id: this.data_set_id
                 })
                 .then(res => {
-                    this.data_id = res.data.data_id;
-                    this.getSetData();
-                    this.getChartData('myChart3', this.data_id);
+                    if (res.data.code === 200) {
+                        this.data_id = res.data.data_id;
+                        this.getSetData();
+                        this.getChartData('myChart3', this.data_id);
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: res.data.mes
+                        });
+                    }
                 });
         },
         // 获取标注数据

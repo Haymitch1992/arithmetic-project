@@ -299,6 +299,7 @@
                     :action="UPLOAD_FILE"
                     :on-success="handleAvatarSuccess"
                     :auto-upload="false"
+                    accept=".csv"
                 >
                     <i class="el-icon-upload"></i>
                     <div class="el-upload__text">
@@ -1019,6 +1020,11 @@ export default {
                 this.dialogTableVisible = false;
                 // 更新列表数据
                 this.getAllData();
+            } else {
+                this.$message({
+                    type: 'error',
+                    message: res.mes
+                });
             }
         },
         getFormValue(id) {

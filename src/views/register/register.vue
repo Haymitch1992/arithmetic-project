@@ -2,7 +2,7 @@
     <div class="bg">
         <div class="login-box">
             <div class="login-img">
-                <img src="../../assets/img/login-1.jpg" alt="">
+                <img src="../../assets/img/login-1.jpg" alt="" />
             </div>
             <div class="login-container">
                 <h2 class="login-title">算法中台</h2>
@@ -10,34 +10,63 @@
                 <el-form ref="form" :model="form" :rules="rules">
                     <el-form-item prop="user_email">
                         <el-input
-                                v-model="form.user_email" placeholder="邮箱"></el-input>
+                            v-model="form.user_email"
+                            placeholder="邮箱"
+                        ></el-input>
                     </el-form-item>
                     <el-form-item prop="auth_code">
                         <el-input
-                                v-model="form.auth_code" placeholder="输入验证码" style="width: 230px; margin-right: 10px;" ></el-input>
+                            v-model="form.auth_code"
+                            placeholder="输入验证码"
+                            style="width: 230px; margin-right: 10px;"
+                        ></el-input>
                         <el-button
-                                type="primary"
-                                style="width: 144px;"
-                                :disabled="!canClick"
-                                plain @click="checkEmail('form')">{{!canClick ? countNumber : "发送验证码"}}</el-button>
+                            type="primary"
+                            style="width: 144px;"
+                            :disabled="!canClick"
+                            plain
+                            @click="checkEmail('form')"
+                        >
+                            {{ !canClick ? countNumber : '发送验证码' }}
+                        </el-button>
                     </el-form-item>
                     <el-form-item prop="user_name">
                         <el-input
-                                v-model="form.user_name" placeholder="用户名"></el-input>
+                            v-model="form.user_name"
+                            placeholder="用户名"
+                        ></el-input>
                     </el-form-item>
                     <el-form-item prop="user_password">
                         <el-input
-                                show-password
-                                v-model="form.user_password" placeholder="6-16位密码区分大小写" type="password"></el-input>
+                            show-password
+                            v-model="form.user_password"
+                            placeholder="6-16位密码区分大小写"
+                            type="password"
+                        ></el-input>
                     </el-form-item>
                     <el-form-item prop="user_password_repetition">
                         <el-input
-                                show-password
-                                v-model="form.user_password_repetition" placeholder="确认密码" type="password"></el-input>
+                            show-password
+                            v-model="form.user_password_repetition"
+                            placeholder="确认密码"
+                            type="password"
+                        ></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button style="width: 180px;" type="primary" @click="checkData('form')">注册</el-button>
-                        <el-button type="text" style="float: right;" @click.native="$router.push('/login')">使用已有账户登录</el-button>
+                        <el-button
+                            style="width: 180px;"
+                            type="primary"
+                            @click="checkData('form')"
+                        >
+                            注册
+                        </el-button>
+                        <el-button
+                            type="text"
+                            style="float: right;"
+                            @click.native="$router.push('/login')"
+                        >
+                            使用已有账户登录
+                        </el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -47,7 +76,12 @@
 
 <script>
 import axios from 'axios';
-import { GET_CHECK_EMAIL, GET_CHECK_USERNAME, POST_EMAIL_VERIFY, POST_REGISTER_DATA } from '../../assets/url';
+import {
+    GET_CHECK_EMAIL,
+    GET_CHECK_USERNAME,
+    POST_EMAIL_VERIFY,
+    POST_REGISTER_DATA
+} from '../../assets/url';
 export default {
     name: 'home',
     filters: {
@@ -122,13 +156,53 @@ export default {
                 user_password_repetition: ''
             },
             rules: {
-                user_name: [{ required: true, message: '请输入用户名', trigger: 'blur' }, { validator: validUserName, trigger: 'blur' }],
-                auth_code: [{ required: true, message: '请输入验证码', trigger: 'blur' }, { min: 4, max: 6, message: '长度在 4 到 6 个字符', trigger: 'blur' }],
-                user_email: [{ required: true, message: '请输入邮箱', trigger: 'blur' }, { validator: validateEmail, trigger: 'blur' }, { validator: validEmail, trigger: 'blur' }],
-                user_password: [{ required: true, message: '请输入密码', trigger: 'blur' }, { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' }],
+                user_name: [
+                    {
+                        required: true,
+                        message: '请输入用户名',
+                        trigger: 'blur'
+                    },
+                    { validator: validUserName, trigger: 'blur' }
+                ],
+                auth_code: [
+                    {
+                        required: true,
+                        message: '请输入验证码',
+                        trigger: 'blur'
+                    },
+                    {
+                        min: 4,
+                        max: 6,
+                        message: '长度在 4 到 6 个字符',
+                        trigger: 'blur'
+                    }
+                ],
+                user_email: [
+                    { required: true, message: '请输入邮箱', trigger: 'blur' },
+                    { validator: validateEmail, trigger: 'blur' },
+                    { validator: validEmail, trigger: 'blur' }
+                ],
+                user_password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    {
+                        min: 6,
+                        max: 16,
+                        message: '长度在 6 到 16 个字符',
+                        trigger: 'blur'
+                    }
+                ],
                 user_password_repetition: [
-                    { required: true, message: '请输入确认密码', trigger: 'blur' },
-                    { min: 6, max: 16, message: '长度在 6 到 16 个字符', trigger: 'blur' },
+                    {
+                        required: true,
+                        message: '请输入确认密码',
+                        trigger: 'blur'
+                    },
+                    {
+                        min: 6,
+                        max: 16,
+                        message: '长度在 6 到 16 个字符',
+                        trigger: 'blur'
+                    },
                     { validator: validatePass2, trigger: 'blur' }
                 ]
             }
@@ -155,6 +229,7 @@ export default {
             });
         },
         sendEmail() {
+            this.canClick = false;
             this.$api
                 .post(POST_EMAIL_VERIFY, {
                     user_email: this.form.user_email
@@ -166,7 +241,7 @@ export default {
                         this.canClick = false;
                         this.timer = setInterval(() => {
                             this.countNumber--;
-                            if (this.countNumber < 0) {
+                            if (this.countNumber <= 0) {
                                 clearInterval(this.timer);
                                 this.countNumber = 60;
                                 this.timer = '';
@@ -174,6 +249,7 @@ export default {
                             }
                         }, 1000);
                     } else {
+                        this.canClick = true;
                         this.$message({
                             type: 'error',
                             message: res.data.mes
@@ -190,9 +266,18 @@ export default {
                     user_password: this.form.user_password
                 })
                 .then(res => {
-                    console.log(res);
                     if (res.data.code === 200) {
+                        this.$message({
+                            type: 'success',
+                            message: '注册成功'
+                        });
                         this.$router.push('/login');
+                    } else {
+                        // 异常情况提示
+                        this.$message({
+                            type: 'error',
+                            message: res.data.mes
+                        });
                     }
                 });
         }

@@ -134,9 +134,11 @@ export default {
         categoryStatusZn(val) {
             switch (val) {
                 case 1:
-                    return '文本类';
+                    return 'Image/Video';
                 case 2:
-                    return '图像类';
+                    return 'Text';
+                case 3:
+                    return 'Audio';
             }
         },
         create_time(val) {

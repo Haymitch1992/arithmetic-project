@@ -46,7 +46,7 @@ function apiAxios(method, url, params) {
         // if (params) {
         //   params = filterNull(params)
         // }
-        console.log(url);
+        // console.log(url);
         service({
             method: method,
             url: url,
