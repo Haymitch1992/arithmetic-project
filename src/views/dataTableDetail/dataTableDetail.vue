@@ -974,6 +974,9 @@ export default {
                             type: 'error',
                             message: res.data.mes
                         });
+                        this.$router.push({
+                            name: 'dataManagement'
+                        });
                     }
                 });
         },

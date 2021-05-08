@@ -5,7 +5,7 @@
                 <img src="../../assets/img/login-1.jpg" alt="" />
             </div>
             <div class="login-container">
-                <h2 class="login-title">算法中台</h2>
+                <h2 class="login-title">数据智能</h2>
                 <span class="register-label">注册</span>
                 <el-form ref="form" :model="form" :rules="rules">
                     <el-form-item prop="user_email">

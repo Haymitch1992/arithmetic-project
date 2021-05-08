@@ -6,7 +6,7 @@
                 class="system-logo"
                 alt=""
             />
-            算法中台
+            数据智能
         </h2>
         <div class="menu-container">
             <el-menu
