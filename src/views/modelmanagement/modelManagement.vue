@@ -274,12 +274,12 @@ export default {
                     model_only_name: item.name
                 })
                 .then(res => {
-                    this.downLoadFile(res.data.zip_path);
+                    this.downLoadFile(res.data.zip_path); // 去掉第一斜杠
                 });
         },
         downLoadFile(str) {
             // 导出数据集
-            window.location.href = this.globalUlr + str;
+            window.location.href = this.globalUlr + str.slice(1);
         },
         // 部署模型
         deploy(item) {
