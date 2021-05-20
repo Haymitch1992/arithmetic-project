@@ -33,7 +33,7 @@
                                     </span>
                                     <span class="list-text">模型名称</span>
                                     <span class="list-content">
-                                        {{ model_data.model_name }}分钟
+                                        {{ model_data.model_name }}
                                     </span>
                                 </li>
                                 <li>
@@ -156,7 +156,7 @@
                         </el-dialog>
                     </el-tab-pane>
                     <el-tab-pane label="事件查看" name="second">
-                        <el-table :data="checked_all_incident">
+                        <el-table :data="incident_data">
                             <el-table-column label="事件类型">
                                 <template slot-scope="scope">
                                     <span
@@ -176,7 +176,15 @@
                                 prop="create_time"
                                 label="事件发生时间"
                                 sortable
-                            ></el-table-column>
+                            >
+                                <template slot-scope="scope">
+                                    <span>
+                                        {{
+                                            scope.row.create_time | create_time
+                                        }}
+                                    </span>
+                                </template>
+                            </el-table-column>
                         </el-table>
                         <div class="pagination-line">
                             <el-pagination
@@ -187,32 +195,49 @@
                                 :page-sizes="[10, 20, 30, 40]"
                                 :page-size="pageSize"
                                 layout="total, sizes, prev, pager, next, jumper"
-                                :total="all_incident.length"
+                                :total="incident_data_count"
                             ></el-pagination>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="日志查看" name="third">
                         <div>
-                            <el-date-picker
-                                v-model="value1"
-                                type="daterange"
-                                range-separator="至"
-                                start-placeholder="开始日期"
-                                size="small"
-                                value-format="yyyy-MM-dd"
-                                end-placeholder="结束日期"
-                            ></el-date-picker>
-                            <el-button
-                                type="primary"
-                                size="small"
-                                @click="postLogQuery"
-                                style="width: 120px;"
-                            >
-                                搜索
-                            </el-button>
-                        </div>
-                        <div class="log-box">
-                            <pre>{{ logJson }}</pre>
+                            <el-table :data="modelLogList">
+                                <el-table-column
+                                    prop="data"
+                                    :show-overflow-tooltip="true"
+                                    label="参数"
+                                ></el-table-column>
+                                <el-table-column
+                                    prop="mes"
+                                    label="返回值"
+                                ></el-table-column>
+                                <el-table-column
+                                    prop="create_time"
+                                    label="时间"
+                                    sortable
+                                >
+                                    <template slot-scope="scope">
+                                        <span>
+                                            {{
+                                                scope.row.create_time
+                                                    | create_time
+                                            }}
+                                        </span>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                            <div class="pagination-line">
+                                <el-pagination
+                                    @size-change="handleSizeChange1"
+                                    background
+                                    @current-change="handleCurrentChange1"
+                                    :current-page="modelPage"
+                                    :page-sizes="[10, 20, 30, 40]"
+                                    :page-size="modelSize"
+                                    layout="total, sizes, prev, pager, next, jumper"
+                                    :total="modelCount"
+                                ></el-pagination>
+                            </div>
                         </div>
                     </el-tab-pane>
                     <el-tab-pane label="监控信息" name="fourth">
@@ -426,11 +451,12 @@
 <script>
 import moment from 'moment';
 import {
-    POST_LOG_QUERY,
     POST_MODEL_INFO,
     POST_MODEL_LOG,
     POST_MODEL_SHOW,
-    POST_MODEL_STATUS
+    POST_MODEL_STATUS,
+    GET_MODEL_INCIDENT,
+    GET_MODEL_LOG
 } from '../../assets/url';
 export default {
     name: 'home',
@@ -438,7 +464,7 @@ export default {
         typeZn(val) {
             switch (val) {
                 case 1:
-                    return '正常';
+                    return '成功';
                 case 0:
                     return '失败';
                 case 3:
@@ -466,6 +492,8 @@ export default {
                 value3: false,
                 value4: false
             },
+            incident_data: [],
+            incident_data_count: 0,
             logJson: {},
             model_data: {},
             model_info_data: {},
@@ -506,41 +534,44 @@ export default {
                 }
             ],
             mid: '',
-            pageSize: 10
+            pageSize: 10,
+            modelSize: 10,
+            modelPage: 1,
+            modelCount: 0,
+            modelLogList: [],
+            deploy_model_id: ''
         };
     },
     methods: {
         backPage() {
             this.$router.push('/online');
         },
-        postLogQuery() {
-            if (!this.value1[0]) {
-                this.$message.error('请选择日期');
-                return;
-            }
-            let startTimeList = this.value1[0].split('-');
-            let endTimeList = this.value1[1].split('-');
+
+        // 获取模型日志
+        getModelLog() {
             this.$api
-                .post(POST_LOG_QUERY, {
+                .get(GET_MODEL_LOG, {
                     data_user_id: localStorage.getItem('data_user_id'),
-                    deploy_model_id: this.mid,
-                    start_time: {
-                        start_year: parseInt(startTimeList[0]),
-                        start_month: parseInt(startTimeList[1]),
-                        start_day: parseInt(startTimeList[2])
-                    },
-                    end_time: {
-                        end_year: parseInt(endTimeList[0]),
-                        end_month: parseInt(endTimeList[1]),
-                        end_day: parseInt(endTimeList[2])
-                    }
+                    deploy_model_id: this.deploy_model_id,
+                    size: this.modelSize,
+                    page: this.modelPage
                 })
                 .then(res => {
-                    if (res.data.code === 200) {
-                        this.logJson = res.data.all_log_data;
-                    } else {
-                        this.logJson = [];
-                    }
+                    this.modelLogList = res.data.log_data;
+                    this.modelCount = res.data.count;
+                });
+        },
+        getModelIncident() {
+            this.$api
+                .get(GET_MODEL_INCIDENT, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    deploy_model_id: this.deploy_model_id,
+                    size: this.pageSize,
+                    page: this.currentPage4
+                })
+                .then(res => {
+                    this.incident_data = res.data.incident_data;
+                    this.incident_data_count = res.data.count;
                 });
         },
         // 修改服务状态
@@ -568,7 +599,6 @@ export default {
                     this.all_incident = res.data.all_incident;
                     this.handleCurrentChange(1);
                     // this.isStart = res.data.model_type ? true : false
-                    console.log(res.data.all_incident);
                 });
         },
         getLogInfo() {
@@ -598,6 +628,9 @@ export default {
                         this.model_info_data.port;
                     // this.pageObj = { ...res.data };
                     this.model_state = res.data.model_info_data.state;
+                    this.deploy_model_id = res.data.model_info_data.id;
+                    this.getModelIncident();
+                    this.getModelLog();
                 });
         },
         handleChange(value) {
@@ -628,16 +661,22 @@ export default {
         },
         handleSizeChange(val) {
             this.pageSize = val;
-            let start = (this.currentPage - 1) * val;
-            let end = this.currentPage * val;
-            this.checked_all_incident = this.all_incident.slice(start, end);
+            this.getModelIncident();
             console.log(`每页 ${val} 条`);
         },
         handleCurrentChange(val) {
-            this.currentPage = val;
-            let start = (val - 1) * this.pageSize;
-            let end = val * this.pageSize;
-            this.checked_all_incident = this.all_incident.slice(start, end);
+            this.currentPage4 = val;
+            this.getModelIncident();
+            console.log(`当前页: ${val}`);
+        },
+        handleSizeChange1(val) {
+            this.modelSize = val;
+            this.getModelLog();
+            console.log(`每页 ${val} 条`);
+        },
+        handleCurrentChange1(val) {
+            this.modelPage = val;
+            this.getModelLog();
             console.log(`当前页: ${val}`);
         }
     },
@@ -646,6 +685,7 @@ export default {
             this.mid = this.$route.params.modelObject;
             this.modelObject = this.$route.params.modelObject;
             this.getInfo();
+
             // this.getLogInfo();
             // this.getEventInfo();
             // console.log(this.$route.params.mid);

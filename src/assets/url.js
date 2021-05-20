@@ -105,7 +105,8 @@ export const GET_MODEL_VERSION = '/api/versionsData/';
 export const GET_MODEL_INFO = '/api/modelInfo/';
 // 模型删除
 export const POST_DELETE_MODEL = '/api/delModelData/';
-
+// 获取模型部署事件记录
+export const GET_MODEL_INCIDENT = '/api/modelIncident/';
 // 模型信息修改
 export const POST_CHANGE_MODEL = '/api/alterModelData/';
 // 已部署模型展示
@@ -127,8 +128,9 @@ export const POST_MODEL_SHOW = '/api/incidentShow/';
 export const POST_MODEL_LOG = '/api/logRecord/';
 // 修改模型部署状态
 export const POST_MODEL_STATUS = '/api/alterTheState/';
-// 调用日志查询
-export const POST_LOG_QUERY = '/api/logQuery/';
+
+// 模型调试日志
+export const GET_MODEL_LOG = '/api/modelLog/';
 // 机器学习模板 列表
 export const GET_ALL_MODEL_TEMPLATE = '/api/allModelTemplate/';
 // 模型在线调试
