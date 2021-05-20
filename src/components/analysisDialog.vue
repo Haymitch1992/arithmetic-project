@@ -8,7 +8,6 @@
             width="70%"
             :before-close="handleClose"
         >
-            <el-button @click="test">测试</el-button>
             <!--聚类-->
             <div
                 style="max-height:60vh;overflow-y:auto;"
@@ -217,7 +216,7 @@
                                 top: (arr1.length * 100) / 2 - 10 + 'px'
                             }"
                         >
-                            预测
+                            真实
                         </span>
                         <span
                             class="pos-span-2"
@@ -225,7 +224,7 @@
                                 left: (arr1.length * 100) / 2 - 30 + 'px'
                             }"
                         >
-                            真实
+                            预测
                         </span>
                     </div>
                 </div>
@@ -278,7 +277,7 @@
                                 top: (arr1.length * 100) / 2 - 10 + 'px'
                             }"
                         >
-                            预测
+                            真实
                         </span>
                         <span
                             class="pos-span-2"
@@ -286,7 +285,7 @@
                                 left: (arr1.length * 100) / 2 - 30 + 'px'
                             }"
                         >
-                            真实
+                            预测
                         </span>
                     </div>
                 </div>
@@ -453,7 +452,7 @@
                                 top: (arr1.length * 100) / 2 - 10 + 'px'
                             }"
                         >
-                            预测
+                            真实
                         </span>
                         <span
                             class="pos-span-2"
@@ -461,7 +460,7 @@
                                 left: (arr1.length * 100) / 2 - 30 + 'px'
                             }"
                         >
-                            真实
+                            预测
                         </span>
                     </div>
                 </div>
@@ -634,14 +633,7 @@ export default {
     },
     methods: {
         // 测试
-        test() {
-            this.$api
-                .get(GET_RESULT_REPORT, {
-                    run_uuid: 'ffd41ca53cea4a2aae34a6c1114d4bb0',
-                    index: 'input_data_rf_features' // 列表
-                })
-                .then(res => {});
-        },
+
         // 获取roc
         getRoc() {
             this.$api
@@ -750,11 +742,19 @@ export default {
                                 lineStyle: {
                                     color: '#fff'
                                 }
+                            },
+                            nameTextStyle: {
+                                align: 'right',
+                                padding: [60, 0, 0, 0]
                             }
                         },
                         yAxis: {
                             type: 'value',
                             name: 'Number of Predicted Class',
+
+                            nameTextStyle: {
+                                padding: [0, 0, 0, 50]
+                            },
                             axisLine: {
                                 lineStyle: {
                                     color: '#fff'
@@ -1345,14 +1345,14 @@ export default {
     }
     .matrix-box {
         margin-top: 50px;
-        margin-left: 80px;
+        margin-left: 100px;
         border-left: 1px solid #eee;
         border-top: 1px solid #eee;
         box-sizing: border-box;
         position: relative;
         .pos-span-1 {
             position: absolute;
-            left: -80px;
+            left: -120px;
             top: 0px;
             transform: rotateZ(-90deg);
             display: inline-block;

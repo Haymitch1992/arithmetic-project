@@ -185,7 +185,7 @@ export default {
             this.getModelInfo();
             this.getVersions();
         } else {
-            this.backList();
+            this.$router.push('/modelManagement');
         }
     },
     methods: {

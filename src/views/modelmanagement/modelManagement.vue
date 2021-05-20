@@ -312,10 +312,18 @@ export default {
                     model_only_name: this.model_only_name
                 })
                 .then(res => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
+                    if (res.data.code === 200) {
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: res.data.mes
+                        });
+                    }
+
                     this.getModelData();
                 });
         },

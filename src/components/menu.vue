@@ -10,7 +10,7 @@
         </h2>
         <div class="menu-container">
             <el-menu
-                default-active="2"
+                :default-active="currentPageNum"
                 class="el-menu-vertical-demo"
                 @select="handleSelect"
             >
@@ -36,6 +36,11 @@
 
 <script>
 export default {
+    data() {
+        return {
+            currentPageNum: '2'
+        };
+    },
     methods: {
         handleSelect(key, keyPath) {
             // 根据index 判断页面跳转
@@ -72,6 +77,32 @@ export default {
         },
         goHelpPage() {
             this.$router.push('/help');
+        }
+    },
+    mounted() {
+        console.log(this.$route.path);
+        switch (this.$route.path) {
+            case '/plan':
+                this.currentPageNum = '1';
+                break;
+            case '/dataManagement':
+                this.currentPageNum = '2';
+                break;
+            case '/projectManagement':
+                this.currentPageNum = '3';
+                break;
+            case '/modelManagement':
+                this.currentPageNum = '4';
+                break;
+            case '/modelDetail':
+                this.currentPageNum = '4';
+                break;
+            case '/online':
+                this.currentPageNum = '5';
+                break;
+            case '/onlineDetail':
+                this.currentPageNum = '5';
+                break;
         }
     }
 };

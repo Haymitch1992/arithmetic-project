@@ -160,21 +160,46 @@ export default {
     },
     methods: {
         changeModelStatus(str, item) {
-            this.$api
-                .post(POST_DEPLOY_MODEL, {
-                    user_id: localStorage.getItem('data_user_id'),
-                    model_name: item.model_only_name,
-                    model_version: item.version,
-                    model_image_name: item.model_image_name,
-                    container_name: item.container_name,
-                    order: str
-                })
-                .then(res => {
-                    if (res.data.status === 'success') {
-                        this.$message.success('操作成功');
-                    }
+            let textStr = '';
+            switch (str) {
+                case 'stop':
+                    textStr = '停止';
+                    break;
+                case 'reboot':
+                    textStr = '启动';
+                    break;
+                case 'delete':
+                    textStr = '删除';
+                    break;
+            }
+            this.$confirm(`是否继续${textStr}?`, '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+                .then(() => {
+                    this.$api
+                        .post(POST_DEPLOY_MODEL, {
+                            user_id: localStorage.getItem('data_user_id'),
+                            model_name: item.model_only_name,
+                            model_version: item.version,
+                            model_image_name: item.model_image_name,
+                            container_name: item.container_name,
+                            order: str
+                        })
+                        .then(res => {
+                            if (res.data.status === 'success') {
+                                this.$message.success('操作成功');
+                            }
 
-                    this.getList();
+                            this.getList();
+                        });
+                })
+                .catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: `已取消${textStr}`
+                    });
                 });
         },
         exportModel(mid) {

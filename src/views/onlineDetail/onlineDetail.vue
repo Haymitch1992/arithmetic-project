@@ -690,6 +690,7 @@ export default {
             // this.getEventInfo();
             // console.log(this.$route.params.mid);
         } else {
+            this.$router.push('/online');
             console.log('没有参数');
         }
     }
