@@ -466,6 +466,7 @@
                         <el-table-column
                             v-for="(item, key) in dataStructureList[0]"
                             :key="key"
+                            :show-overflow-tooltip="true"
                             :prop="key"
                             :label="key"
                             width="180"
