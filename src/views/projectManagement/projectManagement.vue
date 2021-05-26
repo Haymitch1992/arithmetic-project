@@ -442,8 +442,19 @@ export default {
                                 .project_description
                         })
                         .then(res => {
-                            this.resetForm();
-                            this.getAllData();
+                            if (res.data.code === 200) {
+                                this.resetForm();
+                                this.getAllData();
+                                this.$message({
+                                    type: 'success',
+                                    message: '创建成功'
+                                });
+                            } else {
+                                this.$message({
+                                    type: 'error',
+                                    message: res.data.mes
+                                });
+                            }
                         });
                 } else {
                     console.log('error submit!!');
