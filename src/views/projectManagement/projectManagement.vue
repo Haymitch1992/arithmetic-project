@@ -271,10 +271,16 @@ export default {
                 file.type === 'application/vnd.ms-excel';
             const isLt2M = file.size / 1024 / 1024 < 20;
             if (!isJPG) {
-                this.$message.error('上传文件只能是txt或cvs格式!');
+                this.$message({
+                    type: 'error',
+                    message: '上传文件只能是txt或cvs格式!'
+                });
             }
             if (!isLt2M) {
-                this.$message.error('上传文件大小不能超过 20MB!');
+                this.$message({
+                    type: 'error',
+                    message: '上传文件大小不能超过 20MB!'
+                });
             }
             return isJPG && isLt2M;
         },
