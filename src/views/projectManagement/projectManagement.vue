@@ -224,7 +224,13 @@ export default {
                             data_project_id: id
                         })
                         .then(res => {
-                            this.getAllData();
+                            if (res.data.code === 200) {
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功'
+                                });
+                                this.getAllData();
+                            }
                         });
                 })
                 .catch(() => {

@@ -226,37 +226,12 @@
             ></testLog>
         </div>
         <demonStation v-if="this.$store.state.demoStationStatus"></demonStation>
-        <!--创建实验-->
-        <el-dialog
-            title="创建实验"
-            :visible.sync="dialogFormVisible"
-            :close-on-click-modal="false"
-            class="create-test"
-        >
-            <el-form>
-                <el-form-item label="实验名称">
-                    <el-input
-                        v-model="form.test_name"
-                        autocomplete="off"
-                    ></el-input>
-                </el-form-item>
-                <el-form-item label="实验描述">
-                    <el-input
-                        v-model="form.test_content"
-                        autocomplete="off"
-                    ></el-input>
-                </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="closeDialog">取 消</el-button>
-                <el-button type="primary" v-if="!btnShow" @click="createTest">
-                    确 定
-                </el-button>
-                <el-button type="primary" v-if="btnShow" @click="editeTest">
-                    确 定
-                </el-button>
-            </div>
-        </el-dialog>
+        <!-- 创建实验组件 -->
+        <create-test-box
+            :dialogFormVisible="dialogFormVisible"
+            @createTest="createTest"
+            @closeDialog="closeDialog"
+        ></create-test-box>
         <!-- 数据集数据展示 -->
         <dataDialog></dataDialog>
         <logDialog v-if="this.$store.state.logDialog"></logDialog>
@@ -273,6 +248,7 @@
 </template>
 
 <script>
+import createTestBox from '../../components/createTest';
 import {
     diagramExampleData,
     nodeLabel6,
@@ -331,7 +307,8 @@ export default {
         analysisDialog,
         viewDataDialog,
         testLog,
-        searchBox
+        searchBox,
+        createTestBox
     },
     computed: {
         currentTabNum() {
@@ -1107,10 +1084,9 @@ export default {
             }
         },
         closeDialog() {
-            this.form.test_name = '';
-            this.form.test_content = '';
             this.dialogFormVisible = false;
         },
+        // 修改实验名称和描述
         editeTest() {
             this.$api
                 .post(POST_TEST_EDIT, {
@@ -1127,21 +1103,32 @@ export default {
                 });
         },
         // 创建实验
-        createTest() {
+        createTest(obj) {
             this.$api
                 .post(CREATE_TEST, {
                     data_user_id: localStorage.getItem('data_user_id'),
                     test_project_id: this.data_project_id,
-                    test_name: this.form.test_name,
-                    test_content: this.form.test_content
+                    test_name: obj.test_name,
+                    test_content: obj.test_content
                 })
                 .then(res => {
-                    this.allTest();
-                    // 初次使用 创建实验后 继续提示
-                    if (this.$store.state.step === 2) {
-                        this.$store.commit('changeDemoStaion', true);
+                    if (res.data.code === 200) {
+                        this.allTest();
+                        // 初次使用 创建实验后 继续提示
+                        if (this.$store.state.step === 2) {
+                            this.$store.commit('changeDemoStaion', true);
+                        }
+                        this.dialogFormVisible = false;
+                        this.$message({
+                            type: 'success',
+                            message: '创建成功'
+                        });
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: '创建失败'
+                        });
                     }
-                    this.dialogFormVisible = false;
                 });
         },
         // 删除实验
@@ -1157,8 +1144,13 @@ export default {
                         type: 'success',
                         message: '删除成功'
                     });
+                    // 根据实验id 删除导航中的标签
+                    this.choiceNodeList.forEach((item, index) => {
+                        if (item.id === this.data_test_id) {
+                            this.choiceNodeList.splice(index, 1);
+                        }
+                    });
                     this.allTest();
-                    console.log(res);
                 });
         },
         getNodeList() {
