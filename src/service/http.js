@@ -12,6 +12,10 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
     config => {
+        // 如果 data_user_token 和  data_user_id 是空则跳转至登录
+        if ((!localStorage.getItem('data_user_token')) || (!localStorage.getItem('data_user_id'))) {
+            location.href = '#/login';
+        }
         // do something before request is sent
         config.headers["usertoken"] = localStorage.getItem('data_user_token');
         config.headers["datauserid"] = localStorage.getItem('data_user_id');
@@ -31,6 +35,10 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     response => {
         if (response.data.code === 1010) {
+            // 清除缓存
+            localStorage.setItem('data_user_token', '');
+            localStorage.setItem('data_user_id', '');
+            // 跳转至登录页
             location.href = '#/login';
         }
         // 如果返回值 是1010重新登录

@@ -440,6 +440,14 @@ export default {
         this.postNodeStair();
         this.$store.commit('changeCount', 0);
         // 取 localStorage.setItem("data_project_id", "id");
+        this.$store.commit(
+            'changeUserName',
+            localStorage.getItem('data_user_name')
+        );
+        this.$store.commit(
+            'changeUserEmail',
+            localStorage.getItem('data_user_email')
+        );
     },
     beforeDestroy() {
         this.onkeydown = null; // 销毁事件

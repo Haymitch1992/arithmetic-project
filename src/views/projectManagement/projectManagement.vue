@@ -240,8 +240,14 @@ export default {
                 name: 'diagramExample',
                 params: { data_project_id: id }
             });
+            // 在新窗口中同步数据
             localStorage.setItem('data_project_id', id);
             localStorage.setItem('data_project_name', proName);
+            localStorage.setItem('data_user_name', this.$store.state.userName);
+            localStorage.setItem(
+                'data_user_email',
+                this.$store.state.userEmail
+            );
             window.open(routeJump.href, '_blank');
             // 保存当前项目名
         },

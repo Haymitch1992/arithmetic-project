@@ -1,14 +1,14 @@
 <template>
     <div class="info-drop-down-box">
-        <img src="../assets/img/person.jpg" alt="" class="info-img">
-        <p>{{$store.state.userName}}</p>
-        <p>{{$store.state.userEmail}}</p>
+        <img src="../assets/img/person.jpg" alt="" class="info-img" />
+        <p>{{ $store.state.userName }}</p>
+        <p>{{ $store.state.userEmail }}</p>
         <ul class="info-drop-down-ul">
             <li @click="goPersonalPage()">
                 <p>
                     <span class="iconfont icongerenzhongxin"></span>
                 </p>
-                <p >个人中心</p>
+                <p>个人中心</p>
             </li>
             <li @click="logOut">
                 <p>
@@ -21,20 +21,19 @@
 </template>
 
 <script>
-    export default {
-        name: "logo-info",
-        methods: {
-            logOut () {
-                localStorage.setItem('data_user_token', '');
-                this.$router.push('/login');
-            },
-            goPersonalPage() {
-                this.$router.push('/personal');
-            }
+export default {
+    name: 'logo-info',
+    methods: {
+        logOut() {
+            localStorage.setItem('data_user_token', '');
+            localStorage.setItem('data_user_id', '');
+            this.$router.push('/login');
+        },
+        goPersonalPage() {
+            this.$router.push('/personal');
         }
-    };
+    }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
