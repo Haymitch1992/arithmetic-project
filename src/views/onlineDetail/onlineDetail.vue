@@ -685,7 +685,7 @@ export default {
             this.mid = this.$route.params.modelObject;
             this.modelObject = this.$route.params.modelObject;
             this.getInfo();
-
+            this.$store.commit('changeMenuIndex', '5');
             // this.getLogInfo();
             // this.getEventInfo();
             // console.log(this.$route.params.mid);

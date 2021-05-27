@@ -10,7 +10,7 @@
         </h2>
         <div class="menu-container">
             <el-menu
-                :default-active="currentPageNum"
+                :default-active="$store.state.menuCurrentIndex"
                 class="el-menu-vertical-demo"
                 @select="handleSelect"
             >
@@ -37,9 +37,7 @@
 <script>
 export default {
     data() {
-        return {
-            currentPageNum: '2'
-        };
+        return {};
     },
     methods: {
         handleSelect(key, keyPath) {
@@ -47,30 +45,35 @@ export default {
             let index = keyPath[keyPath.length - 1];
             switch (index) {
                 case '1':
+                    this.$store.commit('changeMenuIndex', '1');
                     this.$router.push('/plan');
                     break;
                 case '2':
+                    this.$store.commit('changeMenuIndex', '2');
                     this.$router.push('/dataManagement');
                     break;
-                // case '2-2':
-                //     this.$router.push('/dataTable') // 废弃
-                //     break
                 case '3':
+                    this.$store.commit('changeMenuIndex', '3');
                     this.$router.push('/projectManagement');
                     break;
                 case '3-2':
+                    this.$store.commit('changeMenuIndex', '3');
                     this.$router.push('/engineering');
                     break;
                 case '3-3':
+                    this.$store.commit('changeMenuIndex', '3');
                     this.$router.push('/selectAlgorithm');
                     break;
                 case '3-4':
+                    this.$store.commit('changeMenuIndex', '3');
                     this.$router.push('/assessAlgorithm');
                     break;
                 case '4':
+                    this.$store.commit('changeMenuIndex', '4');
                     this.$router.push('/modelManagement');
                     break;
                 case '5':
+                    this.$store.commit('changeMenuIndex', '4');
                     this.$router.push('/online');
                     break;
             }
@@ -80,28 +83,27 @@ export default {
         }
     },
     mounted() {
-        console.log(this.$route.path);
         switch (this.$route.path) {
             case '/plan':
-                this.currentPageNum = '1';
+                this.$store.commit('changeMenuIndex', '1');
                 break;
             case '/dataManagement':
-                this.currentPageNum = '2';
+                this.$store.commit('changeMenuIndex', '2');
                 break;
             case '/projectManagement':
-                this.currentPageNum = '3';
+                this.$store.commit('changeMenuIndex', '3');
                 break;
             case '/modelManagement':
-                this.currentPageNum = '4';
+                this.$store.commit('changeMenuIndex', '4');
                 break;
             case '/modelDetail':
-                this.currentPageNum = '4';
+                this.$store.commit('changeMenuIndex', '4');
                 break;
             case '/online':
-                this.currentPageNum = '5';
+                this.$store.commit('changeMenuIndex', '5');
                 break;
             case '/onlineDetail':
-                this.currentPageNum = '5';
+                this.$store.commit('changeMenuIndex', '5');
                 break;
         }
     }

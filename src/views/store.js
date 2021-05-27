@@ -18,6 +18,7 @@ let store = new Vuex.Store({
     num: 0,
     userName: '',
     userEmail: '',
+    menuCurrentIndex: '2',
     currentSelectDate: [],
     currentSelectNum: 0,
     progressDialog: false,
@@ -59,6 +60,9 @@ let store = new Vuex.Store({
     },
     changeStep(state, num) {
       state.step = num;
+    },
+    changeMenuIndex(state, num) {
+      state.menuCurrentIndex = num;
     },
     changeDemoStaion(state, type) {
       state.demoStationStatus = type;
