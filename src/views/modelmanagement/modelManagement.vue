@@ -208,6 +208,7 @@ export default {
     },
     mounted() {
         this.getModelData();
+        this.$store.commit('changeMenuIndex', '4');
     },
     methods: {
         updateFileList() {

@@ -44,10 +44,6 @@ export default {
             // 根据index 判断页面跳转
             let index = keyPath[keyPath.length - 1];
             switch (index) {
-                case '1':
-                    this.$store.commit('changeMenuIndex', '1');
-                    this.$router.push('/plan');
-                    break;
                 case '2':
                     this.$store.commit('changeMenuIndex', '2');
                     this.$router.push('/dataManagement');
@@ -55,18 +51,6 @@ export default {
                 case '3':
                     this.$store.commit('changeMenuIndex', '3');
                     this.$router.push('/projectManagement');
-                    break;
-                case '3-2':
-                    this.$store.commit('changeMenuIndex', '3');
-                    this.$router.push('/engineering');
-                    break;
-                case '3-3':
-                    this.$store.commit('changeMenuIndex', '3');
-                    this.$router.push('/selectAlgorithm');
-                    break;
-                case '3-4':
-                    this.$store.commit('changeMenuIndex', '3');
-                    this.$router.push('/assessAlgorithm');
                     break;
                 case '4':
                     this.$store.commit('changeMenuIndex', '4');
@@ -80,31 +64,6 @@ export default {
         },
         goHelpPage() {
             this.$router.push('/help');
-        }
-    },
-    mounted() {
-        switch (this.$route.path) {
-            case '/plan':
-                this.$store.commit('changeMenuIndex', '1');
-                break;
-            case '/dataManagement':
-                this.$store.commit('changeMenuIndex', '2');
-                break;
-            case '/projectManagement':
-                this.$store.commit('changeMenuIndex', '3');
-                break;
-            case '/modelManagement':
-                this.$store.commit('changeMenuIndex', '4');
-                break;
-            case '/modelDetail':
-                this.$store.commit('changeMenuIndex', '4');
-                break;
-            case '/online':
-                this.$store.commit('changeMenuIndex', '5');
-                break;
-            case '/onlineDetail':
-                this.$store.commit('changeMenuIndex', '5');
-                break;
         }
     }
 };

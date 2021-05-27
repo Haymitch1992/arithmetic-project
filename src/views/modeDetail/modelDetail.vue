@@ -184,6 +184,7 @@ export default {
             this.model_only_name = this.$route.params.model_only_name;
             this.getModelInfo();
             this.getVersions();
+            this.$store.commit('changeMenuIndex', '4');
         } else {
             this.$router.push('/modelManagement');
         }

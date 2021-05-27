@@ -157,6 +157,7 @@ export default {
     },
     mounted() {
         this.getList();
+        this.$store.commit('changeMenuIndex', '5');
     },
     methods: {
         changeModelStatus(str, item) {

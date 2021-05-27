@@ -199,6 +199,7 @@ export default {
         console.log(this.randomNum);
         this.createArr();
         this.allTest();
+        this.$store.commit('changeCount', 99);
     }
 };
 </script>

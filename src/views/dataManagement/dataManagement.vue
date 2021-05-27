@@ -694,6 +694,7 @@ export default {
     mounted() {
         this.getAllData();
         this.findTask();
+        this.$store.commit('changeMenuIndex', '2');
     },
     methods: {
         flyDom(x, y) {

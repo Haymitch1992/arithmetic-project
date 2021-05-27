@@ -402,6 +402,7 @@ export default {
             },
             false
         );
+        this.$store.commit('changeMenuIndex', '');
     }
 };
 </script>

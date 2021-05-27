@@ -209,6 +209,7 @@ export default {
     },
     mounted() {
         this.getAllData();
+        this.$store.commit('changeMenuIndex', '3');
     },
     methods: {
         deletePrject(id) {
