@@ -140,10 +140,10 @@ export default {
         searchModel() {
             this.$api
                 .get(POST_SEARCH_MODEL, {
-                    keyword: this.modelKeyWord
+                    template_name: this.modelKeyWord
                 })
                 .then(res => {
-                    this.all_project = res.data.search_template;
+                    this.all_project = res.data.all_model_template;
                     console.log(res);
                 });
         },
@@ -161,7 +161,6 @@ export default {
                     test_template_id: this.data_template_id
                 })
                 .then(res => {
-                    this.allTest();
                     if (res.data.code === 200) {
                         this.$message.success(res.data.mes);
                     } else {
@@ -174,11 +173,8 @@ export default {
             this.htmlText = obj.template_info;
             this.dialogVisible = true;
         },
-        allTest() {
-            // 获取实验列表
-            this.$api.get(GET_ALL_MODEL_TEMPLATE).then(res => {
-                this.all_project = res.data.all_model_template;
-            });
+        handleClose() {
+            this.dialogVisible = false;
         },
         createArr() {
             for (var i = 0; i < 10; i++) {
@@ -198,7 +194,7 @@ export default {
         this.randomNum = parseInt(Math.random() * (20 - 1 + 1) + 1, 10);
         console.log(this.randomNum);
         this.createArr();
-        this.allTest();
+        this.searchModel();
         this.$store.commit('changeCount', 99);
     }
 };

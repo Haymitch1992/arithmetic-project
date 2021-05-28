@@ -138,7 +138,7 @@ export const POST_MODE_ONLINE = '/api/onLineModel/';
 // 选择模型
 export const POST_CREATE_MODEL = '/api/createTestTemplate/';
 // 模型搜索
-export const POST_SEARCH_MODEL = '/api/searchModelTemplate/';
+export const POST_SEARCH_MODEL = '/api/searchTemplate/';
 
 // 运行模型
 export const POST_RUN_MODEL = '/model/run';
