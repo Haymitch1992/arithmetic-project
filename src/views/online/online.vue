@@ -173,12 +173,13 @@ export default {
                     textStr = '删除';
                     break;
             }
-            this.$confirm(`是否继续${textStr}?`, '提示', {
+            this.$confirm(`是否${textStr}?`, '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             })
                 .then(() => {
+                    this.loading = true;
                     this.$api
                         .post(POST_DEPLOY_MODEL, {
                             user_id: localStorage.getItem('data_user_id'),

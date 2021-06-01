@@ -61,7 +61,11 @@
                                 </li>
                                 <li>
                                     <span class="list-text">容器名称</span>
-                                    <span class="list-content">
+                                    <span
+                                        class="list-content"
+                                        :title="model_info_data.container_name"
+                                        style="text-overflow: ellipsis;overflow:hidden;"
+                                    >
                                         {{ model_info_data.container_name }}
                                     </span>
                                     <span class="list-text">镜像id</span>

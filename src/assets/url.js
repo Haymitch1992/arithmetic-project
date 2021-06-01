@@ -179,6 +179,7 @@ export const POST_UPLOAD_FILE = '/api/upload/';
 export const POST_JOIN_FILE = '/api/joinFile/';
 // 模型分片上传合并指令
 export const POST_JOIN_MODEL = '/api/joinModel/';
+export const GET_JOIN_MODEL = '/api/joinModel/';
 
 // 演示文件列表
 export const GET_FILE_LIST = '/api/AllVideoData/';

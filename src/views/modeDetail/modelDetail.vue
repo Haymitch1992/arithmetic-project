@@ -235,6 +235,7 @@ export default {
                 })
                 .then(res => {
                     this.$message(res.data.mes);
+                    this.getModelInfo();
                     // this.model_info_data = res.data.model_info_data;
                 });
         },

@@ -25,6 +25,10 @@
                         v-model="form.model_type"
                         placeholder="请选择模型类别"
                     >
+                        <el-option
+                            label="SavedModel"
+                            value="savedmodel"
+                        ></el-option>
                         <el-option label="PMML" value="pmml"></el-option>
                         <el-option label="TorchScript" value="pt"></el-option>
                     </el-select>
@@ -80,7 +84,8 @@ import SparkMD5 from 'spark-md5';
 import {
     POST_UPLOAD_FILE,
     POST_JOIN_FILE,
-    POST_JOIN_MODEL
+    POST_JOIN_MODEL,
+    GET_JOIN_MODEL
 } from '../assets/url.js';
 
 export default {
@@ -95,6 +100,9 @@ export default {
         form: {
             handler(newName, oldName) {
                 switch (newName.model_type) {
+                    case 'savedmodel':
+                        this.form.frame_name = 'Tensorflow';
+                        break;
                     case 'pt':
                         this.form.frame_name = 'Pytorch';
                         break;
@@ -111,6 +119,22 @@ export default {
         }
     },
     data() {
+        var checkName = (rule, value, callback) => {
+            // 校验名称是否存在
+            this.$api
+                .get(GET_JOIN_MODEL, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    model_name: value
+                })
+                .then(res => {
+                    if (res.data.code !== 200) {
+                        callback(new Error(res.data.mes));
+                    } else {
+                        callback();
+                    }
+                    // this.model_info_data = res.data.model_info_data;
+                });
+        };
         return {
             dialogFormVisible3: true,
             rules: {
@@ -119,7 +143,8 @@ export default {
                         required: true,
                         message: '请输入模型名称',
                         trigger: 'blur'
-                    }
+                    },
+                    { validator: checkName, trigger: 'blur' }
                 ],
                 model_describe: [
                     {
