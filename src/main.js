@@ -24,7 +24,8 @@ Vue.use(uploader);
 Vue.config.productionTip = false;
 Moment.locale('zh-cn');
 Vue.prototype.$api = api;
-Vue.prototype.globalUlr = "http://172.51.216.152:5001/";
+Vue.prototype.globalUlr = "http://47.95.214.123:8080/";
+// Vue.prototype.globalUlr = "http://172.51.216.152:5001/";
 // 不同环境的接口地址
 
 /* eslint-disable no-new */

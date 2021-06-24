@@ -36,6 +36,10 @@
                         <i class="iconfont iconzidonghua"></i>
                         操作日志
                     </li>
+                    <li @click="releaseDialog = true">
+                        <i class="iconfont iconzidonghua"></i>
+                        发布
+                    </li>
                 </ul>
             </div>
             <div class="page-left" v-show="$store.state.count === 0">
@@ -73,6 +77,12 @@
                         @click="changeExperiment(index, item.id)"
                     >
                         {{ item.test_name }}
+                        <!-- 增加已发布状态 -->
+                        <i
+                            title="已运行"
+                            v-if="item.status"
+                            class="el-icon-success"
+                        ></i>
                     </li>
                 </ul>
                 <div class="addTest-line">
@@ -239,6 +249,11 @@
         <analysisDialog></analysisDialog>
         <!-- 查看数据 -->
         <viewDataDialog></viewDataDialog>
+        <!-- 发布 -->
+        <releaseItem
+            v-if="releaseDialog"
+            @closeReleaseDialog="closeReleaseDialog"
+        ></releaseItem>
         <selectHeader
             v-if="showSelectDialog"
             :selectValue="nodeForm"
@@ -249,6 +264,7 @@
 
 <script>
 import createTestBox from '../../components/createTest';
+import releaseItem from '../../components/release.vue';
 import {
     diagramExampleData,
     nodeLabel6,
@@ -274,7 +290,8 @@ import {
     OPERATION_LOG,
     GET_ALL_MODULE,
     POST_ALL_MODULE,
-    ALL_DATA_LIST
+    ALL_DATA_LIST,
+    GET_TEST_STATUS
 } from '../../assets/url.js';
 import randomForest from '../../components/randomForest';
 import experimentalDetail from '../../components/experimentalDetail';
@@ -308,7 +325,8 @@ export default {
         viewDataDialog,
         testLog,
         searchBox,
-        createTestBox
+        createTestBox,
+        releaseItem
     },
     computed: {
         currentTabNum() {
@@ -324,6 +342,7 @@ export default {
     props: {},
     data() {
         return {
+            releaseDialog: false,
             showTestLog: false,
             getAllTestStatus: false,
             searchNode: '',
@@ -430,6 +449,24 @@ export default {
         this.onkeydown = null; // 销毁事件
     },
     methods: {
+        // 修改实验状态
+        changeTestStatus(status) {
+            // 所有节点运行完成后 修改状态
+            // 有的拖动节点 或者修改参数 更改节点
+            this.$api
+                .get(GET_TEST_STATUS, {
+                    data_test_id: this.currentTest.id,
+                    data_test_name: this.currentTest.test_name,
+                    test_status: status
+                })
+                .then(res => {
+                    console.log(res.data);
+                    this.allTest();
+                });
+        },
+        closeReleaseDialog() {
+            this.releaseDialog = false;
+        },
         CloseTestLog() {
             this.showTestLog = false;
         },
@@ -861,6 +898,7 @@ export default {
                 this.currentNodeNum = 0;
                 // 判断终止条件
                 this.loading.close();
+                this.changeTestStatus(1);
                 return false;
             } else {
                 let targetNode = this.runArr[this.currentNodeNum];
@@ -1636,6 +1674,12 @@ export default {
                 padding-left: 4px;
                 cursor: pointer;
                 font-size: 14px;
+                position: relative;
+                i {
+                    position: absolute;
+                    right: 16px;
+                    top: 14px;
+                }
             }
             .active {
                 color: #3a8ee6;

@@ -196,3 +196,6 @@ export const USE_VIDEO_DATA = '/model/display';
 
 // 查看视频分析结果
 export const GET_VIDEO_RESULT = '/api/AnalysisResult/';
+
+// 修改实验运行状态
+export const GET_TEST_STATUS = '/api/alterTestStatus/';

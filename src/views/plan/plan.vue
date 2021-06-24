@@ -1,78 +1,92 @@
 <template>
     <div class="bg">
         <div class="plan-box">
-            <div class="search-line">
-                <el-input
-                    size="small"
-                    placeholder="搜索模板"
-                    v-model="modelKeyWord"
-                    class="search-inp"
-                ></el-input>
-                <el-button
-                    size="small"
-                    type="primary"
-                    @click.native="searchModel"
-                >
-                    搜索
-                </el-button>
-            </div>
-            <div>
-                <div class="plan-ul ">
-                    <div
-                        class="plan-li"
-                        v-for="(item, index) in all_project"
-                        v-bind:key="index"
-                    >
-                        <h3>{{ item.template_name }}</h3>
-                        <div class="img-content">
-                            <img :src="imgList[index]" alt="" />
-                        </div>
-                        <div class="btn-box">
-                            <el-button
-                                type="primary"
-                                size="small"
-                                style="width: 44%"
-                                @click="createModel(item)"
-                            >
-                                从模板创建
-                            </el-button>
-                            <el-button
-                                size="small"
-                                style="width: 44%"
-                                @click="viewTemplate(item)"
-                            >
-                                查看文档
-                            </el-button>
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="实验模板" name="first">
+                    <div class="search-line">
+                        <el-input
+                            size="small"
+                            placeholder="搜索模板"
+                            v-model="modelKeyWord"
+                            class="search-inp"
+                        ></el-input>
+                        <el-button
+                            size="small"
+                            type="primary"
+                            @click.native="searchModel"
+                        >
+                            搜索
+                        </el-button>
+                    </div>
+                    <div class="plan-ul ">
+                        <div
+                            class="plan-li"
+                            v-for="(item, index) in all_project"
+                            v-bind:key="index"
+                        >
+                            <h3>{{ item.template_name }}</h3>
+                            <div class="img-content">
+                                <img :src="imgList[index]" alt="" />
+                            </div>
+                            <p>来源：admin创建</p>
+                            <p>发布时间：2021-06-23 16:16:16</p>
+                            <p>创建次数：20次</p>
+                            <div class="btn-box">
+                                <el-button
+                                    type="primary"
+                                    size="small"
+                                    style="width: 44%"
+                                    @click="createModel(item)"
+                                >
+                                    从模板创建
+                                </el-button>
+                                <el-button
+                                    size="small"
+                                    style="width: 44%"
+                                    @click="viewTemplate(item)"
+                                >
+                                    查看文档
+                                </el-button>
+                            </div>
                         </div>
                     </div>
-                    <div class="plan-li">
-                        <h3>安全帽识别</h3>
-                        <div class="img-content">
-                            <img
-                                src="../../../src/assets/img/item-1.jpg"
-                                alt=""
-                            />
-                        </div>
-                        <div class="btn-box">
-                            <el-button
-                                type="primary"
-                                size="small"
-                                style="width: 44%"
-                                @click="goDevice()"
-                            >
-                                查看示例
-                            </el-button>
-                            <el-button
-                                size="small"
-                                style="width: 44%"
-                                @click="viewTemplate()"
-                            >
-                                查看文档
-                            </el-button>
+                </el-tab-pane>
+                <el-tab-pane label="模型模板" name="second">
+                    <div class="plan-ul ">
+                        <div class="plan-li">
+                            <h3>安全帽识别</h3>
+                            <div class="img-content">
+                                <img
+                                    src="../../../src/assets/img/item-1.jpg"
+                                    alt=""
+                                />
+                            </div>
+                            <div class="btn-box">
+                                <el-button
+                                    type="primary"
+                                    size="small"
+                                    style="width: 44%"
+                                    @click="goDevice()"
+                                >
+                                    查看示例
+                                </el-button>
+                                <el-button
+                                    size="small"
+                                    style="width: 44%"
+                                    @click="viewTemplate()"
+                                >
+                                    查看文档
+                                </el-button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </el-tab-pane>
+                <el-tab-pane label="社区" name="third">
+                    角色管理
+                </el-tab-pane>
+            </el-tabs>
+
+            <div></div>
             <el-dialog
                 title="提示"
                 :visible.sync="dialogVisible"
@@ -114,6 +128,7 @@ export default {
     },
     data() {
         return {
+            activeName: 'first', // 当前标签
             data_project_id: localStorage.getItem('data_project_id'),
             randomNum: '',
             modelKeyWord: '',
@@ -131,6 +146,9 @@ export default {
         };
     },
     methods: {
+        handleClick(tab, event) {
+            console.log(tab, event);
+        },
         goDevice() {
             this.$router.push('/deviceManagement');
         },
@@ -201,8 +219,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.plan-box {
+    /deep/ .el-tabs__item {
+        color: #fff;
+    }
+    /deep/ .el-tabs__item.is-active {
+        color: #409eff;
+    }
+}
+
 .search-line {
-    padding: 20px 6px;
+    padding: 10px 0px 20px;
 }
 .search-inp {
     width: 400px;
@@ -225,8 +252,7 @@ export default {
         margin-bottom: 20px;
         border-radius: 4px;
         padding: 10px;
-        margin-right: 10px;
-        margin-left: 10px;
+        margin-right: 20px;
         background: #3a404c;
         h3 {
             margin: 0;
@@ -246,6 +272,13 @@ export default {
         .btn-box {
             text-align: center;
             padding: 10px 0;
+        }
+        p {
+            margin: 0;
+            color: #fff;
+            line-height: 30px;
+            font-size: 12px;
+            padding: 0 6px;
         }
     }
 }
