@@ -28,9 +28,11 @@
                             <div class="img-content">
                                 <img :src="imgList[index]" alt="" />
                             </div>
-                            <p>来源：admin创建</p>
-                            <p>发布时间：2021-06-23 16:16:16</p>
-                            <p>创建次数：20次</p>
+                            <p>来源：{{ item.source }}创建</p>
+                            <p>
+                                发布时间：{{ item.create_time | create_time }}
+                            </p>
+                            <p>创建次数：{{ item.create_count }}次</p>
                             <div class="btn-box">
                                 <el-button
                                     type="primary"
@@ -82,7 +84,55 @@
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="社区" name="third">
-                    角色管理
+                    <div class="search-line">
+                        <el-input
+                            size="small"
+                            placeholder="搜索模板"
+                            v-model="modelKeyWord"
+                            class="search-inp"
+                        ></el-input>
+                        <el-button
+                            size="small"
+                            type="primary"
+                            @click.native="searchModel"
+                        >
+                            搜索
+                        </el-button>
+                    </div>
+                    <div class="plan-ul ">
+                        <div
+                            class="plan-li"
+                            v-for="(item, index) in all_project"
+                            v-bind:key="index"
+                        >
+                            <h3>{{ item.template_name }}</h3>
+                            <div class="img-content">
+                                <img :src="imgList[index]" alt="" />
+                            </div>
+                            <p>来源：{{ item.source }}创建</p>
+                            <p>
+                                发布时间：{{ item.create_time | create_time }}
+                            </p>
+                            <p>创建次数：{{ item.create_count }}次</p>
+                            <div class="btn-box">
+                                <el-button
+                                    type="primary"
+                                    size="small"
+                                    style="width: 44%"
+                                    @click="createModel(item)"
+                                >
+                                    从模板创建
+                                </el-button>
+                                <el-button
+                                    size="small"
+                                    style="width: 44%"
+                                    @click="viewTemplate(item)"
+                                >
+                                    查看文档
+                                </el-button>
+                            </div>
+                        </div>
+                    </div>
                 </el-tab-pane>
             </el-tabs>
 
@@ -119,6 +169,7 @@ import {
     POST_SEARCH_MODEL,
     POST_CREATE_MODEL
 } from '../../assets/url';
+import moment from 'moment';
 import createTestBox from '../../components/createTest';
 import axios from 'axios';
 export default {
@@ -142,12 +193,29 @@ export default {
             form: {
                 test_name: '',
                 test_content: ''
-            }
+            },
+            type: 1
         };
+    },
+    filters: {
+        create_time(val) {
+            if (!val) return '';
+            return moment(val).format('YYYY-MM-DD HH:mm:ss');
+        }
     },
     methods: {
         handleClick(tab, event) {
-            console.log(tab, event);
+            console.log(tab.index);
+            switch (parseInt(tab.index)) {
+                case 0:
+                    this.type = 1;
+                    this.searchModel();
+                    break;
+                case 2:
+                    this.type = 2;
+                    this.searchModel();
+                    break;
+            }
         },
         goDevice() {
             this.$router.push('/deviceManagement');
@@ -158,7 +226,8 @@ export default {
         searchModel() {
             this.$api
                 .get(POST_SEARCH_MODEL, {
-                    template_name: this.modelKeyWord
+                    template_name: this.modelKeyWord,
+                    template_type: this.type
                 })
                 .then(res => {
                     this.all_project = res.data.all_model_template;

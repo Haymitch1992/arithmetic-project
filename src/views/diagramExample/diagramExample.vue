@@ -253,6 +253,8 @@
         <releaseItem
             v-if="releaseDialog"
             @closeReleaseDialog="closeReleaseDialog"
+            @submitTestTemplate="submitTestTemplate"
+            :currentTest="currentTest"
         ></releaseItem>
         <selectHeader
             v-if="showSelectDialog"
@@ -291,7 +293,8 @@ import {
     GET_ALL_MODULE,
     POST_ALL_MODULE,
     ALL_DATA_LIST,
-    GET_TEST_STATUS
+    GET_TEST_STATUS,
+    GET_SUBMIT_TEST_TEMPLATE
 } from '../../assets/url.js';
 import randomForest from '../../components/randomForest';
 import experimentalDetail from '../../components/experimentalDetail';
@@ -449,6 +452,27 @@ export default {
         this.onkeydown = null; // 销毁事件
     },
     methods: {
+        // 发布实验
+        submitTestTemplate(template_name, template_info) {
+            // GET_SUBMIT_TEST_TEMPLATE
+            this.$api
+                .post(GET_SUBMIT_TEST_TEMPLATE, {
+                    data_user_id: localStorage.getItem('data_user_id'),
+                    data_test_id: this.currentTest.id,
+                    template_name: template_name,
+                    template_info: template_info
+                })
+                .then(res => {
+                    if (res.data.code === 200) {
+                        this.$message.success(res.data.mes);
+                        this.allTest();
+                        this.closeReleaseDialog();
+                    } else {
+                        this.$message.error(res.data.mes);
+                    }
+                    console.log(res.data);
+                });
+        },
         // 修改实验状态
         changeTestStatus(status) {
             // 所有节点运行完成后 修改状态
@@ -1497,6 +1521,7 @@ export default {
         showNodeDetails(val) {
             // 展示选中的节点
             console.log('选中节点的数据', val);
+            this.changeTestStatus(0);
             // 显示对应模块 并传递参数
             // 展示节点显示的内容
             this.isShowNode = true;
@@ -1678,7 +1703,7 @@ export default {
                 i {
                     position: absolute;
                     right: 16px;
-                    top: 14px;
+                    top: 12px;
                 }
             }
             .active {
