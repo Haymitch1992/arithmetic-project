@@ -201,3 +201,5 @@ export const GET_VIDEO_RESULT = '/api/AnalysisResult/';
 export const GET_TEST_STATUS = '/api/alterTestStatus/';
 // 发布实验
 export const GET_SUBMIT_TEST_TEMPLATE = '/api/submitTestTemplate/';
+// 获取模板的json
+export const GET_NODE_MES = '/api/nodeMes/';

@@ -33,6 +33,16 @@
                                 发布时间：{{ item.create_time | create_time }}
                             </p>
                             <p>创建次数：{{ item.create_count }}次</p>
+                            <p>
+                                模型预览：
+                                <a
+                                    style="color:#fff;"
+                                    href="javascript:;"
+                                    @click="openModel(item)"
+                                >
+                                    查看
+                                </a>
+                            </p>
                             <div class="btn-box">
                                 <el-button
                                     type="primary"
@@ -42,12 +52,15 @@
                                 >
                                     从模板创建
                                 </el-button>
-                                <el-button
-                                    size="small"
-                                    style="width: 44%"
-                                    @click="viewTemplate(item)"
-                                >
-                                    查看文档
+                                <el-button size="small" style="width: 44%">
+                                    <a
+                                        target="_blank"
+                                        :href="
+                                            `http://172.51.216.152:5001/media/pdf/${item.template_name}.pdf`
+                                        "
+                                    >
+                                        查看文档
+                                    </a>
                                 </el-button>
                             </div>
                         </div>
@@ -72,12 +85,13 @@
                                 >
                                     查看示例
                                 </el-button>
-                                <el-button
-                                    size="small"
-                                    style="width: 44%"
-                                    @click="viewTemplate()"
-                                >
-                                    查看文档
+                                <el-button size="small" style="width: 44%">
+                                    <a
+                                        target="_blank"
+                                        href="http://172.51.216.152:5001/media/pdf/ATO-停车精度分析.pdf"
+                                    >
+                                        查看文档
+                                    </a>
                                 </el-button>
                             </div>
                         </div>
@@ -114,6 +128,16 @@
                                 发布时间：{{ item.create_time | create_time }}
                             </p>
                             <p>创建次数：{{ item.create_count }}次</p>
+                            <p>
+                                模型预览：
+                                <a
+                                    style="color:#fff;"
+                                    href="javascript:;"
+                                    @click="openModel(item)"
+                                >
+                                    查看
+                                </a>
+                            </p>
                             <div class="btn-box">
                                 <el-button
                                     type="primary"
@@ -158,6 +182,12 @@
                 @createTest="createTest"
                 @closeDialog="closeDialog"
             ></create-test-box>
+            <!-- 预览实验模型 -->
+            <demo
+                v-if="modelVisible"
+                :data_template_id="data_template_id"
+                @closeModel="closeModel"
+            ></demo>
         </div>
     </div>
 </template>
@@ -171,14 +201,17 @@ import {
 } from '../../assets/url';
 import moment from 'moment';
 import createTestBox from '../../components/createTest';
+import demo from '../../components/diagramExample.vue';
 import axios from 'axios';
 export default {
     name: 'home',
     components: {
-        createTestBox
+        createTestBox,
+        demo
     },
     data() {
         return {
+            modelVisible: false,
             activeName: 'first', // 当前标签
             data_project_id: localStorage.getItem('data_project_id'),
             randomNum: '',
@@ -204,6 +237,13 @@ export default {
         }
     },
     methods: {
+        closeModel() {
+            this.modelVisible = false;
+        },
+        openModel(obj) {
+            this.data_template_id = obj.id;
+            this.modelVisible = true;
+        },
         handleClick(tab, event) {
             console.log(tab.index);
             switch (parseInt(tab.index)) {

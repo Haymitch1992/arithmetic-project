@@ -3,7 +3,7 @@
         <div class="onlineDetail-box">
             <div class="back-line">
                 <span class="el-icon-arrow-left" @click="backPage()"></span>
-                道岔转辙机故障诊断
+                {{ model_data.model_name }}
             </div>
             <div>
                 <el-tabs v-model="activeName" @tab-click="handleClick">

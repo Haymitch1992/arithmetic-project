@@ -49,10 +49,13 @@ export default {
     methods: {
         setHeader() {
             // SET_HEADER
+            // 如果当前节点的输入有set_file_path 则带入
+            let set_file_path = window.localStorage.getItem('path') || 'None';
             this.$api
                 .post(SET_HEADER, {
                     data_user_id: localStorage.getItem('data_user_id'),
-                    set_id: this.$store.state.set_id
+                    set_id: this.$store.state.set_id,
+                    set_file_path: set_file_path
                 })
                 .then(res => {
                     // this.options = res.data.search_set

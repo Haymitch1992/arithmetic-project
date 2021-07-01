@@ -172,6 +172,14 @@
                             v-if="itemInp.type === 'btn'"
                             class="select-btn select-hover"
                         >
+                            <span
+                                class="claer-icon"
+                                @click="
+                                    itemInp.value.node_params[itemInp.tag] = []
+                                "
+                            >
+                                重置
+                            </span>
                             <el-button
                                 v-if="
                                     itemInp.value.node_params[itemInp.tag]
@@ -437,6 +445,7 @@ export default {
             this.$parent.showSelectDialog = true;
         },
         openSelectHeader(num, keyStr) {
+            console.log('%%%%%%%%%%%%%', num, keyStr);
             // 打开父页面 选择特征列的弹框
             this.$store.commit(
                 'changeSelectDate',
@@ -486,6 +495,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.claer-icon {
+    position: absolute;
+    top: -40px;
+    right: 0;
+}
 .select-hover {
     position: relative;
 }

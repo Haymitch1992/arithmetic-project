@@ -452,6 +452,69 @@ export default {
         this.onkeydown = null; // 销毁事件
     },
     methods: {
+        findOut(e) {
+            this.yourJSONDataFillThere.nodes.forEach((item, index, arr) => {
+                if (item.component_id === 'load_data') {
+                    this.$store.commit(
+                        'changeSetId',
+                        item.form[0].data[0].value.value.id
+                    );
+                }
+            });
+            // 查找节点的
+            let node = e;
+            let currentNodeId = node.id; // 当前节点的ID
+            let currentNodeIn = node.in_ports_name; // 当前节点的输入
+            window.localStorage.setItem('path', null);
+            console.log('当前节点是', node);
+            // 如果当前节点有一个输入节点则找到上个节点的output
+            console.log('当前节点的输入是', node.in_ports_name);
+            if (currentNodeIn.length === 1) {
+                // 找上个节点的
+                this.yourJSONDataFillThere.edges.forEach(item => {
+                    if (item.dst_node_id === currentNodeId) {
+                        let findNodeId = item.src_node_id;
+                        this.yourJSONDataFillThere.nodes.forEach(item => {
+                            if (item.id === findNodeId) {
+                                console.log(
+                                    '找到了当前节点的上一个节点',
+                                    item.output,
+                                    item.output[currentNodeIn[0]]
+                                );
+                                window.localStorage.setItem(
+                                    'path',
+                                    item.output[currentNodeIn[0]]
+                                );
+                            }
+                        });
+                    }
+                });
+            } else if (currentNodeIn.length === 2) {
+                // 找到不是模型输出的节点
+                this.yourJSONDataFillThere.edges.forEach(item => {
+                    if (item.dst_node_id === currentNodeId) {
+                        let findNodeId = item.src_node_id;
+                        this.yourJSONDataFillThere.nodes.forEach(item => {
+                            if (
+                                item.id === findNodeId &&
+                                item.node_type !== 'item-2'
+                            ) {
+                                console.log(
+                                    '找到了当前节点的上一个节点',
+                                    item.output[currentNodeIn[1]]
+                                );
+                                window.localStorage.setItem(
+                                    'path',
+                                    item.output[currentNodeIn[1]]
+                                );
+                            }
+                        });
+                    }
+                });
+            }
+        },
+        // 如果有两个输入节点则从左向右判断
+        // 如果左输入是模型类的则执行右输入
         // 发布实验
         submitTestTemplate(template_name, template_info) {
             // GET_SUBMIT_TEST_TEMPLATE
@@ -1521,6 +1584,7 @@ export default {
         showNodeDetails(val) {
             // 展示选中的节点
             console.log('选中节点的数据', val);
+            this.findOut(val);
             this.changeTestStatus(0);
             // 显示对应模块 并传递参数
             // 展示节点显示的内容
