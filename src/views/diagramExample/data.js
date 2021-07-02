@@ -1688,6 +1688,163 @@ export const nodeList3 = [
                     ]
                 }
             ]
+        }, {
+            name: '回归-XGBoost',
+            component_id: 'reg_xgb',
+            can_add_out: true, // 能否添加输出
+            node_type: 'item-2',
+            is_generate_model: "true",
+            in_ports: [0],
+            tag_type: 'arithmetic2',
+            in_ports_text: ['数据输入'],
+            in_ports_name: ['train_csv_path'],
+            out_ports: [0],
+            out_ports_text: ['输出模型'],
+            out_ports_name: ['reg_xgb_model'],
+            iconClassName: 'el-icon-loading',
+            form: [
+                {
+                    "label": "字段设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'btn', // 输入框
+                            "label": "选择特征列",
+                            "placeholder": "选择要标注修改的表头",
+                            "value": {
+                                "node_params": {
+                                    "select_feature_columns": []
+                                }
+                            },
+                            "tag": "select_feature_columns"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'btn', // 输入框
+                            "label": "选择标签列",
+                            "placeholder": "选择要标注修改的表头",
+                            "value": {
+                                "node_params": {
+                                    "select_target_columns": []
+                                }
+                            },
+                            "tag": "select_target_columns"
+                        }
+                    ]
+                }, {
+                    "label": "参数设置",
+                    "data": [
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'select-options', // 输入框
+                            "label": "booster",
+                            "value": {
+                                "node_params": {
+                                    "booster": 'gbtree'
+                                }
+                            },
+                            "options": [
+                                {
+                                    "label": "gbtree",
+                                    "value": "gbtree"
+                                },
+                                {
+                                    "label": "gbliner",
+                                    "value": "gbliner"
+                                }
+                            ],
+                            "tag": "booster"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'select-options', // 输入框
+                            "label": "objective",
+                            "value": {
+                                "node_params": {
+                                    "objective": 'reg:linear'
+                                }
+                            },
+                            "options": [
+                                {
+                                    "label": "reg:linear",
+                                    "value": "reg:linear"
+                                },
+                                {
+                                    "label": "binary:logistic",
+                                    "value": "binary:logistic"
+                                }
+                            ],
+                            "tag": "objective"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default', // 输入框
+                            "label": "max_depth",
+                            "value": {
+                                "node_params": {
+                                    "max_depth": '6'
+                                }
+                            },
+                            "tag": "max_depth"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default', // 输入框
+                            "label": "eta",
+                            "value": {
+                                "node_params": {
+                                    "eta": '0.03'
+                                }
+                            },
+                            "tag": "eta"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default', // 输入框
+                            "label": "lambda",
+                            "value": {
+                                "node_params": {
+                                    "lambda": '2'
+                                }
+                            },
+                            "tag": "lambda"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default', // 输入框
+                            "label": "subsample",
+                            "value": {
+                                "node_params": {
+                                    "subsample": '0.8'
+                                }
+                            },
+                            "tag": "subsample"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default', // 输入框
+                            "label": "colsample_bytree",
+                            "value": {
+                                "node_params": {
+                                    "colsample_bytree": '0.7'
+                                }
+                            },
+                            "tag": "colsample_bytree"
+                        },
+                        {
+                            // 类型判断 下拉框|输入框
+                            "type": 'input-default', // 输入框
+                            "label": "early_stopping_rounds",
+                            "value": {
+                                "node_params": {
+                                    "early_stopping_rounds": '200'
+                                }
+                            },
+                            "tag": "early_stopping_rounds"
+                        }
+                    ]
+                }
+            ]
         }
         ]
     },
@@ -1860,6 +2017,27 @@ export const nodeList4 = [
                                     }
                                 },
                                 "tag": "predict_target_columns"
+                            },
+                            {
+                                // 类型判断 下拉框|输入框
+                                "type": 'select-options', // 输入框
+                                "label": "flavor",
+                                "value": {
+                                    "node_params": {
+                                        "flavor": 'sklearn'
+                                    }
+                                },
+                                "options": [
+                                    {
+                                        "label": "sklearn",
+                                        "value": "sklearn"
+                                    },
+                                    {
+                                        "label": "xgboost",
+                                        "value": "xgboost"
+                                    }
+                                ],
+                                "tag": "flavor"
                             }
                         ]
                     }

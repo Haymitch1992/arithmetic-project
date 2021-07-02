@@ -24,7 +24,16 @@
                             v-for="(item, index) in all_project"
                             v-bind:key="index"
                         >
-                            <h3>{{ item.template_name }}</h3>
+                            <h3>
+                                {{ item.template_name }}
+                                <a
+                                    style="color:#fff;float:right;text-decoration: none;"
+                                    href="javascript:;"
+                                    @click="openModel(item)"
+                                >
+                                    预览
+                                </a>
+                            </h3>
                             <div class="img-content">
                                 <img :src="imgList[index]" alt="" />
                             </div>
@@ -33,16 +42,7 @@
                                 发布时间：{{ item.create_time | create_time }}
                             </p>
                             <p>创建次数：{{ item.create_count }}次</p>
-                            <p>
-                                模型预览：
-                                <a
-                                    style="color:#fff;"
-                                    href="javascript:;"
-                                    @click="openModel(item)"
-                                >
-                                    查看
-                                </a>
-                            </p>
+
                             <div class="btn-box">
                                 <el-button
                                     type="primary"
@@ -65,6 +65,16 @@
                             </div>
                         </div>
                     </div>
+                    <el-pagination
+                        @size-change="handleSizeChange"
+                        background
+                        @current-change="handleCurrentChange"
+                        :current-page="page"
+                        layout="total, prev, pager, next"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="size"
+                        :total="total"
+                    ></el-pagination>
                 </el-tab-pane>
                 <el-tab-pane label="模型模板" name="second">
                     <div class="plan-ul ">
@@ -88,7 +98,7 @@
                                 <el-button size="small" style="width: 44%">
                                     <a
                                         target="_blank"
-                                        href="http://172.51.216.152:5001/media/pdf/ATO-停车精度分析.pdf"
+                                        href="http://172.51.216.152:5001/media/pdf/安全帽识别.pdf"
                                     >
                                         查看文档
                                     </a>
@@ -119,7 +129,16 @@
                             v-for="(item, index) in all_project"
                             v-bind:key="index"
                         >
-                            <h3>{{ item.template_name }}</h3>
+                            <h3>
+                                {{ item.template_name }}
+                                <a
+                                    style="color:#fff;float:right;text-decoration: none;"
+                                    href="javascript:;"
+                                    @click="openModel(item)"
+                                >
+                                    预览
+                                </a>
+                            </h3>
                             <div class="img-content">
                                 <img :src="imgList[index]" alt="" />
                             </div>
@@ -128,16 +147,6 @@
                                 发布时间：{{ item.create_time | create_time }}
                             </p>
                             <p>创建次数：{{ item.create_count }}次</p>
-                            <p>
-                                模型预览：
-                                <a
-                                    style="color:#fff;"
-                                    href="javascript:;"
-                                    @click="openModel(item)"
-                                >
-                                    查看
-                                </a>
-                            </p>
                             <div class="btn-box">
                                 <el-button
                                     type="primary"
@@ -157,6 +166,16 @@
                             </div>
                         </div>
                     </div>
+                    <el-pagination
+                        @size-change="handleSizeChange"
+                        background
+                        @current-change="handleCurrentChange"
+                        :current-page="page"
+                        layout="total, prev, pager, next"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="size"
+                        :total="total"
+                    ></el-pagination>
                 </el-tab-pane>
             </el-tabs>
 
@@ -227,7 +246,10 @@ export default {
                 test_name: '',
                 test_content: ''
             },
-            type: 1
+            type: 1,
+            page: 1,
+            size: 10,
+            total: 0
         };
     },
     filters: {
@@ -237,6 +259,16 @@ export default {
         }
     },
     methods: {
+        handleSizeChange(val) {
+            this.size = val;
+            console.log(`每页 ${val} 条`);
+            this.searchModel();
+        },
+        handleCurrentChange(val) {
+            this.page = val;
+            console.log(`当前页: ${val}`);
+            this.searchModel();
+        },
         closeModel() {
             this.modelVisible = false;
         },
@@ -249,10 +281,14 @@ export default {
             switch (parseInt(tab.index)) {
                 case 0:
                     this.type = 1;
+                    this.page = 1;
+                    this.size = 10;
                     this.searchModel();
                     break;
                 case 2:
                     this.type = 2;
+                    this.page = 1;
+                    this.size = 10;
                     this.searchModel();
                     break;
             }
@@ -267,10 +303,13 @@ export default {
             this.$api
                 .get(POST_SEARCH_MODEL, {
                     template_name: this.modelKeyWord,
-                    template_type: this.type
+                    template_type: this.type,
+                    page: this.page,
+                    size: this.size
                 })
                 .then(res => {
                     this.all_project = res.data.all_model_template;
+                    this.total = res.data.count;
                     console.log(res);
                 });
         },
@@ -338,13 +377,13 @@ export default {
 }
 
 .search-line {
-    padding: 10px 0px 20px;
+    padding: 0px 0px 10px;
 }
 .search-inp {
     width: 400px;
 }
 .plan-box {
-    height: calc(100vh - 80px);
+    min-height: calc(100vh - 70px);
     background-color: #292c36;
     padding: 20px 30px;
     box-sizing: border-box;
@@ -380,7 +419,7 @@ export default {
         }
         .btn-box {
             text-align: center;
-            padding: 10px 0;
+            padding: 4px 0;
         }
         p {
             margin: 0;

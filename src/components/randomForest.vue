@@ -574,6 +574,8 @@ export default {
 .prop-body {
     padding: 10px 20px;
     box-sizing: border-box;
+    max-height: 800px;
+    overflow-y: auto;
 }
 .select-btn {
     width: 100%;
