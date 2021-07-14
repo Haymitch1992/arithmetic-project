@@ -453,38 +453,58 @@ export default {
     },
     methods: {
         findOut(e) {
+            // 找到数据集 存入当前数据集选中的数据id
             this.yourJSONDataFillThere.nodes.forEach((item, index, arr) => {
                 if (item.component_id === 'load_data') {
-                    this.$store.commit(
-                        'changeSetId',
-                        item.form[0].data[0].value.value.id
-                    );
+                    // 判断是否是初始值
+                    if (item.form[0].data[0].value.value) {
+                        this.$store.commit(
+                            'changeSetId',
+                            item.form[0].data[0].value.value.id
+                        );
+                        window.localStorage.setItem(
+                            'path',
+                            item.form[0].data[0].value.value.data_path
+                        );
+                        // data_path
+                    } else {
+                        this.$store.commit('changeSetId', '');
+                        window.localStorage.setItem('path', null);
+                    }
                 }
             });
             // 查找节点的
             let node = e;
             let currentNodeId = node.id; // 当前节点的ID
             let currentNodeIn = node.in_ports_name; // 当前节点的输入
-            window.localStorage.setItem('path', null);
+
             console.log('当前节点是', node);
             // 如果当前节点有一个输入节点则找到上个节点的output
             console.log('当前节点的输入是', node.in_ports_name);
             if (currentNodeIn.length === 1) {
                 // 找上个节点的
                 this.yourJSONDataFillThere.edges.forEach(item => {
+                    console.log(item);
                     if (item.dst_node_id === currentNodeId) {
                         let findNodeId = item.src_node_id;
                         this.yourJSONDataFillThere.nodes.forEach(item => {
                             if (item.id === findNodeId) {
-                                console.log(
-                                    '找到了当前节点的上一个节点',
-                                    item.output,
+                                console.log(item);
+                                // console.log(
+                                //     '找到了当前节点的上一个节点',
+                                //     item.output,
+                                //     item.output[currentNodeIn[0]]
+                                // );
+                                // 找到当前节点的运行结果
+                                if (
+                                    item.output &&
                                     item.output[currentNodeIn[0]]
-                                );
-                                window.localStorage.setItem(
-                                    'path',
-                                    item.output[currentNodeIn[0]]
-                                );
+                                ) {
+                                    window.localStorage.setItem(
+                                        'path',
+                                        item.output[currentNodeIn[0]]
+                                    );
+                                }
                             }
                         });
                     }
@@ -499,14 +519,25 @@ export default {
                                 item.id === findNodeId &&
                                 item.node_type !== 'item-2'
                             ) {
-                                console.log(
-                                    '找到了当前节点的上一个节点',
+                                // 找到当前节点的运行结果
+                                if (
+                                    item.output &&
                                     item.output[currentNodeIn[1]]
-                                );
-                                window.localStorage.setItem(
-                                    'path',
-                                    item.output[currentNodeIn[1]]
-                                );
+                                ) {
+                                    window.localStorage.setItem(
+                                        'path',
+                                        item.output[currentNodeIn[1]]
+                                    );
+                                }
+
+                                // console.log(
+                                //     '找到了当前节点的上一个节点',
+                                //     item.output[currentNodeIn[1]]
+                                // );
+                                // window.localStorage.setItem(
+                                //     'path',
+                                //     item.output[currentNodeIn[1]]
+                                // );
                             }
                         });
                     }
