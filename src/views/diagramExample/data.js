@@ -1801,13 +1801,13 @@ export const nodeList3 = [
                         {
                             // 类型判断 下拉框|输入框
                             "type": 'input-default', // 输入框
-                            "label": "lambda",
+                            "label": "param_lambda",
                             "value": {
                                 "node_params": {
-                                    "lambda": '2'
+                                    "param_lambda": '2'
                                 }
                             },
-                            "tag": "lambda"
+                            "tag": "param_lambda"
                         },
                         {
                             // 类型判断 下拉框|输入框
