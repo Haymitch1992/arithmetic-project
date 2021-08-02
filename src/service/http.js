@@ -12,7 +12,7 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
     config => {
-        let arr = ['/api/queryEmail/'];
+        let arr = ['/api/queryEmail/', '/api/queryUserName/'];
         // 需要过滤的接口
         if (arr.includes(config.url)) {
             console.log('接口过滤');
